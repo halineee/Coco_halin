@@ -275,6 +275,4 @@ regions:
 
 adresses:
   title: "Nos adresses"
-  items:
-    - "À compléter : nos restaurants préférés"
-    - "À compléter : nos cafés préférés"
+  items: []
