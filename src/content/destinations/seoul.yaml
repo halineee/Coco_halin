@@ -119,11 +119,9 @@ suggestions:
   - name: "Le marché de Gwangjang"
     korean: "광장시장"
     text: "Pour les galettes de haricot mungo, le yukhoe et l’ambiance des stands."
-
-# Nos adresses : une ligne de texte, ou un bloc avec name / korean / text
-# (les blocs ont automatiquement des liens Naver, Kakao et Google Maps)
-adresses:
   - name: "Bastide"
     korean: "바스티드"
     text: "Si la cuisine française vous manque, c’est notre adresse coup de cœur, à Cheongdam-dong (Gangnam) : une cuisine française délicate et généreuse dans un décor de villa du sud de la France, avec un sommelier pour vous guider dans la carte des vins. Réservation conseillée."
     recherche: "바스티드 청담"
+
+adresses: []
