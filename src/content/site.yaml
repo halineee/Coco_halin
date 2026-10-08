@@ -119,7 +119,6 @@ faq:
         href: "/hotels/"
     - q: "Besoin d’aide pour réserver ?"
       a: "Hôtel, train, taxi, restaurant… Si vous avez besoin d’un coup de main pour une réservation, écrivez-nous sur WhatsApp : nous vous aiderons avec plaisir."
-      whatsapp: true
 
 # ─────────────────────────────────────────────────────────────
 #  Réponse (RSVP) — formulaire de la page d'accueil
@@ -134,13 +133,13 @@ rsvp:
   error: "Oups, l’envoi n’a pas fonctionné. Réessayez, ou écrivez-nous sur WhatsApp."
   googleForm:
     action: ""
+    # Texte exact des choix « oui » / « non » dans le formulaire Google
+    yes: "Oui"
+    no: "Non"
     fields:
       name: ""
       attending: ""
       guests: ""
-      afterparty: ""
-      diet: ""
-      message: ""
 
 footer:
   signature: "Corentin & Halin · 14.08.2027 · Séoul"

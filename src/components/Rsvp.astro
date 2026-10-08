@@ -29,8 +29,8 @@ const ready = Boolean(gf?.action && gf?.fields?.name);
         <fieldset class="field">
           <legend>Serez-vous présent·e ?</legend>
           <div class="choices">
-            <label><input type="radio" name="attending" value="Oui" required /> <span>Oui, avec joie</span></label>
-            <label><input type="radio" name="attending" value="Non" /> <span>Non, hélas</span></label>
+            <label><input type="radio" name="attending" value={gf.yes || 'Oui'} required /> <span>Oui, avec joie</span></label>
+            <label><input type="radio" name="attending" value={gf.no || 'Non'} data-no /> <span>Non, hélas</span></label>
           </div>
         </fieldset>
 
@@ -44,25 +44,7 @@ const ready = Boolean(gf?.action && gf?.fields?.name);
             </select>
           </label>
 
-          <fieldset class="field">
-            <legend>Et à l’after-party ?</legend>
-            <div class="choices">
-              <label><input type="radio" name="afterparty" value="Oui" /> <span>Oui</span></label>
-              <label><input type="radio" name="afterparty" value="Non" /> <span>Non</span></label>
-              <label><input type="radio" name="afterparty" value="Je ne sais pas encore" /> <span>Je ne sais pas encore</span></label>
-            </div>
-          </fieldset>
-
-          <label class="field">
-            <span>Allergies ou régime alimentaire</span>
-            <input name="diet" type="text" placeholder="Facultatif" />
-          </label>
         </div>
-
-        <label class="field">
-          <span>Un petit mot pour nous</span>
-          <textarea name="message" rows="3" placeholder="Facultatif" />
-        </label>
 
         <button type="submit" class="submit">Envoyer ma réponse</button>
         <p class="status" role="status" aria-live="polite" data-thanks={rsvp.thanks} data-error={rsvp.error} />
@@ -78,10 +60,9 @@ const ready = Boolean(gf?.action && gf?.fields?.name);
     const status = form.querySelector<HTMLElement>('.status')!;
     const ifYes = form.querySelector<HTMLElement>('.if-yes')!;
 
-    // Les questions « nombre de personnes », « after-party » et « allergies »
-    // ne s'affichent que si l'invité répond oui.
+    // La question « nombre de personnes » ne s'affiche que si l'invité répond oui.
     const toggle = () => {
-      const no = (form.elements.namedItem('attending') as RadioNodeList).value === 'Non';
+      const no = form.querySelector<HTMLInputElement>('[data-no]')!.checked;
       ifYes.hidden = no;
     };
     form.addEventListener('change', toggle);
@@ -90,10 +71,10 @@ const ready = Boolean(gf?.action && gf?.fields?.name);
       e.preventDefault();
       const data = new FormData(form);
       const body = new FormData();
-      const attending = data.get('attending');
+      const declined = form.querySelector<HTMLInputElement>('[data-no]')!.checked;
       for (const [key, entry] of Object.entries(fields)) {
         if (!entry) continue;
-        if (attending === 'Non' && ['guests', 'afterparty', 'diet'].includes(key)) continue;
+        if (declined && key === 'guests') continue;
         const value = data.get(key);
         if (value) body.append(entry, String(value));
       }
