@@ -1,13 +1,107 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
 import titleArt from '../../assets/illustrations/titres/carnet-de-voyage.svg';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageTitle from '../../components/PageTitle.astro';
-import Placeholder from '../../components/Placeholder.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import KoreaMap from '../../components/KoreaMap.astro';
+import DestinationCard from '../../components/DestinationCard.astro';
+import rawContent from '../../content/carnet.yaml';
+import rawFood from '../../content/a-table.yaml';
+import { destinations } from '../../lib/destinations';
+import { fr } from '../../lib/text';
+import { url } from '../../lib/url';
+
+const content = fr(rawContent);
+const food = fr(rawFood);
 ---
 
-<BaseLayout title="Carnet de voyage">
-  <PageTitle title="Carnet de voyage" art={titleArt} />
-  <div class="container container--wide">
-    <Placeholder label="En préparation">Séoul, Busan, Gyeongju, Jeonju et Jeju : le carnet arrive bientôt.</Placeholder>
+<BaseLayout title={content.pageTitle} description={content.intro}>
+  <PageTitle title={content.pageTitle} art={titleArt} intro={content.intro} />
+
+  <div class="layout container container--wide">
+    <div class="map-col" data-reveal>
+      <KoreaMap />
+      <p class="hint">{content.mapHint}</p>
+    </div>
+
+    <div class="cards-col">
+      <SectionHeading title={content.destinationsTitle} />
+      <div class="cards">
+        {
+          destinations.map((d, i) => (
+            <DestinationCard
+              href={url(`/carnet-de-voyage/${d.slug}/`)}
+              index={i + 1}
+              name={d.name}
+              korean={d.korean}
+              text={d.cardText}
+              image={d.hero}
+            />
+          ))
+        }
+      </div>
+
+      <div class="food">
+        <SectionHeading title={content.foodTitle} />
+        <DestinationCard
+          href={url('/carnet-de-voyage/a-table/')}
+          label={food.tagline}
+          name={food.title}
+          korean={food.korean}
+          text={food.cardText}
+          image={food.hero}
+        />
+      </div>
+    </div>
   </div>
 </BaseLayout>
+
+<style>
+  .layout {
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  .map-col {
+    max-width: 22rem;
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  .hint {
+    margin-top: var(--space-sm);
+    text-align: center;
+    font-size: var(--text-xs);
+    color: var(--color-ink-soft);
+  }
+
+  .cards {
+    display: grid;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+  }
+
+  .food {
+    margin-top: var(--space-xl);
+  }
+
+  .food :global(.destination-card) {
+    margin-top: var(--space-md);
+  }
+
+  @media (min-width: 56em) {
+    .layout {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      align-items: start;
+    }
+
+    .map-col {
+      position: sticky;
+      top: calc(var(--header-height) + 1.5rem);
+    }
+
+    .cards {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

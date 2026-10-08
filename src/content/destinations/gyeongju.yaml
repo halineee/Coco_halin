@@ -1,0 +1,45 @@
+order: 3
+name: "Gyeongju"
+korean: "경주"
+tagline: "Le musée à ciel ouvert"
+cardText: "L’ancienne capitale du royaume de Silla, entre tumulus, temples et étangs."
+hero: "destinations/gyeongju.jpg"
+intro: "Capitale du royaume de Silla pendant près de mille ans, Gyeongju est une ville paisible où l’on croise des tombes royales en forme de collines au détour d’une rue."
+
+aVoir:
+  - name: "Bulguksa"
+    korean: "불국사"
+    text: "Le temple le plus célèbre du pays, inscrit au patrimoine mondial de l’UNESCO."
+  - name: "La grotte de Seokguram"
+    korean: "석굴암"
+    text: "Un bouddha de pierre au-dessus de Bulguksa, face à la mer."
+  - name: "Daereungwon"
+    korean: "대릉원"
+    text: "Un parc de tumulus royaux, comme de grandes collines vertes."
+  - name: "Donggung et l’étang de Wolji"
+    korean: "동궁과 월지"
+    text: "Un ancien palais qui se reflète dans l’eau, magnifique à la nuit tombée."
+
+aGouter:
+  - name: "Le pain de Gyeongju"
+    korean: "황남빵"
+    text: "Petite pâtisserie fourrée à la pâte de haricot rouge, la spécialité de la ville."
+  - name: "Le ssambap"
+    korean: "쌈밥"
+    text: "Riz et multiples accompagnements à envelopper dans des feuilles."
+
+aFaire:
+  - name: "Hwangnidan-gil"
+    text: "Une rue de hanok remplie de cafés, de librairies et de boutiques."
+  - name: "Louer un vélo"
+    text: "La ville est plate et les sites sont proches : idéal à vélo."
+
+conseils:
+  duree: "1 à 2 jours"
+  ouLoger: "Dans un hanok près de Hwangnidan-gil"
+  transport: "KTX jusqu’à Singyeongju (≈ 2 h depuis Séoul), puis bus ou taxi"
+  tips:
+    - "Facile à combiner avec Busan, à environ une heure de route."
+
+adresses:
+  - "À compléter : nos adresses à Gyeongju"

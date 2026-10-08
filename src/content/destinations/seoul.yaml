@@ -1,0 +1,60 @@
+# Destination : Séoul
+# « adresses » : vos adresses personnelles (restaurants, cafés…).
+# Une ligne commençant par « À compléter » s'affiche comme provisoire.
+order: 1
+name: "Séoul"
+korean: "서울"
+tagline: "Palais, marchés et gratte-ciel"
+cardText: "La capitale, entre palais royaux, ruelles de hanok et quartiers branchés."
+hero: "destinations/seoul.jpg"
+intro: "Une ville immense où les palais du XIVe siècle côtoient les tours de verre, où l’on passe d’un marché fumant à une galerie d’art en quelques stations de métro."
+
+aVoir:
+  - name: "Gyeongbokgung"
+    korean: "경복궁"
+    text: "Le plus grand des palais royaux, avec la relève de la garde. Entrée gratuite en hanbok."
+  - name: "Bukchon"
+    korean: "북촌 한옥마을"
+    text: "Un quartier de maisons traditionnelles entre deux palais — habité, donc à visiter en silence."
+  - name: "Ikseon-dong"
+    korean: "익선동"
+    text: "Ruelles de hanok transformées en cafés et petites boutiques."
+  - name: "Namsan et la N Seoul Tower"
+    korean: "남산"
+    text: "La plus belle vue sur la ville, idéalement au coucher du soleil."
+  - name: "Le fleuve Han"
+    korean: "한강"
+    text: "Pique-nique, vélo et soirées au bord de l’eau, comme les Séoulites."
+
+aGouter:
+  - name: "Le marché de Gwangjang"
+    korean: "광장시장"
+    text: "Galettes de haricot mungo (bindaetteok), kimbap et stands animés."
+  - name: "Le barbecue coréen"
+    korean: "삼겹살"
+    text: "Poitrine de porc grillée à table, à envelopper dans une feuille de salade."
+  - name: "Le naengmyeon"
+    korean: "냉면"
+    text: "Nouilles froides, parfaites en plein mois d’août."
+
+aFaire:
+  - name: "Porter le hanbok"
+    text: "À louer près des palais, le temps d’une promenade."
+  - name: "Seongsu-dong"
+    text: "Anciens ateliers devenus cafés, concept stores et pop-up stores."
+  - name: "Myeongdong et Dongdaemun"
+    text: "Cosmétiques, mode et shopping jusque tard le soir."
+  - name: "Un spa coréen (jjimjilbang)"
+    text: "Bains, saunas et salles de repos : une expérience très locale."
+
+conseils:
+  duree: "4 à 5 jours"
+  ouLoger: "Jongno, Myeongdong ou Hongdae (voir la page Hôtels)"
+  transport: "Métro et taxi"
+  tips:
+    - "Beaucoup de musées et palais ferment un jour par semaine (souvent le lundi ou le mardi) : vérifiez avant de partir."
+    - "En août, il fait chaud et humide : prévoyez les visites en extérieur le matin."
+
+adresses:
+  - "À compléter : nos restaurants préférés"
+  - "À compléter : nos cafés préférés"

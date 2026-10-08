@@ -1,0 +1,133 @@
+---
+// Carte stylisée de la Corée du Sud (contours : Natural Earth, domaine public).
+// Chaque ville est un lien vers sa page du carnet.
+import map from '../lib/korea-map.json';
+import { destinations } from '../lib/destinations';
+import { url } from '../lib/url';
+
+interface Props {
+  current?: string;
+  class?: string;
+}
+const { current, class: className } = Astro.props;
+
+// Côté de l'étiquette pour chaque ville (pour éviter les bords de la carte)
+const labelSide: Record<string, 'left' | 'right'> = {
+  seoul: 'right',
+  jeonju: 'right',
+  gyeongju: 'left',
+  busan: 'left',
+  jeju: 'right',
+};
+const cities = destinations
+  .filter((d) => d.slug in map.cities)
+  .map((d) => {
+    const [x, y] = (map.cities as Record<string, number[]>)[d.slug];
+    return { ...d, x, y, side: labelSide[d.slug] ?? 'right' };
+  });
+---
+
+<figure class:list={['korea-map', className]}>
+  <svg viewBox={`-10 -10 ${map.width + 20} ${map.height + 20}`} role="group" aria-label="Carte de la Corée du Sud">
+    <path class="land" d={map.d}></path>
+    {
+      cities.map((c) => {
+        const active = c.slug === current;
+        const dx = c.side === 'right' ? 16 : -16;
+        return (
+          <a href={url(`/carnet-de-voyage/${c.slug}/`)} class:list={['city', { active }]} aria-label={c.name} aria-current={active ? 'page' : undefined}>
+            <circle class="hit" cx={c.x} cy={c.y} r="34" />
+            <circle class="halo" cx={c.x} cy={c.y} r="11" />
+            <circle class="dot" cx={c.x} cy={c.y} r="5" />
+            <text x={c.x + dx} y={c.y + 6} text-anchor={c.side === 'right' ? 'start' : 'end'}>
+              {c.name}
+            </text>
+            {c.slug === 'seoul' && (
+              <text class="wedding" x={c.x + dx} y={c.y + 26} text-anchor="start">
+                ♡ le mariage
+              </text>
+            )}
+          </a>
+        );
+      })
+    }
+  </svg>
+</figure>
+
+<style>
+  .korea-map {
+    margin: 0;
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .land {
+    fill: var(--color-paper-deep);
+    stroke: var(--color-ink-soft);
+    stroke-width: 0.9;
+    stroke-linejoin: round;
+  }
+
+  .city {
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .hit {
+    fill: transparent;
+  }
+
+  .halo {
+    fill: var(--color-paper);
+    stroke: var(--color-ink-soft);
+    stroke-width: 1;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+  }
+
+  .dot {
+    fill: var(--color-ink);
+  }
+
+  text {
+    font-family: var(--font-sans);
+    font-size: 19px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    fill: var(--color-ink);
+    paint-order: stroke;
+    stroke: var(--color-paper);
+    stroke-width: 5px;
+    stroke-linejoin: round;
+  }
+
+  .wedding {
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    fill: var(--color-ink-soft);
+  }
+
+  .city:hover .halo,
+  .city:focus-visible .halo,
+  .city.active .halo {
+    opacity: 1;
+  }
+
+  .city.active .halo {
+    fill: var(--color-ink);
+    stroke: none;
+    opacity: 0.15;
+    transform: scale(1.5);
+  }
+
+  .city:focus-visible {
+    outline: none;
+  }
+</style>

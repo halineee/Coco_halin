@@ -1,0 +1,356 @@
+---
+// Gabarit commun aux pages des villes (Séoul, Busan, Gyeongju, Jeonju, Jeju).
+// Le contenu de chaque ville est dans src/content/destinations/<ville>.yaml.
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import PlaceList from '../../components/PlaceList.astro';
+import KoreaMap from '../../components/KoreaMap.astro';
+import Icon from '../../components/Icon.astro';
+import { destinations, type Destination } from '../../lib/destinations';
+import { getImage } from '../../lib/images';
+import { isTodo } from '../../lib/text';
+import { url } from '../../lib/url';
+
+export function getStaticPaths() {
+  return destinations.map((d, i) => ({
+    params: { ville: d.slug },
+    props: { d, index: i, next: destinations[(i + 1) % destinations.length] },
+  }));
+}
+
+interface Props {
+  d: Destination;
+  index: number;
+  next: Destination;
+}
+const { d, index, next } = Astro.props;
+const hero = getImage(d.hero);
+
+const sections = [
+  { id: 'a-voir', label: 'À voir' },
+  { id: 'a-gouter', label: 'À goûter' },
+  { id: 'a-faire', label: 'À faire' },
+  { id: 'conseils', label: 'Conseils pratiques' },
+];
+---
+
+<BaseLayout title={d.name} description={d.intro}>
+  <div class="container container--wide back">
+    <a href={url('/carnet-de-voyage/')}>
+      <Icon name="arrow-right" size={16} strokeWidth={1.3} class="flip" /> Carnet de voyage
+    </a>
+  </div>
+
+  <header class="hero container container--wide">
+    <div class="hero-media" data-reveal>
+      <Image src={hero} alt="" widths={[600, 1000, 1600]} sizes="(min-width: 64em) 64rem, 100vw" loading="eager" fetchpriority="high" />
+    </div>
+    <div class="hero-text" data-reveal>
+      <p class="eyebrow">Étape {String(index + 1).padStart(2, '0')} · {d.tagline}</p>
+      <h1 class="script">{d.name}</h1>
+      <p class="korean" lang="ko">{d.korean}</p>
+      <p class="intro">{d.intro}</p>
+    </div>
+  </header>
+
+  <nav class="jump container container--wide" aria-label="Rubriques">
+    {sections.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
+  </nav>
+
+  <section id="a-voir" class="block container container--wide">
+    <SectionHeading eyebrow="01" title="À voir" />
+    <div class="list"><PlaceList items={d.aVoir} /></div>
+  </section>
+
+  <section id="a-gouter" class="block container container--wide">
+    <SectionHeading eyebrow="02" title="À goûter" />
+    <div class="list"><PlaceList items={d.aGouter} /></div>
+    <a class="more" href={url('/carnet-de-voyage/a-table/')}>
+      Manger et boire en Corée <Icon name="arrow-right" size={16} strokeWidth={1.3} />
+    </a>
+  </section>
+
+  <section id="a-faire" class="block container container--wide">
+    <SectionHeading eyebrow="03" title="À faire" />
+    <div class="list"><PlaceList items={d.aFaire} /></div>
+  </section>
+
+  <section id="conseils" class="block container container--wide">
+    <SectionHeading eyebrow="04" title="Conseils pratiques" />
+    <dl class="facts" data-reveal>
+      <div>
+        <dt><Icon name="clock" size={18} strokeWidth={1.3} /> Durée conseillée</dt>
+        <dd>{d.conseils.duree}</dd>
+      </div>
+      <div>
+        <dt><Icon name="hotel" size={18} strokeWidth={1.3} /> Où loger</dt>
+        <dd>{d.conseils.ouLoger}</dd>
+      </div>
+      <div>
+        <dt><Icon name="metro" size={18} strokeWidth={1.3} /> Comment y aller</dt>
+        <dd>{d.conseils.transport}</dd>
+      </div>
+    </dl>
+    {
+      d.conseils.tips && d.conseils.tips.length > 0 && (
+        <ul class="tips" data-reveal>
+          {d.conseils.tips.map((tip) => (
+            <li>{tip}</li>
+          ))}
+        </ul>
+      )
+    }
+
+    {
+      d.adresses && d.adresses.length > 0 && (
+        <div class="adresses" data-reveal>
+          <h3 class="script">Nos adresses</h3>
+          <ul>
+            {d.adresses.map((a) => (
+              <li class:list={{ todo: isTodo(a) }}>{a}</li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+  </section>
+
+  <section class="elsewhere container container--wide" aria-label="Autres destinations">
+    <div class="mini-map" data-reveal>
+      <KoreaMap current={d.slug} />
+    </div>
+    <div class="next" data-reveal>
+      <p class="eyebrow">Étape suivante</p>
+      <a href={url(`/carnet-de-voyage/${next.slug}/`)} class="next-link">
+        <span class="script">{next.name}</span>
+        <Icon name="arrow-right" size={24} strokeWidth={1.1} />
+      </a>
+      <p class="next-text">{next.cardText}</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .back {
+    padding-top: var(--space-md);
+  }
+
+  .back a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    font-size: var(--text-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-ink-soft);
+  }
+
+  .back :global(.flip) {
+    transform: scaleX(-1);
+  }
+
+  .hero {
+    padding-top: var(--space-xs);
+  }
+
+  .hero-media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    background: var(--color-paper-deep);
+  }
+
+  .hero-media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-text {
+    padding-top: var(--space-lg);
+  }
+
+  .hero h1 {
+    margin-top: var(--space-sm);
+    padding-top: 0.15em;
+    font-size: var(--text-script-lg);
+    line-height: 1.05;
+  }
+
+  .hero .korean {
+    margin-top: 0.3rem;
+    font-size: var(--text-sm);
+    letter-spacing: 0.14em;
+    color: var(--color-ink-soft);
+  }
+
+  .intro {
+    max-width: 36rem;
+    margin-top: var(--space-md);
+    font-size: var(--text-base);
+    line-height: 1.7;
+  }
+
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: var(--space-lg);
+  }
+
+  .jump a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 0 0.95rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    font-size: var(--text-sm);
+    text-decoration: none;
+    color: var(--color-ink-soft);
+  }
+
+  .block {
+    padding-top: var(--space-xl);
+  }
+
+  .list {
+    margin-top: var(--space-md);
+  }
+
+  .more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    margin-top: var(--space-sm);
+    font-size: var(--text-sm);
+    text-underline-offset: 0.3em;
+  }
+
+  .facts {
+    display: grid;
+    gap: var(--space-sm);
+    margin: var(--space-md) 0 0;
+  }
+
+  .facts div {
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    background: var(--color-paper-deep);
+  }
+
+  .facts dt {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: var(--text-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+
+  .facts dd {
+    margin: 0.35rem 0 0;
+    line-height: 1.5;
+  }
+
+  .tips,
+  .adresses ul {
+    display: grid;
+    gap: 0.5rem;
+    margin: var(--space-md) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+  }
+
+  .tips li,
+  .adresses li {
+    position: relative;
+    padding-left: 1.1rem;
+    line-height: 1.6;
+  }
+
+  .tips li::before,
+  .adresses li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.8em;
+    width: 0.55rem;
+    height: 1px;
+    background: var(--color-ink-soft);
+  }
+
+  .adresses {
+    margin-top: var(--space-xl);
+  }
+
+  .adresses h3 {
+    font-size: var(--text-script-sm);
+  }
+
+  .todo {
+    font-style: italic;
+    color: var(--color-ink-faint);
+  }
+
+  .elsewhere {
+    display: grid;
+    gap: var(--space-lg);
+    align-items: center;
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .mini-map {
+    width: 60%;
+    max-width: 14rem;
+    margin-inline: auto;
+  }
+
+  .next {
+    text-align: center;
+  }
+
+  .next-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.3rem;
+    text-decoration: none;
+  }
+
+  .next-link .script {
+    font-size: var(--text-script-md);
+  }
+
+  .next-text {
+    max-width: 22rem;
+    margin: 0.3rem auto 0;
+    font-size: var(--text-sm);
+    color: var(--color-ink-soft);
+  }
+
+  @media (min-width: 56em) {
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: var(--space-xl);
+      align-items: end;
+    }
+
+    .facts {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .elsewhere {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

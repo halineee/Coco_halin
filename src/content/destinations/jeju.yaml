@@ -1,0 +1,48 @@
+order: 5
+name: "Jeju"
+korean: "제주"
+tagline: "L’île volcanique"
+cardText: "Volcans, plages, champs de mandariniers et sentiers le long de la mer."
+hero: "destinations/jeju.jpg"
+intro: "Au sud de la péninsule, l’île de Jeju est née des volcans : falaises de basalte, plages turquoise, cratères et le mont Hallasan, plus haut sommet du pays."
+
+aVoir:
+  - name: "Seongsan Ilchulbong"
+    korean: "성산일출봉"
+    text: "Un cratère surgi de la mer, célèbre pour son lever de soleil."
+  - name: "Le mont Hallasan"
+    korean: "한라산"
+    text: "Le plus haut sommet de Corée, au centre de l’île."
+  - name: "Manjanggul"
+    korean: "만장굴"
+    text: "Un immense tunnel de lave à parcourir sous terre."
+  - name: "L’île d’Udo"
+    korean: "우도"
+    text: "Une petite île à quelques minutes de ferry, à explorer à vélo."
+
+aGouter:
+  - name: "Le porc noir"
+    korean: "흑돼지"
+    text: "La grande spécialité de l’île, grillée au barbecue."
+  - name: "Les produits des haenyeo"
+    korean: "해녀"
+    text: "Ormeaux et fruits de mer pêchés par les plongeuses de Jeju."
+  - name: "Le hallabong"
+    korean: "한라봉"
+    text: "Un agrume sucré typique de l’île, décliné en jus et desserts."
+
+aFaire:
+  - name: "Les sentiers Olle"
+    text: "Des chemins de randonnée qui font le tour de l’île, par étapes."
+  - name: "Les plages de Hyeopjae et Hamdeok"
+    text: "Sable clair et eau turquoise, parfaites en été."
+
+conseils:
+  duree: "3 à 4 jours"
+  ouLoger: "Jeju-si pour la praticité, Seogwipo pour le sud de l’île"
+  transport: "Avion depuis Gimpo (≈ 1 h 10), puis voiture de location ou taxi"
+  tips:
+    - "Les transports en commun sont limités : louer une voiture est le plus simple (permis international nécessaire)."
+
+adresses:
+  - "À compléter : nos adresses à Jeju"

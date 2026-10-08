@@ -1,0 +1,125 @@
+# ─────────────────────────────────────────────────────────────
+#  Page « À table » (Carnet de voyage) : manger et boire en Corée.
+#  Les spécialités régionales sont reprises automatiquement depuis
+#  les pages des villes (rubrique « À goûter »).
+# ─────────────────────────────────────────────────────────────
+
+title: "À table !"
+korean: "맛있게 드세요"
+tagline: "Manger et boire en Corée"
+cardText: "Les plats à goûter, les codes à table, la culture des cafés et les spécialités de chaque région."
+hero: "destinations/a-table.jpg"
+intro: "En Corée, la table est un moment de partage : on pose tout au centre, on se sert les uns les autres et l’on goûte à tout. Voici de quoi vous y retrouver."
+
+codes:
+  title: "Les codes à table"
+  items:
+    - title: "Tout se partage"
+      text: "Les plats sont posés au centre et chacun pioche. Les petits accompagnements (banchan) sont offerts et resservis gratuitement."
+    - title: "L’eau est en libre-service"
+      text: "Elle est gratuite, souvent dans une carafe à table ou à une fontaine près de l’entrée."
+    - title: "Baguettes et cuillère"
+      text: "Souvent rangées dans un tiroir sous la table. La cuillère sert pour le riz et la soupe."
+    - title: "Une sonnette pour appeler"
+      text: "Beaucoup de tables ont un petit bouton pour appeler le serveur. Sinon, un « Jeogiyo ! » (저기요) suffit."
+    - title: "On paie à la caisse"
+      text: "En partant, à la caisse près de la porte. Les cartes bancaires sont acceptées partout."
+    - title: "Pas de pourboire"
+      text: "Le pourboire ne se pratique pas en Corée."
+    - title: "Deux portions minimum"
+      text: "Pour le barbecue et certains plats à partager, beaucoup de restaurants demandent de commander au moins deux portions."
+
+plats:
+  title: "Les incontournables"
+  items:
+    - name: "Bibimbap"
+      korean: "비빔밥"
+      text: "Riz, légumes, œuf et pâte de piment, à mélanger soi-même."
+    - name: "Samgyeopsal"
+      korean: "삼겹살"
+      text: "Poitrine de porc grillée à table, à envelopper dans une feuille de salade."
+    - name: "Bulgogi"
+      korean: "불고기"
+      text: "Bœuf mariné, sucré-salé, idéal pour commencer en douceur."
+    - name: "Kimchi jjigae"
+      korean: "김치찌개"
+      text: "Le ragoût au kimchi, plat réconfortant du quotidien."
+    - name: "Tteokbokki"
+      korean: "떡볶이"
+      text: "Gâteaux de riz dans une sauce pimentée, star de la street food."
+    - name: "Kimbap"
+      korean: "김밥"
+      text: "Rouleaux de riz et d’algue garnis, parfaits pour un pique-nique."
+    - name: "Le poulet frit"
+      korean: "치킨"
+      text: "Croustillant, souvent laqué, à accompagner d’une bière : le « chimaek »."
+    - name: "Japchae"
+      korean: "잡채"
+      text: "Nouilles de patate douce sautées aux légumes, plat de fête."
+
+ete:
+  title: "En plein mois d’août"
+  text: "Le mariage tombe en plein été coréen, chaud et humide. Voici ce que mangent les Coréens pour se rafraîchir… ou reprendre des forces."
+  items:
+    - name: "Naengmyeon"
+      korean: "냉면"
+      text: "Nouilles froides dans un bouillon glacé."
+    - name: "Bingsu"
+      korean: "빙수"
+      text: "Glace pilée garnie de fruits, de haricot rouge ou de lait, à partager."
+    - name: "Samgyetang"
+      korean: "삼계탕"
+      text: "Petit poulet farci au riz et au ginseng, servi brûlant les jours les plus chauds de l’été, selon la tradition."
+
+cafes:
+  title: "La culture des cafés"
+  text: "La Corée compte un nombre impressionnant de cafés, souvent très soignés : on y vient autant pour le décor que pour le café ou les desserts."
+  tips:
+    - "On commande au comptoir, et l’usage est de prendre une boisson par personne."
+    - "Les cafés servent rarement de l’alcool : pour un verre, direction un bar ou un restaurant."
+    - "Beaucoup ouvrent tard, et les cafés-boulangeries sont parfaits pour le petit-déjeuner."
+  streets:
+    title: "Quartiers de cafés"
+    items:
+      - name: "Seongsu-dong"
+        city: "Séoul"
+        text: "Anciennes usines devenues cafés et concept stores."
+      - name: "Ikseon-dong"
+        city: "Séoul"
+        text: "Cafés installés dans des maisons traditionnelles."
+      - name: "Yeonnam-dong"
+        city: "Séoul"
+        text: "Petites rues tranquilles près de Hongdae, le long d’un parc."
+      - name: "Hwangnidan-gil"
+        city: "Gyeongju"
+        text: "Cafés et boutiques dans des hanok."
+      - name: "Les cafés en bord de mer"
+        city: "Jeju"
+        text: "Notamment autour de la plage de Woljeong-ri."
+
+boire:
+  title: "Boire un verre"
+  items:
+    - name: "Soju"
+      korean: "소주"
+      text: "L’alcool national, clair et légèrement sucré, servi en petits verres."
+    - name: "Makgeolli"
+      korean: "막걸리"
+      text: "Alcool de riz laiteux et pétillant, souvent servi avec des galettes (jeon)."
+    - name: "Somaek"
+      korean: "소맥"
+      text: "Le mélange soju et bière, très populaire."
+  tips:
+    - "On ne se sert pas soi-même : on remplit le verre des autres, qui vous rendront la pareille."
+    - "Face à une personne plus âgée, on tient son verre à deux mains et l’on tourne légèrement la tête pour boire."
+    - "Les tentes de rue (pojangmacha) et les petites tables devant les supérettes sont typiques des soirées d’été."
+
+regions:
+  title: "Spécialités régionales"
+  text: "Chaque région a ses plats. Touchez une ville pour découvrir sa page."
+
+adresses:
+  title: "Nos adresses"
+  items:
+    - "À compléter : nos restaurants préférés"
+    - "À compléter : nos cafés préférés"

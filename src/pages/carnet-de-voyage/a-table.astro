@@ -1,0 +1,425 @@
+---
+// Page « À table ! » : manger et boire en Corée.
+// Contenu : src/content/a-table.yaml ; spécialités régionales reprises
+// des pages des villes.
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import PlaceList from '../../components/PlaceList.astro';
+import Icon from '../../components/Icon.astro';
+import rawContent from '../../content/a-table.yaml';
+import { destinations } from '../../lib/destinations';
+import { getImage } from '../../lib/images';
+import { fr, isTodo } from '../../lib/text';
+import { url } from '../../lib/url';
+
+const c = fr(rawContent);
+const hero = getImage(c.hero);
+const sections = [
+  { id: 'codes', label: 'À table' },
+  { id: 'plats', label: 'Les plats' },
+  { id: 'cafes', label: 'Cafés' },
+  { id: 'boire', label: 'Boire un verre' },
+  { id: 'regions', label: 'Par région' },
+];
+---
+
+<BaseLayout title={c.title} description={c.intro}>
+  <div class="container container--wide back">
+    <a href={url('/carnet-de-voyage/')}>
+      <Icon name="arrow-right" size={16} strokeWidth={1.3} class="flip" /> Carnet de voyage
+    </a>
+  </div>
+
+  <header class="hero container container--wide">
+    <div class="hero-media" data-reveal>
+      <Image src={hero} alt="" widths={[600, 1000, 1600]} sizes="(min-width: 64em) 64rem, 100vw" loading="eager" />
+    </div>
+    <div class="hero-text" data-reveal>
+      <p class="eyebrow">{c.tagline}</p>
+      <h1 class="script">{c.title}</h1>
+      <p class="korean" lang="ko">{c.korean}</p>
+      <p class="intro">{c.intro}</p>
+    </div>
+  </header>
+
+  <nav class="jump container container--wide" aria-label="Rubriques">
+    {sections.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
+  </nav>
+
+  <!-- Les codes à table -->
+  <section id="codes" class="block container container--wide">
+    <SectionHeading eyebrow="01" title={c.codes.title} />
+    <div class="codes">
+      {
+        c.codes.items.map((item: any) => (
+          <div class="code" data-reveal>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Plats -->
+  <section id="plats" class="block container container--wide">
+    <SectionHeading eyebrow="02" title={c.plats.title} />
+    <div class="list"><PlaceList items={c.plats.items} /></div>
+
+    <div class="summer" data-reveal>
+      <h3 class="script">{c.ete.title}</h3>
+      <p class="lead">{c.ete.text}</p>
+      <div class="list"><PlaceList items={c.ete.items} /></div>
+    </div>
+  </section>
+
+  <!-- Cafés -->
+  <section id="cafes" class="block container container--wide">
+    <SectionHeading eyebrow="03" title={c.cafes.title} />
+    <p class="lead" data-reveal>{c.cafes.text}</p>
+    <ul class="tips" data-reveal>
+      {c.cafes.tips.map((tip: string) => <li>{tip}</li>)}
+    </ul>
+    <h3 class="eyebrow sub-eyebrow">{c.cafes.streets.title}</h3>
+    <ul class="streets">
+      {
+        c.cafes.streets.items.map((s: any) => (
+          <li data-reveal>
+            <p class="street-city">{s.city}</p>
+            <p class="street-name">{s.name}</p>
+            <p class="street-text">{s.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Boire un verre -->
+  <section id="boire" class="block container container--wide">
+    <SectionHeading eyebrow="04" title={c.boire.title} />
+    <div class="list"><PlaceList items={c.boire.items} /></div>
+    <ul class="tips" data-reveal>
+      {c.boire.tips.map((tip: string) => <li>{tip}</li>)}
+    </ul>
+  </section>
+
+  <!-- Spécialités régionales -->
+  <section id="regions" class="block container container--wide">
+    <SectionHeading eyebrow="05" title={c.regions.title} text={c.regions.text} />
+    <div class="regions">
+      {
+        destinations.map((d) => (
+          <a class="region" href={url(`/carnet-de-voyage/${d.slug}/#a-gouter`)} data-reveal>
+            <div class="region-head">
+              <span class="script">{d.name}</span>
+              <Icon name="arrow-right" size={18} strokeWidth={1.2} />
+            </div>
+            <ul>
+              {d.aGouter.map((dish) => (
+                <li>
+                  {dish.name}
+                  {dish.korean && (
+                    <span class="korean" lang="ko">
+                      {dish.korean}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  {
+    c.adresses?.items?.length > 0 && (
+      <section class="block container container--wide">
+        <SectionHeading title={c.adresses.title} />
+        <ul class="tips">
+          {c.adresses.items.map((a: string) => (
+            <li class:list={{ todo: isTodo(a) }}>{a}</li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .back {
+    padding-top: var(--space-md);
+  }
+
+  .back a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    font-size: var(--text-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-ink-soft);
+  }
+
+  .back :global(.flip) {
+    transform: scaleX(-1);
+  }
+
+  .hero-media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    background: var(--color-paper-deep);
+  }
+
+  .hero-media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-text {
+    padding-top: var(--space-lg);
+  }
+
+  .hero h1 {
+    margin-top: var(--space-sm);
+    padding-top: 0.15em;
+    font-size: var(--text-script-lg);
+    line-height: 1.05;
+  }
+
+  .korean {
+    margin-left: 0.4rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-soft);
+  }
+
+  .hero .korean {
+    display: block;
+    margin: 0.3rem 0 0;
+    letter-spacing: 0.14em;
+  }
+
+  .intro,
+  .lead {
+    max-width: 36rem;
+    margin-top: var(--space-md);
+    line-height: 1.7;
+  }
+
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: var(--space-lg);
+  }
+
+  .jump a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 0 0.95rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    font-size: var(--text-sm);
+    text-decoration: none;
+    color: var(--color-ink-soft);
+  }
+
+  .block {
+    padding-top: var(--space-xl);
+  }
+
+  .list {
+    margin-top: var(--space-md);
+  }
+
+  /* Codes à table */
+  .codes {
+    display: grid;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+  }
+
+  .code {
+    padding: var(--space-md);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-card);
+  }
+
+  .code h3 {
+    font-size: 1.05rem;
+    font-weight: 400;
+  }
+
+  .code p {
+    margin-top: 0.3rem;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+  }
+
+  /* Été */
+  .summer {
+    margin-top: var(--space-xl);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    background: var(--color-paper-deep);
+  }
+
+  .summer h3 {
+    font-size: var(--text-script-sm);
+  }
+
+  .summer .lead {
+    margin-top: var(--space-xs);
+    font-size: var(--text-sm);
+  }
+
+  /* Listes à tirets */
+  .tips {
+    display: grid;
+    gap: 0.5rem;
+    margin: var(--space-md) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+  }
+
+  .tips li {
+    position: relative;
+    padding-left: 1.1rem;
+    line-height: 1.6;
+  }
+
+  .tips li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.8em;
+    width: 0.55rem;
+    height: 1px;
+    background: var(--color-ink-soft);
+  }
+
+  .todo {
+    font-style: italic;
+    color: var(--color-ink-faint);
+  }
+
+  /* Quartiers de cafés */
+  .sub-eyebrow {
+    margin-top: var(--space-lg);
+    font-weight: 400;
+  }
+
+  .streets {
+    display: flex;
+    gap: var(--space-sm);
+    margin: var(--space-sm) calc(-1 * var(--gutter)) 0;
+    padding: 0 var(--gutter) var(--space-xs);
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .streets::-webkit-scrollbar {
+    display: none;
+  }
+
+  .streets li {
+    flex: 0 0 min(70%, 15rem);
+    padding: var(--space-md);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-card);
+    scroll-snap-align: start;
+  }
+
+  .street-city {
+    font-size: var(--text-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+
+  .street-name {
+    margin-top: 0.2rem;
+    font-size: 1.1rem;
+  }
+
+  .street-text {
+    margin-top: 0.3rem;
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+  }
+
+  /* Régions */
+  .regions {
+    display: grid;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+  }
+
+  .region {
+    display: block;
+    padding: var(--space-md);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-card);
+    color: inherit;
+    text-decoration: none;
+    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+
+  .region-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .region-head .script {
+    font-size: var(--text-script-sm);
+  }
+
+  .region ul {
+    margin: var(--space-xs) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+    line-height: 1.8;
+  }
+
+  @media (hover: hover) {
+    .region:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-soft);
+    }
+  }
+
+  @media (min-width: 48em) {
+    .codes {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .regions {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 56em) {
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: var(--space-xl);
+      align-items: end;
+    }
+  }
+</style>

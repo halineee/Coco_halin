@@ -1,0 +1,77 @@
+---
+// Liste numérotée de lieux, plats ou activités (pages du carnet).
+import type { Place } from '../lib/destinations';
+
+interface Props {
+  items: Place[];
+}
+const { items } = Astro.props;
+---
+
+<ol class="place-list">
+  {
+    items.map((item, i) => (
+      <li data-reveal style={`--reveal-delay: ${(i % 4) * 0.06}s`}>
+        <span class="num">{String(i + 1).padStart(2, '0')}</span>
+        <div>
+          <h4>
+            {item.name}
+            {item.korean && (
+              <span class="korean" lang="ko">
+                {item.korean}
+              </span>
+            )}
+          </h4>
+          <p>{item.text}</p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .place-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: 2.25rem 1fr;
+    gap: var(--space-xs);
+    padding: var(--space-md) 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  li:last-child {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .num {
+    padding-top: 0.2rem;
+    font-size: var(--text-xs);
+    letter-spacing: 0.14em;
+    color: var(--color-ink-soft);
+  }
+
+  h4 {
+    font-size: 1.1rem;
+    font-weight: 400;
+    line-height: 1.35;
+  }
+
+  .korean {
+    margin-left: 0.45rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-soft);
+    white-space: nowrap;
+  }
+
+  p {
+    margin-top: 0.25rem;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+  }
+</style>

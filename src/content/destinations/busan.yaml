@@ -1,0 +1,53 @@
+order: 2
+name: "Busan"
+korean: "부산"
+tagline: "La mer, les marchés et les collines"
+cardText: "La grande ville portuaire du sud : plages, poissons frais et villages colorés."
+hero: "destinations/busan.jpg"
+intro: "Deuxième ville du pays, Busan vit au rythme de la mer : longues plages, marchés aux poissons, temples face aux vagues et maisons colorées accrochées aux collines."
+
+aVoir:
+  - name: "Haeundae"
+    korean: "해운대"
+    text: "La plage la plus célèbre de Corée, et sa promenade le long de la mer."
+  - name: "Gamcheon Culture Village"
+    korean: "감천문화마을"
+    text: "Un village de maisons pastel en escalier, devenu galerie à ciel ouvert."
+  - name: "Haedong Yonggungsa"
+    korean: "해동용궁사"
+    text: "Un temple bouddhiste posé sur les rochers, face à la mer."
+  - name: "Le marché de Jagalchi"
+    korean: "자갈치시장"
+    text: "Le plus grand marché aux poissons du pays."
+
+aGouter:
+  - name: "Le dwaeji gukbap"
+    korean: "돼지국밥"
+    text: "Soupe de porc et riz, la spécialité réconfortante de Busan."
+  - name: "Le milmyeon"
+    korean: "밀면"
+    text: "Nouilles froides de blé, la version locale du naengmyeon."
+  - name: "Les eomuk"
+    korean: "어묵"
+    text: "Galettes de poisson, servies en brochettes dans un bouillon chaud."
+  - name: "Les fruits de mer crus"
+    korean: "회"
+    text: "Choisis au marché, préparés à l’étage dans les petits restaurants."
+
+aFaire:
+  - name: "Le train côtier de Haeundae"
+    text: "Une petite ligne panoramique le long de la côte."
+  - name: "Gwangalli le soir"
+    text: "La plage face au pont illuminé, avec ses bars et ses cafés."
+  - name: "Huinnyeoul"
+    text: "Un village de falaises blanches au-dessus de la mer, idéal pour une balade."
+
+conseils:
+  duree: "2 à 3 jours"
+  ouLoger: "Haeundae pour la plage, Seomyeon pour la vie locale"
+  transport: "KTX depuis Séoul (≈ 2 h 30), puis métro"
+  tips:
+    - "Les plages sont très fréquentées en août : allez-y tôt le matin."
+
+adresses:
+  - "À compléter : nos adresses à Busan"
