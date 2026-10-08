@@ -8,7 +8,7 @@
 | 바꾸고 싶은 것 | 파일 |
 |---|---|
 | 이름, 날짜, 소개 문구, 장소, 지도 링크, 메뉴 | `src/content/site.yaml` |
-| 홈 폴라로이드 사진 | `src/assets/photos/accueil/polaroid.jpg` 를 같은 이름으로 교체 |
+| 홈 폴라로이드 사진 | `src/assets/photos/accueil/` 에 사진을 넣고 `site.yaml` 의 `heroPhoto` 에 파일 이름 적기 |
 | 색상, 폰트, 간격 | `src/styles/tokens.css` |
 | 갤러리 ‘En attendant le grand jour…’ 사진 | `src/assets/photos/en-attendant/` 폴더에 사진 넣기 |
 | 갤러리 ‘Une histoire en images’ 사진 | `src/assets/photos/histoire/` 폴더에 사진 넣기 |
