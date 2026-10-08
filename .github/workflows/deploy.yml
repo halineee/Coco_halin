@@ -1,9 +1,10 @@
-# Publie automatiquement le site sur GitHub Pages à chaque mise à jour de « main ».
+# Publie automatiquement le site sur GitHub Pages à chaque mise à jour
+# de la branche principale du dépôt.
 name: Déploiement GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main, claude/seoul-wedding-travel-site-l6xm5x]
   workflow_dispatch:
 
 permissions:
