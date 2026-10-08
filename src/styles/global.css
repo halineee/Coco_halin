@@ -93,10 +93,6 @@ button {
   line-height: 1;
 }
 
-.serif {
-  font-family: var(--font-serif);
-}
-
 .eyebrow {
   font-family: var(--font-sans);
   font-size: var(--text-xs);

@@ -11,7 +11,7 @@ const { title, eyebrow, intro } = Astro.props;
 <div class="page-title container container--wide">
   {eyebrow && <p class="eyebrow" data-reveal>{eyebrow}</p>}
   <h1 class="script" data-reveal>{title}</h1>
-  {intro && <p class="intro serif" data-reveal style="--reveal-delay: 0.12s">{intro}</p>}
+  {intro && <p class="intro" data-reveal style="--reveal-delay: 0.12s">{intro}</p>}
 </div>
 
 <style>
@@ -34,9 +34,8 @@ const { title, eyebrow, intro } = Astro.props;
   .intro {
     max-width: 30rem;
     margin-top: var(--space-md);
-    font-size: var(--text-lg);
-    font-style: italic;
-    line-height: 1.5;
+    font-size: var(--text-base);
+    line-height: 1.6;
     color: var(--color-ink-soft);
   }
 </style>

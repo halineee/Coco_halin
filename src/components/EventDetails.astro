@@ -18,7 +18,7 @@ const { wedding, home } = site;
     {home.intro.map((line: string) => <span>{line}</span>)}
   </p>
 
-  <p class="tagline serif" data-reveal>{home.tagline}</p>
+  <p class="tagline script" data-reveal>{home.tagline}</p>
 </section>
 
 <style>
@@ -53,8 +53,7 @@ const { wedding, home } = site;
 
   .tagline {
     margin-top: var(--space-lg);
-    font-size: var(--text-lg);
-    font-style: italic;
-    color: var(--color-ink-soft);
+    font-size: clamp(1.55rem, 1.3rem + 1vw, 1.9rem);
+    line-height: 1.35;
   }
 </style>

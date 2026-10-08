@@ -13,7 +13,7 @@ const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(venue.mapE
   <h2 id="le-lieu" class="heading script" data-reveal>{venue.sectionTitle}</h2>
 
   <div class="name" data-reveal>
-    <p class="venue-name serif">{venue.name}</p>
+    <p class="venue-name">{venue.name}</p>
     <p class="eyebrow">{venue.nameDetail}</p>
   </div>
 
@@ -51,7 +51,7 @@ const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(venue.mapE
   {
     venue.notes?.length > 0 && (
       <div class="notes" data-reveal>
-        <p class="eyebrow">{venue.notesTitle}</p>
+        <h3 class="heading script">{venue.notesTitle}</h3>
         <ul>
           {venue.notes.map((note: string) => (
             <li>{note}</li>
@@ -77,10 +77,10 @@ const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(venue.mapE
   }
 
   .venue-name {
-    font-size: var(--text-xl);
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    line-height: 1.2;
+    font-size: var(--text-lg);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    line-height: 1.3;
   }
 
   .name .eyebrow {
@@ -120,9 +120,8 @@ const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(venue.mapE
 
   address {
     font-style: normal;
-    font-family: var(--font-serif);
-    font-size: var(--text-lg);
-    line-height: 1.4;
+    font-size: var(--text-base);
+    line-height: 1.55;
   }
 
   address span {
@@ -159,7 +158,7 @@ const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(venue.mapE
   }
 
   .notes {
-    margin-top: var(--space-lg);
+    margin-top: var(--space-xl);
   }
 
   .notes ul {
@@ -171,9 +170,8 @@ const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(venue.mapE
   }
 
   .notes li {
-    font-family: var(--font-serif);
-    font-size: var(--text-lg);
-    line-height: 1.45;
+    font-size: var(--text-base);
+    line-height: 1.6;
   }
 
   .notes li + li::before {
