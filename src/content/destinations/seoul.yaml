@@ -54,7 +54,7 @@ aVoir:
   - name: "Itaewon et Hannam-dong"
     photo: "destinations/seoul/11-itaewon.jpg"
     korean: "이태원 · 한남동"
-    text: "Le quartier le plus cosmopolite de Séoul : restaurants du monde entier, bars, boutiques de créateurs et galeries, à deux pas du musée Leeum."
+    text: "Le quartier le plus international de Séoul, où vivent et sortent de nombreux étrangers : on y entend toutes les langues, on y mange des cuisines du monde entier, et l’on y trouve bars, boutiques de créateurs et galeries, à deux pas du musée Leeum. Facile de s’y sentir chez soi."
   - name: "Le fleuve Han"
     photo: "destinations/seoul/10-fleuve-han.jpg"
     korean: "한강"
@@ -85,6 +85,9 @@ aFaire:
     photo: "destinations/seoul/14-myeongdong.jpg"
     korean: "명동 · 동대문"
     text: "Cosmétiques, mode et shopping jusque tard le soir."
+  - name: "Une soirée à Hongdae"
+    korean: "홍대"
+    text: "Le quartier étudiant autour de l’université Hongik : musiciens et danseurs de rue, bars, clubs et petits restaurants. Une ambiance jeune et cosmopolite, où se mêlent Coréens, étudiants étrangers et voyageurs du monde entier."
   - name: "Un spa coréen (jjimjilbang)"
     text: "Bains, saunas et salles de repos : une expérience très locale."
 
