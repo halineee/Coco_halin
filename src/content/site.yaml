@@ -129,19 +129,30 @@ faq:
 rsvp:
   title: "Serez-vous des nôtres ?"
   text: "Merci de nous répondre dès que possible, cela nous aidera beaucoup pour l’organisation."
-  airbnbQuestion: "Intéressé·e par l’Airbnb de groupe (nuits du 13 et du 14 août) ?"
-  thanks: "Merci ! Votre réponse a bien été envoyée."
+  airbnbQuestion: "Souhaiteriez-vous bénéficier d’un hébergement partagé à Séoul ?"
+  airbnbNote: "Nous envisageons de réserver un hébergement commun du 13 au 15 août (2 nuits)."
+  thanks: "Merci pour votre réponse. Nous avons hâte de vous retrouver à Séoul !"
   error: "Oups, l’envoi n’a pas fonctionné. Réessayez, ou écrivez-nous sur WhatsApp."
+  # ⚠ Les choix ci-dessous doivent être recopiés EXACTEMENT comme dans
+  #   le formulaire Google (ponctuation et espaces compris).
+  #   « decline: true » = la personne ne vient pas.
+  attendingOptions:
+    - "Oui, avec plaisir !"
+    - "Je ne sais pas encore."
+    - "Malheureusement, je ne pourrai pas être présent(e)."
+  declineOption: "Malheureusement, je ne pourrai pas être présent(e)."
+  airbnbOptions:
+    - "Oui, cela m’intéresserait."
+    - "Je ne sais pas encore."
+    - "Non, merci."
+  airbnbDefault: "Non, merci."
   googleForm:
-    action: ""
-    # Texte exact des choix « oui » / « non » dans le formulaire Google
-    yes: "Oui"
-    no: "Non"
+    action: "https://docs.google.com/forms/d/e/1FAIpQLSdtLQTP6vjNWlrVCiHp9iDxR-pwz8aY8OkH5b-42sBRIU24tQ/formResponse"
     fields:
-      name: ""
-      attending: ""
-      guests: ""
-      airbnb: ""
+      name: "entry.1247240223"
+      attending: "entry.799290780"
+      guests: "entry.268171316"
+      airbnb: "entry.30419483"
 
 footer:
   signature: "Corentin & Halin · 14.08.2027 · Séoul"

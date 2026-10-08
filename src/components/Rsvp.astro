@@ -1,13 +1,19 @@
 ---
-// Formulaire de réponse (RSVP). Les réponses sont envoyées à un
-// formulaire Google : réglages dans src/content/site.yaml (« rsvp »).
-// Tant que l'adresse du formulaire Google est vide, rien ne s'affiche.
+// Formulaire de réponse (RSVP). Les réponses sont envoyées au formulaire
+// Google (et donc dans son tableau Google Sheets). Réglages dans
+// src/content/site.yaml (« rsvp »). Sans adresse de formulaire, rien ne s'affiche.
 import site from '../content/site.yaml';
 import { fr } from '../lib/text';
 
-const { rsvp } = fr(site);
-const gf = rsvp?.googleForm;
-const ready = Boolean(gf?.action && gf?.fields?.name);
+// Textes affichés : avec les espaces insécables français.
+const rsvp = fr(site.rsvp);
+// Valeurs envoyées à Google : recopiées telles quelles (sans retouche),
+// sinon Google ne reconnaît pas le choix.
+const raw = site.rsvp;
+const gf = raw?.googleForm;
+const ready = Boolean(gf?.action && gf?.fields?.name && gf?.fields?.attending);
+const attendingOptions: string[] = raw?.attendingOptions ?? [];
+const airbnbOptions: string[] = raw?.airbnbOptions ?? [];
 ---
 
 {
@@ -20,40 +26,52 @@ const ready = Boolean(gf?.action && gf?.fields?.name);
         {rsvp.text}
       </p>
 
-      <form class="form" data-rsvp data-action={gf.action} data-fields={JSON.stringify(gf.fields)} data-reveal>
+      <form
+        class="form"
+        data-rsvp
+        data-action={gf.action}
+        data-fields={JSON.stringify(gf.fields)}
+        data-decline={raw.declineOption}
+        data-airbnb-default={raw.airbnbDefault}
+        data-reveal
+      >
         <label class="field">
           <span>Nom et prénom</span>
           <input name="name" type="text" autocomplete="name" required />
         </label>
 
         <fieldset class="field">
-          <legend>Serez-vous présent·e ?</legend>
-          <div class="choices">
-            <label><input type="radio" name="attending" value={gf.yes || 'Oui'} required /> <span>Oui, avec joie</span></label>
-            <label><input type="radio" name="attending" value={gf.no || 'Non'} data-no /> <span>Non, hélas</span></label>
+          <legend>Votre réponse</legend>
+          <div class="choices stacked">
+            {attendingOptions.map((opt, i) => (
+              <label>
+                <input type="radio" name="attending" value={opt} required={i === 0} />
+                <span>{fr(opt)}</span>
+              </label>
+            ))}
           </div>
         </fieldset>
 
-        <div class="if-yes">
+        <div class="if-coming">
           <label class="field">
-            <span>Nombre de personnes (vous compris)</span>
-            <select name="guests">
-              {[1, 2, 3, 4, 5, 6].map((n) => (
-                <option value={String(n)}>{n}</option>
-              ))}
-            </select>
+            <span>Combien de personnes, vous compris ?</span>
+            <input name="guests" type="number" inputmode="numeric" min="1" max="20" value="1" />
           </label>
 
-          {gf.fields.airbnb && (
+          {gf.fields.airbnb && airbnbOptions.length > 0 && (
             <fieldset class="field">
               <legend>{rsvp.airbnbQuestion}</legend>
-              <div class="choices">
-                <label><input type="radio" name="airbnb" value={gf.yes || 'Oui'} /> <span>Oui, ça m’intéresse</span></label>
-                <label><input type="radio" name="airbnb" value={gf.no || 'Non'} /> <span>Non merci</span></label>
+              {rsvp.airbnbNote && <p class="hint">{rsvp.airbnbNote}</p>}
+              <div class="choices stacked">
+                {airbnbOptions.map((opt) => (
+                  <label>
+                    <input type="radio" name="airbnb" value={opt} />
+                    <span>{fr(opt)}</span>
+                  </label>
+                ))}
               </div>
             </fieldset>
           )}
-
         </div>
 
         <button type="submit" class="submit">Envoyer ma réponse</button>
@@ -67,31 +85,43 @@ const ready = Boolean(gf?.action && gf?.fields?.name);
   const form = document.querySelector<HTMLFormElement>('[data-rsvp]');
   if (form) {
     const fields = JSON.parse(form.dataset.fields || '{}') as Record<string, string>;
+    const decline = form.dataset.decline || '';
+    const airbnbDefault = form.dataset.airbnbDefault || '';
     const status = form.querySelector<HTMLElement>('.status')!;
-    const ifYes = form.querySelector<HTMLElement>('.if-yes')!;
+    const ifComing = form.querySelector<HTMLElement>('.if-coming')!;
+    const airbnbRadios = form.querySelectorAll<HTMLInputElement>('input[name="airbnb"]');
 
-    // La question « nombre de personnes » ne s'affiche que si l'invité répond oui.
+    const declined = () => new FormData(form).get('attending') === decline;
+
+    // Si l'invité ne vient pas, on masque le nombre de personnes et l'hébergement.
     const toggle = () => {
-      const no = form.querySelector<HTMLInputElement>('[data-no]')!.checked;
-      ifYes.hidden = no;
+      const no = declined();
+      ifComing.hidden = no;
+      airbnbRadios.forEach((r, i) => (r.required = !no && i === 0));
     };
     form.addEventListener('change', toggle);
+    toggle();
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = new FormData(form);
-      const body = new FormData();
-      const declined = form.querySelector<HTMLInputElement>('[data-no]')!.checked;
+      const no = declined();
+      // Toutes les questions du formulaire Google sont obligatoires :
+      // on envoie des valeurs par défaut quand l'invité ne vient pas.
+      const values: Record<string, string> = {
+        name: String(data.get('name') || '').trim(),
+        attending: String(data.get('attending') || ''),
+        guests: no ? '0' : String(data.get('guests') || '1'),
+        airbnb: no ? airbnbDefault : String(data.get('airbnb') || airbnbDefault),
+      };
+      const body = new URLSearchParams();
       for (const [key, entry] of Object.entries(fields)) {
-        if (!entry) continue;
-        if (declined && (key === 'guests' || key === 'airbnb')) continue;
-        const value = data.get(key);
-        if (value) body.append(entry, String(value));
+        if (entry && values[key]) body.append(entry, values[key]);
       }
       const button = form.querySelector('button')!;
       button.disabled = true;
       try {
-        // Google Forms n'autorise pas la lecture de la réponse : on envoie « à l'aveugle ».
+        // Google Forms ne permet pas de lire la réponse : envoi « à l'aveugle ».
         await fetch(form.dataset.action!, { method: 'POST', mode: 'no-cors', body });
         form.classList.add('sent');
         status.textContent = status.dataset.thanks || '';
@@ -131,12 +161,12 @@ const ready = Boolean(gf?.action && gf?.fields?.name);
     text-align: left;
   }
 
-  .if-yes {
+  .if-coming {
     display: grid;
     gap: var(--space-md);
   }
 
-  .if-yes[hidden] {
+  .if-coming[hidden] {
     display: none;
   }
 
@@ -154,6 +184,7 @@ const ready = Boolean(gf?.action && gf?.fields?.name);
     padding: 0;
     font-size: var(--text-xs);
     letter-spacing: 0.16em;
+    line-height: 1.6;
     text-transform: uppercase;
     color: var(--color-ink-soft);
   }
@@ -162,9 +193,15 @@ const ready = Boolean(gf?.action && gf?.fields?.name);
     margin-bottom: 0.4rem;
   }
 
+  .hint {
+    margin-bottom: 0.3rem;
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+  }
+
   input[type='text'],
-  select,
-  textarea {
+  input[type='number'] {
     width: 100%;
     padding: 0.7rem 0.8rem;
     border: 1px solid var(--color-line);
@@ -175,18 +212,19 @@ const ready = Boolean(gf?.action && gf?.fields?.name);
     font-size: 1rem; /* évite le zoom automatique sur iPhone */
   }
 
-  textarea {
-    resize: vertical;
-  }
-
-  ::placeholder {
-    color: var(--color-ink-faint);
+  input[type='number'] {
+    max-width: 6rem;
   }
 
   .choices {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+  }
+
+  .choices.stacked {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .choices label {
@@ -204,6 +242,7 @@ const ready = Boolean(gf?.action && gf?.fields?.name);
     border: 1px solid var(--color-line);
     border-radius: 999px;
     font-size: var(--text-sm);
+    line-height: 1.4;
     cursor: pointer;
     transition:
       background 0.2s,
@@ -256,5 +295,6 @@ const ready = Boolean(gf?.action && gf?.fields?.name);
 
   .sent .status {
     font-size: 1rem;
+    line-height: 1.6;
   }
 </style>
