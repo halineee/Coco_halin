@@ -56,7 +56,8 @@ venue:
     - "61 Mangu-ro, Dongdaemun-gu"
     - "Séoul, Corée du Sud"
   addressKorean: "서울특별시 동대문구 망우로 61"
-  nearestStation: "À quelques minutes de la station Hoegi (회기역)"
+  hall: "Salle Floche (플로체홀) · 7e étage"
+  nearestStation: "Station Hoegi (회기역), sortie 2 — à 170 m à pied"
   # Carte intégrée (Google Maps, affichée en noir et blanc)
   mapEmbedQuery: "서울특별시 동대문구 망우로 61 벨라루체웨딩홀"
   # Liens vers les applications de cartes.
@@ -81,6 +82,7 @@ venue:
   notesTitle: "Bon à savoir"
   notes:
     - "Merci d’arriver entre 30 et 10 minutes avant le début de la cérémonie."
+    - "La cérémonie dure environ une heure et sera suivie d’un buffet : soyez à l’heure pour ne rien manquer !"
 
 footer:
   signature: "Corentin & Halin · 14.08.2027 · Séoul"

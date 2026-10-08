@@ -15,7 +15,7 @@ import { isTodo, fr } from '../lib/text';
 const content = fr(rawContent);
 const site = fr(rawSite);
 
-const { arriver, seDeplacer, venirAuMariage: jourJ } = content;
+const { arriver, seDeplacer, venirAuMariage: jourJ, entreRegions } = content;
 ---
 
 <BaseLayout title={content.pageTitle} description={content.intro}>
@@ -68,6 +68,20 @@ const { arriver, seDeplacer, venirAuMariage: jourJ } = content;
         ))
       }
     </ul>
+
+    <div class="etiquette" data-reveal>
+      <h3 class="eyebrow">{seDeplacer.etiquette.title}</h3>
+      <dl>
+        {
+          seDeplacer.etiquette.items.map((item: any) => (
+            <div>
+              <dt>{item.label}</dt>
+              <dd>{item.text}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
 
     <div class="apps" data-reveal>
       <h3 class="eyebrow">{seDeplacer.apps.title}</h3>
@@ -126,7 +140,48 @@ const { arriver, seDeplacer, venirAuMariage: jourJ } = content;
       <ul>
         {jourJ.arrival.map((line: string) => <li class:list={{ todo: isTodo(line) }}>{line}</li>)}
       </ul>
+      {
+        jourJ.website && (
+          <a class="ext-link" href={jourJ.website.url} target="_blank" rel="noopener noreferrer">
+            {jourJ.website.label} <Icon name="external" size={14} strokeWidth={1.6} />
+          </a>
+        )
+      }
     </div>
+  </section>
+
+  <!-- 4. Entre les régions -->
+  <section id="entre-regions" class="block container container--wide">
+    <SectionHeading eyebrow="04" title={entreRegions.title} />
+    <p class="lead" data-reveal>{entreRegions.text}</p>
+    <div class="options">
+      {entreRegions.options.map((option: any) => <TransportOptionCard {...option} />)}
+    </div>
+
+    <div class="booking" data-reveal>
+      <h3 class="sub script">{entreRegions.booking.title}</h3>
+      <ol class="booking-steps">
+        {
+          entreRegions.booking.steps.map((step: any) => (
+            <li>
+              <p class="step-title">{step.title}</p>
+              <p class="step-text">{step.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="booking-links">
+        {
+          entreRegions.booking.links.map((link: any) => (
+            <a class="ext-link" href={link.url} target="_blank" rel="noopener noreferrer">
+              {link.label} <Icon name="external" size={14} strokeWidth={1.6} />
+            </a>
+          ))
+        }
+      </div>
+      <p class="note">{entreRegions.booking.note}</p>
+    </div>
+    <p class="disclaimer">{content.disclaimer}</p>
   </section>
 </BaseLayout>
 
@@ -380,6 +435,116 @@ const { arriver, seDeplacer, venirAuMariage: jourJ } = content;
 
   .map-links {
     margin-top: var(--space-md);
+  }
+
+  /* Manger et boire */
+  .etiquette {
+    margin-top: var(--space-xl);
+  }
+
+  .etiquette dl {
+    display: grid;
+    gap: var(--space-sm);
+    margin: var(--space-sm) 0 0;
+  }
+
+  .etiquette dl div {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: var(--space-sm);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .etiquette dt {
+    font-weight: 400;
+  }
+
+  .etiquette dd {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+  }
+
+  /* Liens externes */
+  .ext-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    margin-top: var(--space-sm);
+    padding: 0 1rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    font-size: var(--text-sm);
+    text-decoration: none;
+    transition: background 0.3s var(--ease);
+  }
+
+  @media (hover: hover) {
+    .ext-link:hover {
+      background: var(--color-card);
+    }
+  }
+
+  /* Réserver son train */
+  .booking {
+    margin-top: var(--space-xl);
+  }
+
+  .booking-steps {
+    counter-reset: step;
+    margin: var(--space-md) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .booking-steps li {
+    position: relative;
+    padding: 0 0 var(--space-md) 2.6rem;
+    counter-increment: step;
+  }
+
+  .booking-steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: -0.1rem;
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 1px solid var(--color-ink-soft);
+    border-radius: 50%;
+    font-size: var(--text-xs);
+  }
+
+  .booking-steps li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 0.87rem;
+    top: 1.75rem;
+    bottom: 0.1rem;
+    width: 1px;
+    background: var(--color-line);
+  }
+
+  .step-title {
+    font-weight: 400;
+  }
+
+  .step-text {
+    margin-top: 0.2rem;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+  }
+
+  .booking-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.5rem;
   }
 
   @media (min-width: 56em) {

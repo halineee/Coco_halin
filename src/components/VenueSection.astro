@@ -4,8 +4,9 @@ import site from '../content/site.yaml';
 import MapLinks from './MapLinks.astro';
 import TaxiCard from './TaxiCard.astro';
 import Icon from './Icon.astro';
+import { fr } from '../lib/text';
 
-const { venue } = site;
+const { venue } = fr(site);
 const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(venue.mapEmbedQuery)}&z=16&hl=fr&output=embed`;
 ---
 
@@ -15,6 +16,7 @@ const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(venue.mapE
   <div class="name" data-reveal>
     <p class="venue-name">{venue.name}</p>
     <p class="eyebrow">{venue.nameDetail}</p>
+    {venue.hall && <p class="hall">{venue.hall}</p>}
   </div>
 
   <div class="map-frame" data-reveal>
@@ -85,6 +87,12 @@ const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(venue.mapE
 
   .name .eyebrow {
     margin-top: 0.3rem;
+  }
+
+  .hall {
+    margin-top: 0.4rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-soft);
   }
 
   .map-frame {
