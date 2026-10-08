@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import titleArt from '../assets/illustrations/titres/photos.svg';
 import PageTitle from '../components/PageTitle.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import PhotoCarousel from '../components/PhotoCarousel.astro';
@@ -13,7 +14,7 @@ const story = await loadGallery(content.histoire.folder, content.details, 'Souve
 ---
 
 <BaseLayout title={content.pageTitle}>
-  <PageTitle title={content.pageTitle} />
+  <PageTitle title={content.pageTitle} art={titleArt} />
 
   <section class="block" aria-labelledby="en-attendant">
     <div class="container container--wide">
@@ -24,11 +25,8 @@ const story = await loadGallery(content.histoire.folder, content.details, 'Souve
 
   <p class="transition container container--wide script" data-reveal>{content.transition}</p>
 
-  <section class="block container container--wide" aria-labelledby="histoire">
-    <SectionHeading id="histoire" title={content.histoire.title} text={content.histoire.text} />
-    <div class="mosaic-wrap">
-      <PhotoMosaic photos={story} label={content.histoire.title} />
-    </div>
+  <section class="block container container--wide" aria-label={content.histoire.label}>
+    <PhotoMosaic photos={story} label={content.histoire.label} />
   </section>
 
   <Lightbox />
@@ -43,9 +41,5 @@ const story = await loadGallery(content.histoire.folder, content.details, 'Souve
     padding-block: var(--space-xl) var(--space-lg);
     font-size: var(--text-script-sm);
     color: var(--color-ink-soft);
-  }
-
-  .mosaic-wrap {
-    margin-top: var(--space-lg);
   }
 </style>

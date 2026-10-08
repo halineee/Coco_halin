@@ -17,8 +17,8 @@ enAttendant:
 transition: "Et bien plus encore…"
 
 histoire:
-  title: "Une histoire en images"
-  text: "Tous ces moments qui nous ont menés jusqu’ici."
+  # Nom de la galerie (non affiché, lu par les lecteurs d'écran)
+  label: "Nos souvenirs en images"
   folder: "photos/histoire"
 
 # Détails facultatifs, photo par photo (chemin à partir de src/assets/).

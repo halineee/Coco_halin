@@ -1,11 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import titleArt from '../../assets/illustrations/titres/carnet-de-voyage.svg';
 import PageTitle from '../../components/PageTitle.astro';
 import Placeholder from '../../components/Placeholder.astro';
 ---
 
 <BaseLayout title="Carnet de voyage">
-  <PageTitle title="Carnet de voyage" />
+  <PageTitle title="Carnet de voyage" art={titleArt} />
   <div class="container container--wide">
     <Placeholder label="En préparation">Séoul, Busan, Gyeongju, Jeonju et Jeju : le carnet arrive bientôt.</Placeholder>
   </div>

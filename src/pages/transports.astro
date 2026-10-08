@@ -1,11 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import titleArt from '../assets/illustrations/titres/transports.svg';
 import PageTitle from '../components/PageTitle.astro';
 import Placeholder from '../components/Placeholder.astro';
 ---
 
 <BaseLayout title="Transports">
-  <PageTitle title="Transports" />
+  <PageTitle title="Transports" art={titleArt} />
   <div class="container container--wide">
     <Placeholder label="En préparation">Le guide pratique pour venir en Corée arrive bientôt.</Placeholder>
   </div>

@@ -1,11 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import titleArt from '../assets/illustrations/titres/hotels.svg';
 import PageTitle from '../components/PageTitle.astro';
 import Placeholder from '../components/Placeholder.astro';
 ---
 
 <BaseLayout title="Hôtels">
-  <PageTitle title="Hôtels" />
+  <PageTitle title="Hôtels" art={titleArt} />
   <div class="container container--wide">
     <Placeholder label="En préparation">Notre sélection d’hôtels par quartier arrive bientôt.</Placeholder>
   </div>

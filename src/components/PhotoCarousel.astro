@@ -1,6 +1,6 @@
 ---
 // Carrousel « à la Canva » : une photo au centre, les voisines qui
-// dépassent sur les côtés avec un bord de papier déchiré.
+// dépassent légèrement sur les côtés.
 // Glisser du doigt (mobile) ou utiliser les flèches ; toucher la photo
 // centrale l'ouvre en plein écran.
 import { Image } from 'astro:assets';
@@ -13,26 +13,10 @@ interface Props {
 }
 const { photos, label } = Astro.props;
 
-// Bord déchiré : un contour irrégulier sur les côtés gauche et droit,
-// utilisé comme masque sur les photos latérales.
-function tornMask() {
-  const steps = 46;
-  const left: string[] = [];
-  const right: string[] = [];
-  for (let i = 0; i <= steps; i++) {
-    const y = (i / steps) * 100;
-    const jitter = (seed: number) => (Math.sin(seed * 12.9898) * 43758.5453) % 1;
-    left.push(`${(1.2 + Math.abs(jitter(i + 1)) * 2.6).toFixed(2)} ${y.toFixed(2)}`);
-    right.push(`${(98.8 - Math.abs(jitter(i + 101)) * 2.6).toFixed(2)} ${(100 - y).toFixed(2)}`);
-  }
-  const d = `M${left.join(' L')} L${right.join(' L')} Z`;
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><path d='${d}' fill='black'/></svg>`;
-  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
-}
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
-<div class="carousel" data-carousel style={`--torn: ${tornMask()}`}>
+<div class="carousel" data-carousel>
   <ul class="track" data-lightbox aria-label={label}>
     {
       photos.map((photo, i) => (
@@ -175,8 +159,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
     width: 100%;
     aspect-ratio: 4 / 5;
     object-fit: cover;
-    -webkit-mask: var(--torn) center / 100% 100% no-repeat;
-    mask: var(--torn) center / 100% 100% no-repeat;
+    border-radius: var(--radius-md);
+    transition: box-shadow 0.6s var(--ease);
   }
 
   .slide.is-active {
@@ -185,9 +169,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
   }
 
   .slide.is-active :global(img) {
-    border-radius: var(--radius-md);
-    -webkit-mask: none;
-    mask: none;
     box-shadow: var(--shadow-soft);
   }
 
