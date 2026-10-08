@@ -20,11 +20,13 @@
        elle sera utilisée automatiquement (voir styles/fonts.css).
      --font-serif  : textes éditoriaux, sous-titres
      --font-sans   : informations pratiques
-     --font-mono   : chiffres (compte à rebours, prix) */
+     --font-mono   : chiffres
+     --font-hand   : écriture fine au stylo (légende du polaroid) */
   --font-script: 'Feeling Passionate', 'Comforter Brush', cursive;
   --font-serif: 'Cormorant Garamond', 'Times New Roman', serif;
   --font-sans: 'Jost', system-ui, -apple-system, sans-serif;
   --font-mono: 'Courier Prime', 'Courier New', monospace;
+  --font-hand: 'Sulat Rizal', 'Sacramento', cursive;   /* légende du polaroid (Sulat Rizal dans Canva) */
 
   /* Tailles de texte (fluides : petites sur mobile, un peu plus grandes sur ordinateur) */
   --text-xs: 0.6875rem;

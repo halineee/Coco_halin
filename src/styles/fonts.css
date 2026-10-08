@@ -8,6 +8,7 @@
 @import '@fontsource/jost/400.css';
 @import '@fontsource/jost/500.css';
 @import '@fontsource/courier-prime/400.css';
+@import '@fontsource/sacramento/400.css';
 
 /* ── Feeling Passionate (police Canva) ───────────────────────
    Pour l'utiliser :
@@ -18,6 +19,19 @@
 @font-face {
   font-family: 'Feeling Passionate';
   src: url('/Coco_halin/fonts/FeelingPassionate.woff2') format('woff2');
+  font-display: swap;
+}
+──────────────────────────────────────────────────────────── */
+
+/* ── Sulat Rizal (police Canva, légende du polaroid) ─────────
+   En attendant, la police « Sacramento » est utilisée.
+   Même procédure que ci-dessus : placez le fichier dans
+   public/fonts/SulatRizal.woff2 puis supprimez les deux lignes
+   de commentaire qui entourent le bloc ci-dessous.
+
+@font-face {
+  font-family: 'Sulat Rizal';
+  src: url('/Coco_halin/fonts/SulatRizal.woff2') format('woff2');
   font-display: swap;
 }
 ──────────────────────────────────────────────────────────── */

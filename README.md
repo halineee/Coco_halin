@@ -11,7 +11,7 @@
 | 홈 폴라로이드 사진 | `src/assets/photos/accueil/polaroid.jpg` 를 같은 이름으로 교체 |
 | 색상, 폰트, 간격 | `src/styles/tokens.css` |
 | 메뉴 아이콘 그림 | `src/components/Icon.astro` |
-| 꽃다발·편지 일러스트 | `src/components/BouquetIllustration.astro` |
+| Getting Married 타이틀, 하트라인, 꽃다발·편지, 마스킹테이프 | `src/assets/illustrations/` 안의 파일을 같은 이름으로 교체 |
 
 - 사진은 `src/assets/` 아래에 넣으면 자동으로 최적화(압축·크기 조절)됩니다. 원본 그대로 넣어도 됩니다.
 - `.yaml` 파일은 `이름: "값"` 형식입니다. 따옴표 안의 글자만 바꾸면 됩니다. 들여쓰기(띄어쓰기)는 그대로 유지해 주세요.
@@ -21,6 +21,7 @@
 
 현재 제목 폰트는 비슷한 무료 폰트(Comforter Brush)로 대체되어 있습니다.
 Canva 폰트를 웹에서 쓸 수 있는 라이선스가 있다면 `src/styles/fonts.css` 안의 안내를 따라 주세요.
+폴라로이드 아래 이름(Sulat Rizal)도 같은 방식이며, 그 전까지는 Sacramento 폰트로 표시됩니다.
 
 ## 내 컴퓨터에서 미리보기
 
