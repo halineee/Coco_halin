@@ -35,11 +35,6 @@ const airbnbOptions: string[] = raw?.airbnbOptions ?? [];
         data-airbnb-default={raw.airbnbDefault}
         data-reveal
       >
-        <label class="field">
-          <span>Nom et prénom</span>
-          <input name="name" type="text" autocomplete="name" required />
-        </label>
-
         <fieldset class="field">
           <legend>Votre réponse</legend>
           <div class="choices stacked">
@@ -51,6 +46,12 @@ const airbnbOptions: string[] = raw?.airbnbOptions ?? [];
             ))}
           </div>
         </fieldset>
+
+        <div class="after-choice" hidden>
+          <label class="field">
+            <span>Nom et prénom</span>
+            <input name="name" type="text" autocomplete="name" required />
+          </label>
 
         <div class="if-coming">
           <label class="field">
@@ -74,7 +75,8 @@ const airbnbOptions: string[] = raw?.airbnbOptions ?? [];
           )}
         </div>
 
-        <button type="submit" class="submit">Envoyer ma réponse</button>
+          <button type="submit" class="submit">Envoyer ma réponse</button>
+        </div>
         <p class="status" role="status" aria-live="polite" data-thanks={rsvp.thanks} data-error={rsvp.error} />
       </form>
     </section>
@@ -94,8 +96,12 @@ const airbnbOptions: string[] = raw?.airbnbOptions ?? [];
     const declined = () => new FormData(form).get('attending') === decline;
 
     // Si l'invité ne vient pas, on masque le nombre de personnes et l'hébergement.
+    // Le reste du formulaire n'apparaît qu'une fois la réponse choisie.
+    const afterChoice = form.querySelector<HTMLElement>('.after-choice')!;
     const toggle = () => {
+      const chosen = new FormData(form).get('attending') !== null;
       const no = declined();
+      afterChoice.hidden = !chosen;
       ifComing.hidden = no;
       airbnbRadios.forEach((r, i) => (r.required = !no && i === 0));
     };
@@ -161,13 +167,32 @@ const airbnbOptions: string[] = raw?.airbnbOptions ?? [];
     text-align: left;
   }
 
+  .after-choice,
   .if-coming {
     display: grid;
     gap: var(--space-md);
   }
 
+  .after-choice:not([hidden]) {
+    animation: rsvp-in 0.4s var(--ease);
+  }
+
+  .after-choice[hidden],
   .if-coming[hidden] {
     display: none;
+  }
+
+  @keyframes rsvp-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .after-choice:not([hidden]) {
+      animation: none;
+    }
   }
 
   .field {
