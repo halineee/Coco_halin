@@ -53,6 +53,7 @@ const ogImage = new URL(url('/og-image.jpg'), Astro.site);
         <BackToTop />
         <HeartDivider class="footer-divider" />
         <p class="signature">{site.footer.signature}</p>
+        <a class="credits-link" href={url('/credits/')}>Crédits photos</a>
       </div>
     </footer>
 
@@ -106,6 +107,13 @@ const ogImage = new URL(url('/og-image.jpg'), Astro.site);
 
   .site-footer :global(.footer-divider) {
     margin-top: var(--space-lg);
+  }
+
+  .credits-link {
+    display: inline-block;
+    margin-top: var(--space-xs);
+    font-size: var(--text-xs);
+    color: var(--color-ink-faint);
   }
 
   .signature {
