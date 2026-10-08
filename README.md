@@ -13,6 +13,7 @@
 | 갤러리 ‘En attendant le grand jour…’ 사진 | `src/assets/photos/en-attendant/` 폴더에 사진 넣기 |
 | 갤러리 ‘Une histoire en images’ 사진 | `src/assets/photos/histoire/` 폴더에 사진 넣기 |
 | 갤러리 제목·문구, 사진 설명, 크게 보일 사진 | `src/content/photos.yaml` |
+| 호텔 (동네 설명, 호텔 카드) | `src/content/hotels.yaml` + 사진은 `src/assets/hotels/` |
 | 메뉴 아이콘 그림 | `src/components/Icon.astro` |
 | Getting Married 타이틀, 하트라인, 꽃다발·편지, 마스킹테이프 | `src/assets/illustrations/` 안의 파일을 같은 이름으로 교체 |
 | 각 페이지 메인 제목 (Photos, Transports, Hôtels, Carnet de voyage) | `src/assets/illustrations/titres/` 안의 파일을 같은 이름으로 교체 |

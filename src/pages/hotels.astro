@@ -1,13 +1,270 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
 import titleArt from '../assets/illustrations/titres/hotels.svg';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import PageTitle from '../components/PageTitle.astro';
-import Placeholder from '../components/Placeholder.astro';
+import HotelCard from '../components/HotelCard.astro';
+import Icon from '../components/Icon.astro';
+import rawContent from '../content/hotels.yaml';
+import { fr } from '../lib/text';
+
+const content = fr(rawContent);
 ---
 
-<BaseLayout title="Hôtels">
-  <PageTitle title="Hôtels" art={titleArt} />
-  <div class="container container--wide">
-    <Placeholder label="En préparation">Notre sélection d’hôtels par quartier arrive bientôt.</Placeholder>
+<BaseLayout title={content.pageTitle} description={content.intro}>
+  <PageTitle title={content.pageTitle} art={titleArt} intro={content.intro} />
+
+  <div class="container container--wide meta" data-reveal>
+    <ul class="legend" aria-label="Gammes de prix">
+      {
+        content.priceLegend.map((p: { symbol: string; label: string }) => (
+          <li>
+            <span class="symbol">{p.symbol}</span> {p.label}
+          </li>
+        ))
+      }
+    </ul>
+    {content.note && <p class="note">{content.note}</p>}
   </div>
+
+  <!-- Navigation entre les quartiers (reste visible en haut lors du défilement) -->
+  <nav class="quartier-nav" aria-label="Quartiers" data-quartier-nav>
+    <ul class="container container--wide">
+      {
+        content.quartiers.map((q: any) => (
+          <li>
+            <a href={`#${q.id}`} data-target={q.id}>
+              {q.name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  {
+    content.quartiers.map((q: any) => (
+      <section id={q.id} class:list={['quartier', { highlight: q.highlight }]} aria-labelledby={`${q.id}-titre`}>
+        <div class="container container--wide">
+          <header class="quartier-head" data-reveal>
+            {q.highlight && <p class="badge">Notre recommandation</p>}
+            <h2 id={`${q.id}-titre`} class="script">
+              {q.name}
+            </h2>
+            {q.korean && (
+              <p class="korean" lang="ko">
+                {q.korean}
+              </p>
+            )}
+            <p class="description">{q.description}</p>
+            {q.tags?.length > 0 && (
+              <ul class="tags" aria-label="Idéal pour">
+                {q.tags.map((tag: string) => (
+                  <li>{tag}</li>
+                ))}
+              </ul>
+            )}
+            {q.access && (
+              <p class="access">
+                <Icon name="rings" size={20} strokeWidth={1.2} /> {q.access}
+              </p>
+            )}
+          </header>
+
+          <div class="cards">
+            {q.hotels.map((hotel: any) => (
+              <HotelCard {...hotel} neighborhood={q.name} />
+            ))}
+          </div>
+        </div>
+      </section>
+    ))
+  }
 </BaseLayout>
+
+<script>
+  // Met en évidence le quartier visible dans la barre de navigation
+  const nav = document.querySelector<HTMLElement>('[data-quartier-nav]');
+  if (nav) {
+    const links = [...nav.querySelectorAll<HTMLAnchorElement>('a[data-target]')];
+    const setActive = (id: string) => {
+      links.forEach((link) => {
+        const active = link.dataset.target === id;
+        link.classList.toggle('is-active', active);
+        if (active) {
+          const list = link.closest('ul')!;
+          list.scrollTo({ left: link.offsetLeft - list.clientWidth / 2 + link.offsetWidth / 2, behavior: 'smooth' });
+        }
+      });
+    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: '-35% 0px -60% 0px' },
+    );
+    document.querySelectorAll('section.quartier').forEach((s) => observer.observe(s));
+    // En haut de page, rien n'est encore sélectionné : on revient au début
+    window.addEventListener('scroll', () => {
+      if (window.scrollY < 200) {
+        links.forEach((link) => link.classList.remove('is-active'));
+      }
+    }, { passive: true });
+  }
+</script>
+
+<style>
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm) var(--space-md);
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+    color: var(--color-ink-soft);
+  }
+
+  .symbol {
+    color: var(--color-ink);
+    letter-spacing: 0.08em;
+  }
+
+  .note {
+    font-size: var(--text-xs);
+    color: var(--color-ink-soft);
+  }
+
+  /* Barre des quartiers */
+  .quartier-nav {
+    position: sticky;
+    top: var(--header-height);
+    z-index: 40;
+    margin-top: var(--space-lg);
+    padding-block: 0.5rem;
+    background: color-mix(in srgb, var(--color-paper) 92%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .quartier-nav ul {
+    display: flex;
+    gap: 0.45rem;
+    margin-block: 0;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .quartier-nav ul::-webkit-scrollbar {
+    display: none;
+  }
+
+  .quartier-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 0 0.95rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    font-size: var(--text-sm);
+    white-space: nowrap;
+    text-decoration: none;
+    color: var(--color-ink-soft);
+    transition: background 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease);
+  }
+
+  .quartier-nav a.is-active {
+    border-color: var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-card);
+  }
+
+  /* Quartiers */
+  .quartier {
+    padding-top: var(--space-2xl);
+    scroll-margin-top: calc(var(--header-height) + 4rem - var(--space-2xl));
+  }
+
+  .badge {
+    display: inline-block;
+    margin-bottom: var(--space-sm);
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    background: var(--color-ink);
+    color: var(--color-card);
+    font-size: 0.625rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .quartier-head h2 {
+    font-size: var(--text-script-md);
+    line-height: 1.1;
+  }
+
+  .korean {
+    margin-top: 0.3rem;
+    font-size: var(--text-sm);
+    letter-spacing: 0.1em;
+    color: var(--color-ink-soft);
+  }
+
+  .description {
+    max-width: 36rem;
+    margin-top: var(--space-sm);
+    line-height: 1.65;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: var(--space-sm) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tags li {
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    background: var(--color-paper-deep);
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+  }
+
+  .access {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: var(--space-sm);
+    font-size: var(--text-sm);
+    color: var(--color-ink-soft);
+  }
+
+  .cards {
+    display: grid;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+  }
+
+  @media (min-width: 40em) {
+    .cards {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 56em) {
+    .cards {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

@@ -1,0 +1,152 @@
+# ─────────────────────────────────────────────────────────────
+#  Page Hôtels
+#
+#  Les hôtels sont regroupés par quartier. Pour ajouter un hôtel,
+#  copiez un bloc « - name: … » dans la liste « hotels » du quartier
+#  et remplissez les champs.
+#
+#  Champs d'un hôtel :
+#    name        : nom de l'hôtel
+#    image       : photo (chemin à partir de src/assets/), ex. "hotels/01.jpg"
+#    description : une ou deux phrases
+#    price       : "€", "€€" ou "€€€" (voir la légende plus bas)
+#    transport   : station la plus proche / temps jusqu'au mariage
+#    url         : lien vers le site de l'hôtel ou de réservation
+#
+#  Tant qu'un nom commence par « À compléter », la carte s'affiche
+#  comme provisoire.
+# ─────────────────────────────────────────────────────────────
+
+pageTitle: "Hôtels"
+intro: "Notre sélection d’hôtels, quartier par quartier, pour choisir l’ambiance qui vous ressemble."
+note: "La liste des hôtels sera bientôt complétée."
+
+priceLegend:
+  - symbol: "€"
+    label: "Abordable"
+  - symbol: "€€"
+    label: "Intermédiaire"
+  - symbol: "€€€"
+    label: "Haut de gamme"
+
+quartiers:
+  - id: "pres-du-lieu"
+    name: "Près du lieu de réception"
+    korean: "회기 · 청량리"
+    highlight: true
+    description: "Le choix le plus pratique pour le jour J : quelques minutes seulement vous séparent de Bella Luce. Un quartier vivant et étudiant, moins touristique, autour de l’université Kyung Hee et de Cheongnyangni."
+    tags: ["Accès au mariage", "Pratique", "Moins touristique"]
+    access: "Quelques minutes du mariage"
+    hotels:
+      - name: "À compléter"
+        image: "hotels/01.jpg"
+        description: "À compléter"
+        price: "€€"
+        transport: "À compléter"
+        url: ""
+      - name: "À compléter"
+        image: "hotels/02.jpg"
+        description: "À compléter"
+        price: "€"
+        transport: "À compléter"
+        url: ""
+
+  - id: "jongno-insadong"
+    name: "Jongno / Insadong"
+    korean: "종로 · 인사동"
+    description: "Le cœur historique de Séoul : palais royaux, ruelles de maisons traditionnelles à Bukchon, salons de thé et galeries d’Insadong. Idéal pour une première visite."
+    tags: ["Première visite", "Séoul traditionnelle", "Culture"]
+    access: "Ligne 1 directe jusqu’à Hoegi"
+    hotels:
+      - name: "À compléter"
+        image: "hotels/03.jpg"
+        description: "À compléter"
+        price: "€€"
+        transport: "À compléter"
+        url: ""
+      - name: "À compléter"
+        image: "hotels/04.jpg"
+        description: "À compléter"
+        price: "€€€"
+        transport: "À compléter"
+        url: ""
+
+  - id: "dongdaemun"
+    name: "Dongdaemun"
+    korean: "동대문"
+    description: "Le quartier de la mode et du shopping jusque tard dans la nuit, autour de l’architecture spectaculaire du Dongdaemun Design Plaza. Central et très bien relié au lieu du mariage."
+    tags: ["Shopping", "Bien desservi", "Pratique"]
+    access: "Ligne 1 directe jusqu’à Hoegi"
+    hotels:
+      - name: "À compléter"
+        image: "hotels/05.jpg"
+        description: "À compléter"
+        price: "€"
+        transport: "À compléter"
+        url: ""
+      - name: "À compléter"
+        image: "hotels/06.jpg"
+        description: "À compléter"
+        price: "€€"
+        transport: "À compléter"
+        url: ""
+
+  - id: "hongdae-mapo"
+    name: "Hongdae / Mapo"
+    korean: "홍대 · 마포"
+    description: "Le Séoul jeune et créatif : cafés, boutiques indépendantes, musiciens de rue et vie nocturne animée. Parfait pour profiter des soirées."
+    tags: ["Vie nocturne", "Cafés", "Ambiance jeune"]
+    access: "Environ 45 min du mariage"
+    hotels:
+      - name: "À compléter"
+        image: "hotels/07.jpg"
+        description: "À compléter"
+        price: "€"
+        transport: "À compléter"
+        url: ""
+      - name: "À compléter"
+        image: "hotels/08.jpg"
+        description: "À compléter"
+        price: "€€"
+        transport: "À compléter"
+        url: ""
+
+  - id: "yongsan-itaewon"
+    name: "Yongsan / Itaewon"
+    korean: "용산 · 이태원"
+    description: "Le quartier le plus international de Séoul : restaurants du monde entier, bars et boutiques de créateurs à Hannam-dong, et le Musée national de Corée tout proche."
+    tags: ["Restaurants", "International", "Boutiques"]
+    access: "Environ 40 min du mariage"
+    hotels:
+      - name: "À compléter"
+        image: "hotels/09.jpg"
+        description: "À compléter"
+        price: "€€"
+        transport: "À compléter"
+        url: ""
+      - name: "À compléter"
+        image: "hotels/10.jpg"
+        description: "À compléter"
+        price: "€€€"
+        transport: "À compléter"
+        url: ""
+
+  - id: "gangnam"
+    name: "Gangnam"
+    korean: "강남"
+    description: "Le Séoul moderne, au sud du fleuve : grandes avenues, centres commerciaux, boutiques de luxe et restaurants branchés. Un peu plus éloigné du lieu du mariage."
+    tags: ["Moderne", "Shopping", "Restaurants"]
+    access: "Environ 45 à 50 min du mariage"
+    hotels:
+      - name: "À compléter"
+        image: "hotels/11.jpg"
+        description: "À compléter"
+        price: "€€€"
+        transport: "À compléter"
+        url: ""
+      - name: "À compléter"
+        image: "hotels/12.jpg"
+        description: "À compléter"
+        price: "€€"
+        transport: "À compléter"
+        url: ""

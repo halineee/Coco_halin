@@ -161,9 +161,6 @@ venirAuMariage:
     - "Rendez-vous au 7e étage, dans la salle Floche (플로체홀)."
     - "Merci d’arriver entre 30 et 10 minutes avant le début de la cérémonie (17h30)."
     - "La cérémonie dure environ une heure et sera suivie d’un buffet."
-  website:
-    label: "Site de Bella Luce"
-    url: "http://bellaluceseoul.co.kr"
 
 # ── 4. ENTRE LES RÉGIONS ─────────────────────────────────────
 entreRegions:
