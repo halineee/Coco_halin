@@ -100,7 +100,7 @@ const ogImage = new URL(url('/og-image.jpg'), Astro.site);
   }
 
   .site-footer {
-    padding-block: var(--space-2xl) max(var(--space-lg), env(safe-area-inset-bottom));
+    padding-block: calc(var(--space-2xl) / 2) max(var(--space-lg), env(safe-area-inset-bottom));
     text-align: center;
   }
 

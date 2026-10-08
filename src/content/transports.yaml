@@ -1,0 +1,146 @@
+# ─────────────────────────────────────────────────────────────
+#  Page Transports
+#  Tous les textes de la page sont ici.
+#  ⚠️ Les durées et les prix sont indicatifs : pensez à les vérifier
+#  peu avant le mariage (ils changent régulièrement).
+#  Les lignes contenant « À compléter » s'affichent comme provisoires.
+# ─────────────────────────────────────────────────────────────
+
+pageTitle: "Transports"
+intro: "Tout ce qu’il faut savoir pour arriver en Corée, circuler à Séoul et nous rejoindre le jour J."
+disclaimer: "Durées et tarifs donnés à titre indicatif — à vérifier avant le départ."
+
+# Petits liens en haut de page (ancres vers chaque section)
+sections:
+  - id: "arriver"
+    label: "Arriver"
+  - id: "se-deplacer"
+    label: "Se déplacer"
+  - id: "venir-au-mariage"
+    label: "Le jour J"
+
+# ── 1. ARRIVER EN CORÉE ───────────────────────────────────────
+arriver:
+  title: "Arriver en Corée"
+  text: "Les vols depuis la France arrivent à l’aéroport international d’Incheon (ICN), à environ une heure de Séoul. Trois options pour rejoindre la ville :"
+  options:
+    - name: "AREX"
+      korean: "공항철도"
+      tagline: "Le train de l’aéroport"
+      recommended: true
+      duration: "≈ 45 min à 1 h"
+      price: "≈ 4 500 à 11 000 ₩"
+      pros:
+        - "Rapide et ponctuel, sans embouteillages"
+        - "Le train express relie l’aéroport à la gare de Séoul sans arrêt"
+        - "Correspondances faciles avec le métro"
+      info: "Deux trains : l’express (direct jusqu’à la gare de Séoul) et le train omnibus, moins cher, qui dessert d’autres stations. Suivez les panneaux « Train to Seoul » dans le hall des arrivées."
+    - name: "Bus de l’aéroport"
+      korean: "공항 리무진 버스"
+      tagline: "Limousine bus"
+      duration: "≈ 1 h à 1 h 30"
+      price: "≈ 17 000 à 18 000 ₩"
+      pros:
+        - "Dépose près de nombreux hôtels"
+        - "Sièges confortables, bagages en soute"
+        - "Pratique avec de grosses valises"
+      info: "Billets aux comptoirs et bornes du hall des arrivées. Chaque ligne dessert un quartier : indiquez le nom de votre hôtel ou de votre quartier au comptoir. La durée dépend de la circulation."
+    - name: "Taxi"
+      korean: "택시"
+      tagline: "Le plus simple, de porte à porte"
+      duration: "≈ 1 h à 1 h 30"
+      price: "≈ 60 000 à 100 000 ₩ + péage"
+      pros:
+        - "Idéal à plusieurs ou tard le soir"
+        - "Aucune correspondance"
+        - "Paiement par carte accepté"
+      info: "File d’attente officielle à la sortie du terminal. Ayez l’adresse de votre hôtel en coréen. Majoration la nuit. Les taxis noirs (« deluxe ») sont plus chers."
+
+# ── 2. SE DÉPLACER À SÉOUL ────────────────────────────────────
+seDeplacer:
+  title: "Se déplacer à Séoul"
+  text: "Séoul est l’une des villes les plus faciles à parcourir : propre, sûre et très bien desservie."
+  highlight:
+    title: "La carte T-money"
+    korean: "티머니"
+    text: "Une carte rechargeable à utiliser partout : métro, bus, taxis et même supérettes. Achetez-la dès votre arrivée dans une supérette (GS25, CU, 7-Eleven) ou à l’aéroport, puis rechargez-la en espèces aux bornes du métro ou en caisse."
+    tips:
+      - "Badgez en entrant et en sortant (métro et bus), pour bénéficier des correspondances à tarif réduit."
+      - "Une carte par personne."
+      - "La recharge se fait généralement en espèces : prévoyez quelques billets de 10 000 ₩."
+  modes:
+    - name: "Métro"
+      icon: "metro"
+      text: "Rapide, fréquent et indiqué en anglais. Chaque ligne a une couleur et chaque station un numéro."
+      detail: "Trajet à partir d’environ 1 500 ₩"
+    - name: "Bus"
+      icon: "bus"
+      text: "Très complet mais moins intuitif pour une première visite. Les applications de cartes indiquent le bon numéro et l’arrêt."
+      detail: "Montez par l’avant, badgez aussi en descendant"
+    - name: "Taxi"
+      icon: "taxi"
+      text: "Nombreux et abordables comparés à la France. La plupart des chauffeurs parlent peu anglais : montrez l’adresse en coréen."
+      detail: "Prise en charge à partir d’environ 4 800 ₩"
+  apps:
+    title: "Applications utiles"
+    items:
+      - name: "Naver Map"
+        text: "Itinéraires précis à pied et en transports (en anglais)."
+      - name: "Kakao Map"
+        text: "Alternative très fiable à Naver Map."
+      - name: "Kakao T"
+        text: "Pour commander un taxi, comme Uber."
+      - name: "Papago"
+        text: "Traduction, y compris des menus et panneaux en photo."
+    note: "Google Maps fonctionne mal en Corée pour les itinéraires : préférez Naver Map ou Kakao Map."
+
+# ── 3. VENIR AU MARIAGE ──────────────────────────────────────
+venirAuMariage:
+  title: "Venir au mariage"
+  text: "Bella Luce se trouve à Dongdaemun-gu, près de la station Hoegi (회기역)."
+  station:
+    name: "Station Hoegi"
+    korean: "회기역"
+    lines: "Ligne 1 · Ligne Gyeongui–Jungang"
+    walk: "À compléter : temps de marche et sortie de la station"
+  routes:
+    - id: "aeroport"
+      label: "Aéroport"
+      duration: "≈ 1 h 30"
+      steps:
+        - title: "AREX jusqu’à la gare de Séoul"
+          text: "Prenez l’AREX depuis l’aéroport d’Incheon jusqu’au terminus, Seoul Station (서울역)."
+        - title: "Ligne 1 jusqu’à Hoegi"
+          text: "Changez pour la ligne 1 (bleu foncé), direction Cheongnyangni / Uijeongbu, et descendez à Hoegi (회기역)."
+        - title: "À pied jusqu’à Bella Luce"
+          text: "À compléter : sortie et trajet à pied."
+      alternative: "En taxi, comptez environ 1 h à 1 h 30 selon la circulation."
+    - id: "centre"
+      label: "Centre-ville"
+      duration: "≈ 30 à 45 min"
+      steps:
+        - title: "Ligne 1 jusqu’à Hoegi"
+          text: "Depuis la gare de Séoul, City Hall, Jonggak, Jongno 3-ga ou Dongdaemun, la ligne 1 mène directement à Hoegi (회기역)."
+        - title: "À pied jusqu’à Bella Luce"
+          text: "À compléter : sortie et trajet à pied."
+      alternative: "En taxi depuis Myeongdong ou Jongno, comptez environ 30 à 40 min."
+    - id: "hotels"
+      label: "Votre hôtel"
+      duration: "Selon le quartier"
+      steps:
+        - title: "Gangnam"
+          text: "Ligne 2 jusqu’à Wangsimni (왕십리), puis ligne Gyeongui–Jungang jusqu’à Hoegi."
+        - title: "Hongdae / Mapo"
+          text: "Ligne Gyeongui–Jungang depuis Hongik University (홍대입구) ou Gongdeok (공덕), direction Yongmun / Cheongnyangni, jusqu’à Hoegi."
+        - title: "Myeongdong / Jongno / Dongdaemun"
+          text: "Rejoignez la ligne 1, puis descendez à Hoegi."
+        - title: "Itaewon / Yongsan"
+          text: "Depuis Yongsan (용산), ligne Gyeongui–Jungang direction Cheongnyangni jusqu’à Hoegi."
+      alternative: "Le plus simple : tapez « 회기역 » ou « 벨라루체웨딩홀 » dans Naver Map pour l’itinéraire exact depuis votre hôtel."
+  taxi:
+    title: "En taxi"
+    text: "Le jour J, le taxi reste l’option la plus confortable, surtout en tenue de cérémonie. Montrez simplement l’adresse ci-dessous au chauffeur."
+  arrivalTitle: "À l’arrivée"
+  arrival:
+    - "Merci d’arriver entre 30 et 10 minutes avant le début de la cérémonie (17h30)."
+    - "À compléter : accès au bâtiment, étage, accueil."

@@ -2,15 +2,17 @@
 // Sous-titre manuscrit d'une section (ex. « Le lieu », « En attendant le grand jour… »).
 interface Props {
   title: string;
+  eyebrow?: string;
   text?: string;
   align?: 'left' | 'center';
   as?: 'h2' | 'h3';
   id?: string;
 }
-const { title, text, align = 'left', as: Tag = 'h2', id } = Astro.props;
+const { title, eyebrow, text, align = 'left', as: Tag = 'h2', id } = Astro.props;
 ---
 
 <div class:list={['section-heading', align]} data-reveal>
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
   <Tag class="script" id={id}>{title}</Tag>
   {text && <p>{text}</p>}
 </div>
@@ -25,7 +27,11 @@ const { title, text, align = 'left', as: Tag = 'h2', id } = Astro.props;
     line-height: 1.15;
   }
 
-  p {
+  .eyebrow {
+    margin: 0 0 var(--space-xs);
+  }
+
+  p:not(.eyebrow) {
     margin-top: var(--space-xs);
     font-size: var(--text-sm);
     color: var(--color-ink-soft);

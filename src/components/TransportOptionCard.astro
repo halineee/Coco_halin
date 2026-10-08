@@ -1,0 +1,180 @@
+---
+// Carte d'une option de transport (AREX, bus, taxi…) :
+// durée, prix, points forts et informations pratiques.
+import Icon from './Icon.astro';
+
+interface Props {
+  name: string;
+  korean?: string;
+  tagline?: string;
+  recommended?: boolean;
+  duration: string;
+  price: string;
+  pros?: string[];
+  info?: string;
+}
+const { name, korean, tagline, recommended, duration, price, pros = [], info } = Astro.props;
+---
+
+<article class:list={['option', { recommended }]} data-reveal>
+  <header>
+    <div class="titles">
+      {tagline && <p class="eyebrow">{tagline}</p>}
+      <h3>
+        {name}
+        {korean && <span class="korean" lang="ko">{korean}</span>}
+      </h3>
+    </div>
+    {recommended && <span class="badge">Notre conseil</span>}
+  </header>
+
+  <dl class="stats">
+    <div>
+      <dt><Icon name="clock" size={16} strokeWidth={1.4} /> Durée</dt>
+      <dd>{duration}</dd>
+    </div>
+    <div>
+      <dt><Icon name="won" size={16} strokeWidth={1.4} /> Prix</dt>
+      <dd>{price}</dd>
+    </div>
+  </dl>
+
+  {
+    pros.length > 0 && (
+      <ul class="pros">
+        {pros.map((pro) => (
+          <li>{pro}</li>
+        ))}
+      </ul>
+    )
+  }
+
+  {
+    info && (
+      <p class="info">
+        <span class="info-label">Bon à savoir</span>
+        {info}
+      </p>
+    )
+  }
+</article>
+
+<style>
+  .option {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-card);
+  }
+
+  .option.recommended {
+    border-color: var(--color-ink-soft);
+  }
+
+  header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-sm);
+  }
+
+  h3 {
+    margin-top: 0.15rem;
+    font-size: 1.35rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1.25;
+  }
+
+  .korean {
+    margin-left: 0.5rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-soft);
+  }
+
+  .badge {
+    flex: none;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    background: var(--color-ink);
+    color: var(--color-card);
+    font-size: 0.625rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 0;
+    border-block: 1px solid var(--color-line);
+  }
+
+  .stats div {
+    padding: var(--space-sm) 0;
+  }
+
+  .stats div + div {
+    padding-left: var(--space-md);
+    border-left: 1px solid var(--color-line);
+  }
+
+  dt {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: var(--text-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+
+  dd {
+    margin: 0.3rem 0 0;
+    font-size: var(--text-base);
+    font-weight: 400;
+  }
+
+  .pros {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+  }
+
+  .pros li {
+    position: relative;
+    padding-left: 1.1rem;
+  }
+
+  .pros li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 0.55rem;
+    height: 1px;
+    background: var(--color-ink-soft);
+  }
+
+  .info {
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+  }
+
+  .info-label {
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: var(--text-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+  }
+</style>

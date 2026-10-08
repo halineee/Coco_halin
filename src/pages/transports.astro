@@ -1,13 +1,394 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
 import titleArt from '../assets/illustrations/titres/transports.svg';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import PageTitle from '../components/PageTitle.astro';
-import Placeholder from '../components/Placeholder.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import TransportOptionCard from '../components/TransportOptionCard.astro';
+import RouteTabs from '../components/RouteTabs.astro';
+import TaxiCard from '../components/TaxiCard.astro';
+import MapLinks from '../components/MapLinks.astro';
+import Icon from '../components/Icon.astro';
+import rawContent from '../content/transports.yaml';
+import rawSite from '../content/site.yaml';
+import { isTodo, fr } from '../lib/text';
+
+const content = fr(rawContent);
+const site = fr(rawSite);
+
+const { arriver, seDeplacer, venirAuMariage: jourJ } = content;
 ---
 
-<BaseLayout title="Transports">
-  <PageTitle title="Transports" art={titleArt} />
-  <div class="container container--wide">
-    <Placeholder label="En préparation">Le guide pratique pour venir en Corée arrive bientôt.</Placeholder>
-  </div>
+<BaseLayout title={content.pageTitle} description={content.intro}>
+  <PageTitle title={content.pageTitle} art={titleArt} intro={content.intro} />
+
+  <nav class="jump container container--wide" aria-label="Sections de la page" data-reveal>
+    {content.sections.map((s: { id: string; label: string }) => <a href={`#${s.id}`}>{s.label}</a>)}
+  </nav>
+
+  <!-- 1. Arriver en Corée -->
+  <section id="arriver" class="block container container--wide">
+    <SectionHeading eyebrow="01" title={arriver.title} />
+    <p class="lead" data-reveal>{arriver.text}</p>
+    <div class="options">
+      {arriver.options.map((option: any) => <TransportOptionCard {...option} />)}
+    </div>
+    <p class="disclaimer">{content.disclaimer}</p>
+  </section>
+
+  <!-- 2. Se déplacer à Séoul -->
+  <section id="se-deplacer" class="block container container--wide">
+    <SectionHeading eyebrow="02" title={seDeplacer.title} />
+    <p class="lead" data-reveal>{seDeplacer.text}</p>
+
+    <div class="tmoney" data-reveal>
+      <div class="tmoney-head">
+        <Icon name="card" size={30} strokeWidth={1.1} />
+        <h3>
+          {seDeplacer.highlight.title}
+          <span class="korean" lang="ko">{seDeplacer.highlight.korean}</span>
+        </h3>
+      </div>
+      <p>{seDeplacer.highlight.text}</p>
+      <ul>
+        {seDeplacer.highlight.tips.map((tip: string) => <li>{tip}</li>)}
+      </ul>
+    </div>
+
+    <ul class="modes">
+      {
+        seDeplacer.modes.map((mode: any) => (
+          <li data-reveal>
+            <span class="mode-icon"><Icon name={mode.icon} size={30} strokeWidth={1.1} /></span>
+            <div>
+              <h3>{mode.name}</h3>
+              <p>{mode.text}</p>
+              {mode.detail && <p class="detail">{mode.detail}</p>}
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="apps" data-reveal>
+      <h3 class="eyebrow">{seDeplacer.apps.title}</h3>
+      <ul>
+        {
+          seDeplacer.apps.items.map((app: any) => (
+            <li>
+              <span class="app-name">
+                <Icon name="phone" size={18} strokeWidth={1.3} /> {app.name}
+              </span>
+              <span class="app-text">{app.text}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="note">{seDeplacer.apps.note}</p>
+    </div>
+  </section>
+
+  <!-- 3. Venir au mariage -->
+  <section id="venir-au-mariage" class="block container container--wide">
+    <SectionHeading eyebrow="03" title={jourJ.title} />
+    <p class="lead" data-reveal>{jourJ.text}</p>
+
+    <div class="station" data-reveal>
+      <Icon name="metro" size={32} strokeWidth={1.1} />
+      <div>
+        <p class="station-name">
+          {jourJ.station.name} <span class="korean" lang="ko">{jourJ.station.korean}</span>
+        </p>
+        <p class="station-lines">{jourJ.station.lines}</p>
+        <p class:list={['station-walk', { todo: isTodo(jourJ.station.walk) }]}>{jourJ.station.walk}</p>
+      </div>
+    </div>
+
+    <div class="routes" data-reveal>
+      <RouteTabs routes={jourJ.routes} />
+    </div>
+
+    <div class="taxi-block" data-reveal>
+      <h3 class="sub script">{jourJ.taxi.title}</h3>
+      <p class="lead">{jourJ.taxi.text}</p>
+      <TaxiCard
+        title={site.venue.taxiCard.title}
+        text={site.venue.taxiCard.text}
+        nameKorean={site.venue.nameKorean}
+        addressKorean={site.venue.addressKorean}
+      />
+      <div class="map-links">
+        <MapLinks links={site.venue.mapLinks} />
+      </div>
+    </div>
+
+    <div class="arrival" data-reveal>
+      <h3 class="sub script">{jourJ.arrivalTitle}</h3>
+      <ul>
+        {jourJ.arrival.map((line: string) => <li class:list={{ todo: isTodo(line) }}>{line}</li>)}
+      </ul>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .jump a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 1rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    font-size: var(--text-sm);
+    text-decoration: none;
+    color: var(--color-ink-soft);
+    transition: background 0.3s var(--ease), color 0.3s var(--ease);
+  }
+
+  @media (hover: hover) {
+    .jump a:hover {
+      background: var(--color-card);
+      color: var(--color-ink);
+    }
+  }
+
+  .block {
+    padding-top: var(--space-2xl);
+  }
+
+  .lead {
+    max-width: 36rem;
+    margin-top: var(--space-sm);
+    font-size: var(--text-base);
+    line-height: 1.65;
+  }
+
+  .korean {
+    margin-left: 0.4rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-soft);
+  }
+
+  .todo {
+    font-style: italic;
+    color: var(--color-ink-faint) !important;
+  }
+
+  h3 {
+    font-weight: 400;
+  }
+
+  /* Options d'arrivée */
+  .options {
+    display: grid;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+  }
+
+  .disclaimer {
+    margin-top: var(--space-md);
+    font-size: var(--text-xs);
+    color: var(--color-ink-soft);
+  }
+
+  /* T-money */
+  .tmoney {
+    margin-top: var(--space-lg);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    background: var(--color-paper-deep);
+  }
+
+  .tmoney-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .tmoney h3 {
+    font-size: 1.25rem;
+  }
+
+  .tmoney > p {
+    margin-top: var(--space-sm);
+    font-size: var(--text-sm);
+    line-height: 1.65;
+  }
+
+  .tmoney ul,
+  .arrival ul {
+    display: grid;
+    gap: 0.45rem;
+    margin: var(--space-sm) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+  }
+
+  .tmoney li,
+  .arrival li {
+    position: relative;
+    padding-left: 1.1rem;
+    line-height: 1.6;
+  }
+
+  .tmoney li::before,
+  .arrival li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.8em;
+    width: 0.55rem;
+    height: 1px;
+    background: var(--color-ink-soft);
+  }
+
+  /* Modes de transport */
+  .modes {
+    display: grid;
+    margin: var(--space-lg) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .modes li {
+    display: flex;
+    gap: var(--space-md);
+    padding: var(--space-md) 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .modes li:last-child {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .mode-icon {
+    flex: none;
+    color: var(--color-ink-soft);
+  }
+
+  .modes h3 {
+    font-size: 1.15rem;
+  }
+
+  .modes p {
+    margin-top: 0.2rem;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+  }
+
+  .modes .detail {
+    margin-top: 0.4rem;
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    color: var(--color-ink-soft);
+  }
+
+  /* Applications */
+  .apps {
+    margin-top: var(--space-xl);
+  }
+
+  .apps ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-sm);
+    margin: var(--space-sm) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .apps li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: var(--space-sm);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-card);
+  }
+
+  .app-name {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-weight: 400;
+  }
+
+  .app-text {
+    font-size: var(--text-xs);
+    line-height: 1.5;
+    color: var(--color-ink-soft);
+  }
+
+  .note {
+    margin-top: var(--space-sm);
+    font-size: var(--text-xs);
+    color: var(--color-ink-soft);
+  }
+
+  /* Venir au mariage */
+  .station {
+    display: flex;
+    gap: var(--space-md);
+    align-items: flex-start;
+    margin-top: var(--space-lg);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    background: var(--color-paper-deep);
+  }
+
+  .station-name {
+    font-size: 1.2rem;
+  }
+
+  .station-lines {
+    margin-top: 0.15rem;
+    font-size: var(--text-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+
+  .station-walk {
+    margin-top: var(--space-xs);
+    font-size: var(--text-sm);
+  }
+
+  .routes {
+    margin-top: var(--space-lg);
+  }
+
+  .sub {
+    font-size: var(--text-script-sm);
+    line-height: 1.15;
+  }
+
+  .taxi-block,
+  .arrival {
+    margin-top: var(--space-xl);
+  }
+
+  .taxi-block :global(.taxi-card) {
+    margin-top: var(--space-md);
+  }
+
+  .map-links {
+    margin-top: var(--space-md);
+  }
+
+  @media (min-width: 56em) {
+    .options {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .apps ul {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>
