@@ -148,6 +148,11 @@ rsvp:
   airbnbDefault: "Non, merci."
   googleForm:
     action: "https://docs.google.com/forms/d/e/1FAIpQLSdtLQTP6vjNWlrVCiHp9iDxR-pwz8aY8OkH5b-42sBRIU24tQ/formResponse"
+    # Sections du formulaire Google parcourues (0 = première section).
+    # Les questions « nombre de personnes » et « hébergement » sont dans
+    # la 2e section : il faut l'indiquer, sinon Google ignore ces réponses.
+    pageHistory: "0,1"
+    pageHistoryDeclined: "0"
     fields:
       name: "entry.1247240223"
       attending: "entry.799290780"

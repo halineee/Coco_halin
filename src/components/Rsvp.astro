@@ -33,6 +33,8 @@ const airbnbOptions: string[] = raw?.airbnbOptions ?? [];
         data-fields={JSON.stringify(gf.fields)}
         data-decline={raw.declineOption}
         data-airbnb-default={raw.airbnbDefault}
+        data-page-history={gf.pageHistory ?? ''}
+        data-page-history-declined={gf.pageHistoryDeclined ?? ''}
         data-reveal
       >
         <fieldset class="field">
@@ -124,6 +126,9 @@ const airbnbOptions: string[] = raw?.airbnbOptions ?? [];
       for (const [key, entry] of Object.entries(fields)) {
         if (entry && values[key]) body.append(entry, values[key]);
       }
+      // Formulaire Google en plusieurs sections : on indique celles « visitées ».
+      const history = no ? form.dataset.pageHistoryDeclined : form.dataset.pageHistory;
+      if (history) body.append('pageHistory', history);
       const button = form.querySelector('button')!;
       button.disabled = true;
       try {
