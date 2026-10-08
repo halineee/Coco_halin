@@ -42,7 +42,7 @@ plats:
         - name: "Galbi"
           photo: "food/galbi.jpg"
           korean: "갈비"
-          text: "Côtes marinées (bœuf ou porc), grillées au charbon : un classique des repas de fête."
+          text: "Côtes marinées grillées au charbon : de bœuf (so galbi) ou de porc (dwaeji galbi), plus abordable et tout aussi délicieux."
         - name: "Bulgogi"
           photo: "food/bulgogi.jpg"
           korean: "불고기"

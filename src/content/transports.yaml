@@ -70,6 +70,18 @@ seDeplacer:
       - "Badgez en entrant et en sortant (métro et bus), pour bénéficier des correspondances à tarif réduit."
       - "Une carte par personne."
       - "La recharge se fait généralement en espèces : prévoyez quelques billets de 10 000 ₩."
+    # Écran du lecteur de carte (bus et métro)
+    reader:
+      title: "Lire l’écran du lecteur"
+      text: "À chaque passage de la carte, le lecteur affiche deux lignes :"
+      lines:
+        - korean: "요금"
+          amount: "1 500 ₩"
+          label: "le prix payé pour ce trajet"
+        - korean: "잔액"
+          amount: "8 500 ₩"
+          label: "ce qui reste sur votre carte"
+      note: "Quand une correspondance est appliquée, une voix annonce « hwanseung-imnida » (환승입니다)."
   modes:
     - name: "Métro"
       icon: "metro"
@@ -93,6 +105,17 @@ seDeplacer:
         text: "Ce n’est pas interdit par la loi, mais très mal vu : évitez de manger dans le métro, une bouteille d’eau fermée ne pose aucun problème."
       - label: "Train (KTX)"
         text: "Vous pouvez manger et boire à votre place, en restant discret."
+  # Places réservées dans le métro
+  seats:
+    title: "Les places réservées"
+    text: "Dans le métro coréen, certaines places restent libres même quand la rame est bondée. L’usage est de ne pas s’y asseoir, même si personne n’attend."
+    items:
+      - label: "Siège rose"
+        korean: "임산부 배려석"
+        text: "Réservé aux femmes enceintes. On le laisse vide : une future maman n’ose pas toujours demander, et sa grossesse ne se voit pas forcément."
+      - label: "Bouts de voiture"
+        korean: "노약자석"
+        text: "Les petites banquettes aux extrémités de chaque voiture sont pour les personnes âgées, handicapées, les femmes enceintes et les parents avec de jeunes enfants."
   apps:
     title: "Applications utiles"
     items:

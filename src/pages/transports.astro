@@ -52,6 +52,33 @@ const { arriver, seDeplacer, venirAuMariage: jourJ, entreRegions } = content;
       <ul>
         {seDeplacer.highlight.tips.map((tip: string) => <li>{tip}</li>)}
       </ul>
+      {
+        seDeplacer.highlight.reader && (
+          <div class="reader">
+            <p class="reader-title">{seDeplacer.highlight.reader.title}</p>
+            <p class="reader-text">{seDeplacer.highlight.reader.text}</p>
+            <div class="reader-row">
+              <div class="screen" aria-hidden="true">
+                {seDeplacer.highlight.reader.lines.map((l: any) => (
+                  <p>
+                    <span lang="ko">{l.korean}</span>
+                    <span>{l.amount}</span>
+                  </p>
+                ))}
+              </div>
+              <dl class="reader-legend">
+                {seDeplacer.highlight.reader.lines.map((l: any) => (
+                  <div>
+                    <dt lang="ko">{l.korean}</dt>
+                    <dd>{l.label}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+            {seDeplacer.highlight.reader.note && <p class="reader-note">{seDeplacer.highlight.reader.note}</p>}
+          </div>
+        )
+      }
     </div>
 
     <ul class="modes">
@@ -82,6 +109,35 @@ const { arriver, seDeplacer, venirAuMariage: jourJ, entreRegions } = content;
         }
       </dl>
     </div>
+
+    {
+      seDeplacer.seats && (
+        <div class="seats" data-reveal>
+          <h3 class="eyebrow">{seDeplacer.seats.title}</h3>
+          <p class="seats-text">{seDeplacer.seats.text}</p>
+          <svg class="seats-plan" viewBox="0 0 300 64" role="img" aria-label="Plan d’une voiture de métro : places réservées en bout de voiture et sièges roses en bout de banquette">
+            <rect x="1" y="6" width="298" height="52" rx="10" class="car" />
+            {[0, 1, 2].map((i) => <rect x={10 + i * 17} y="16" width="14" height="32" rx="4" class="seat prio" />)}
+            {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+              <rect x={78 + i * 21} y="16" width="18" height="32" rx="4" class:list={['seat', { pink: i === 0 || i === 6 }]} />
+            ))}
+            {[0, 1, 2].map((i) => <rect x={239 + i * 17} y="16" width="14" height="32" rx="4" class="seat prio" />)}
+          </svg>
+          <dl>
+            {seDeplacer.seats.items.map((item: any, i: number) => (
+              <div>
+                <dt>
+                  <span class:list={['swatch', i === 0 ? 'pink' : 'prio']} />
+                  {item.label}
+                  <span class="korean" lang="ko">{item.korean}</span>
+                </dt>
+                <dd>{item.text}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      )
+    }
 
     <div class="apps" data-reveal>
       <h3 class="eyebrow">{seDeplacer.apps.title}</h3>
@@ -435,6 +491,156 @@ const { arriver, seDeplacer, venirAuMariage: jourJ, entreRegions } = content;
 
   .map-links {
     margin-top: var(--space-md);
+  }
+
+  /* Écran du lecteur T-money */
+  .reader {
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .reader-title {
+    font-size: 1.05rem;
+  }
+
+  .reader-text,
+  .reader-note {
+    margin-top: 0.3rem;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+  }
+
+  .reader-note {
+    margin-top: var(--space-sm);
+    color: var(--color-ink-soft);
+  }
+
+  .reader-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-top: var(--space-sm);
+  }
+
+  .screen {
+    flex: none;
+    width: 8.6rem;
+    padding: 0.55rem 0.7rem;
+    border: 4px solid #3d3d44;
+    border-radius: 10px;
+    background: #23324a;
+    color: #fff;
+    font-size: 0.95rem;
+    font-variant-numeric: tabular-nums;
+    box-shadow: 0 0 0 1px #c9874a;
+  }
+
+  .screen p {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    line-height: 1.6;
+  }
+
+  .screen p span:first-child {
+    color: #f3c76b;
+  }
+
+  .screen p + p span:first-child {
+    color: #9fe0a6;
+  }
+
+  .reader-legend {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0;
+    font-size: var(--text-sm);
+  }
+
+  .reader-legend dt {
+    font-weight: 500;
+  }
+
+  .reader-legend dd {
+    margin: 0;
+    line-height: 1.45;
+    color: var(--color-ink-soft);
+  }
+
+  /* Places réservées */
+  .seats {
+    margin-top: var(--space-xl);
+  }
+
+  .seats-text {
+    margin-top: var(--space-xs);
+    font-size: var(--text-sm);
+    line-height: 1.65;
+  }
+
+  .seats-plan {
+    display: block;
+    width: 100%;
+    max-width: 26rem;
+    margin-top: var(--space-md);
+  }
+
+  .seats-plan .car {
+    fill: var(--color-card);
+    stroke: var(--color-line);
+  }
+
+  .seats-plan .seat {
+    fill: #d6d8e2;
+  }
+
+  .seats-plan .pink,
+  .swatch.pink {
+    fill: #e9a6c6;
+    background: #e9a6c6;
+  }
+
+  .seats-plan .prio,
+  .swatch.prio {
+    fill: #a99fcf;
+    background: #a99fcf;
+  }
+
+  .seats dl {
+    display: grid;
+    gap: var(--space-sm);
+    margin: var(--space-md) 0 0;
+  }
+
+  .seats dl div {
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .seats dt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .seats dt .korean {
+    font-size: var(--text-xs);
+    color: var(--color-ink-faint);
+  }
+
+  .swatch {
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 3px;
+  }
+
+  .seats dd {
+    margin: 0.3rem 0 0;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-ink-soft);
   }
 
   /* Manger et boire */
