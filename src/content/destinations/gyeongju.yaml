@@ -7,6 +7,7 @@ intro: "Capitale du royaume de Silla pendant près de mille ans, Gyeongju est un
 
 aVoir:
   - name: "Bulguksa"
+    photo: "destinations/gyeongju/01-bulguksa.jpg"
     korean: "불국사"
     text: "Le temple le plus célèbre du pays, inscrit au patrimoine mondial de l’UNESCO."
   - name: "La grotte de Seokguram"
@@ -27,6 +28,7 @@ aGouter:
     korean: "찰보리빵"
     text: "Deux petites crêpes moelleuses à l’orge, fourrées de pâte de haricot rouge."
   - name: "Le ssambap"
+    photo: "food/ssambap.jpg"
     korean: "쌈밥"
     text: "Riz et multiples accompagnements à envelopper dans des feuilles de salade."
   - name: "Le Gyodong beopju"

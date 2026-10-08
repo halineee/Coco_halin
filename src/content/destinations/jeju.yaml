@@ -19,6 +19,7 @@ aVoir:
     korean: "만장굴"
     text: "Un immense tunnel de lave à parcourir sous terre."
   - name: "L’île d’Udo"
+    photo: "destinations/jeju/05-udo.jpg"
     korean: "우도"
     text: "Une petite île à quelques minutes de ferry, à explorer à vélo."
 
@@ -27,9 +28,11 @@ aGouter:
     korean: "흑돼지"
     text: "La grande spécialité de l’île, grillée au barbecue."
   - name: "Les produits des haenyeo"
+    photo: "food/haenyeo.jpg"
     korean: "해녀"
     text: "Ormeaux et fruits de mer pêchés par les plongeuses de Jeju."
   - name: "Le hallabong"
+    photo: "food/hallabong.jpg"
     korean: "한라봉"
     text: "Un agrume sucré typique de l’île, décliné en jus et desserts."
 

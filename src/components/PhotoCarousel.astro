@@ -10,13 +10,15 @@ import Icon from './Icon.astro';
 interface Props {
   photos: GalleryPhoto[];
   label: string;
+  /** Format des photos, ex. « 4 / 5 » (portrait) ou « 4 / 3 » (paysage) */
+  ratio?: string;
 }
-const { photos, label } = Astro.props;
+const { photos, label, ratio = '4 / 5' } = Astro.props;
 
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
-<div class="carousel" data-carousel>
+<div class="carousel" data-carousel style={`--ratio: ${ratio}`}>
   <ul class="track" data-lightbox aria-label={label}>
     {
       photos.map((photo, i) => (
@@ -157,7 +159,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   .slide :global(img) {
     width: 100%;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: var(--ratio, 4 / 5);
     object-fit: cover;
     border-radius: var(--radius-md);
     transition: box-shadow 0.6s var(--ease);

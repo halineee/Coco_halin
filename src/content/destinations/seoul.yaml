@@ -58,13 +58,16 @@ aVoir:
 
 aGouter:
   - name: "Le marché de Gwangjang"
+    photo: "destinations/seoul/12-gwangjang.jpg"
     korean: "광장시장"
     carte: true
     text: "Galettes de haricot mungo (bindaetteok), kimbap et stands animés."
   - name: "Le barbecue coréen"
+    photo: "food/samgyeopsal.jpg"
     korean: "삼겹살"
     text: "Poitrine de porc grillée à table, à envelopper dans une feuille de salade."
   - name: "Le naengmyeon"
+    photo: "food/naengmyeon.jpg"
     korean: "냉면"
     text: "Nouilles froides, parfaites en plein mois d’août."
 

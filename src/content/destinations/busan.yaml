@@ -25,12 +25,15 @@ aVoir:
 
 aGouter:
   - name: "Le dwaeji gukbap"
+    photo: "food/dwaeji-gukbap.jpg"
     korean: "돼지국밥"
     text: "Soupe de porc et riz, la spécialité réconfortante de Busan."
   - name: "Le milmyeon"
+    photo: "food/milmyeon.jpg"
     korean: "밀면"
     text: "Nouilles froides de blé, la version locale du naengmyeon."
   - name: "Les eomuk"
+    photo: "food/eomuk.jpg"
     korean: "어묵"
     text: "Galettes de poisson, servies en brochettes dans un bouillon chaud."
   - name: "Les fruits de mer crus"

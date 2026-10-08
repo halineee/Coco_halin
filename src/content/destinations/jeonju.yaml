@@ -21,12 +21,15 @@ aVoir:
 
 aGouter:
   - name: "Le bibimbap de Jeonju"
+    photo: "food/bibimbap-jeonju.jpg"
     korean: "전주비빔밥"
     text: "Le plat emblématique de la ville, servi dans un bol de laiton."
   - name: "Le kongnamul gukbap"
+    photo: "food/kongnamul-gukbap.jpg"
     korean: "콩나물국밥"
     text: "Soupe de pousses de soja et riz, parfaite au petit-déjeuner."
   - name: "Les maisons de makgeolli"
+    photo: "food/makgeolli.jpg"
     korean: "막걸리 골목"
     carte: true
     recherche: "전주 막걸리골목"

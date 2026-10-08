@@ -36,6 +36,7 @@ plats:
     - title: "Au barbecue"
       items:
         - name: "Samgyeopsal"
+          photo: "food/samgyeopsal.jpg"
           korean: "삼겹살"
           text: "Poitrine de porc grillée à table, à envelopper dans une feuille de salade avec ail et sauce."
         - name: "Galbi"
@@ -92,6 +93,7 @@ plats:
     - title: "Nouilles"
       items:
         - name: "Jajangmyeon"
+          photo: "food/jajangmyeon.jpg"
           korean: "짜장면"
           text: "Nouilles à la sauce de haricots noirs, star de la cuisine sino-coréenne."
         - name: "Jjamppong"
@@ -113,36 +115,45 @@ plats:
           korean: "치킨"
           text: "Croustillant nature, ou laqué d’une sauce sucrée-pimentée (yangnyeom). Avec une bière, c’est le « chimaek »."
         - name: "Jokbal"
+          photo: "food/jokbal.jpg"
           korean: "족발"
           text: "Pied de porc braisé au soja et aux épices, servi tranché, fondant et parfumé."
         - name: "Bossam"
+          photo: "food/bossam.jpg"
           korean: "보쌈"
           text: "Porc bouilli tranché, à envelopper dans du chou avec du kimchi frais."
         - name: "Haemul pajeon"
+          photo: "food/haemul-pajeon.jpg"
           korean: "해물파전"
           text: "Grande galette aux oignons verts et fruits de mer, l’alliée du makgeolli, surtout les jours de pluie."
 
     - title: "Street food"
       items:
         - name: "Tteokbokki"
+          photo: "food/tteokbokki.jpg"
           korean: "떡볶이"
           text: "Gâteaux de riz dans une sauce pimentée, la star des stands de rue."
         - name: "Eomuk"
+          photo: "food/eomuk.jpg"
           korean: "어묵"
           text: "Brochettes de galettes de poisson dans un bouillon chaud, à boire à la tasse."
         - name: "Twigim"
+          photo: "food/twigim.jpg"
           korean: "튀김"
           text: "Beignets de légumes, de calamars ou d’œufs, à tremper dans la sauce du tteokbokki."
         - name: "Corn dog coréen"
+          photo: "food/corn-dog.jpg"
           korean: "핫도그"
           text: "Saucisse ou mozzarella dans une pâte croustillante, roulée dans le sucre : étonnant et addictif."
 
     - title: "Côté sucré"
       items:
         - name: "Hotteok"
+          photo: "food/hotteok.jpg"
           korean: "호떡"
           text: "Petite crêpe épaisse fourrée de sucre brun et de graines, servie brûlante."
         - name: "Bungeoppang"
+          photo: "food/bungeoppang.jpg"
           korean: "붕어빵"
           text: "Gaufre en forme de poisson fourrée à la pâte de haricot rouge (plutôt en hiver)."
         - name: "Les boulangeries coréennes"
@@ -152,6 +163,7 @@ plats:
   # Les supérettes
   superettes:
     title: "La culture des supérettes"
+    photo: "food/superette.jpg"
     text: "GS25, CU, 7-Eleven… On en trouve à chaque coin de rue, souvent ouvertes 24 h/24. On y achète des triangles de riz (samgak gimbap), des ramyeon à préparer sur place avec l’eau chaude en libre-service, des glaces et des boissons — et l’on s’installe aux petites tables devant la porte, les soirs d’été."
 
 ete:
@@ -159,12 +171,15 @@ ete:
   text: "Le mariage tombe en plein été coréen, chaud et humide. Voici ce que mangent les Coréens pour se rafraîchir… ou reprendre des forces."
   items:
     - name: "Naengmyeon"
+      photo: "food/naengmyeon.jpg"
       korean: "냉면"
       text: "Nouilles froides dans un bouillon glacé."
     - name: "Bingsu"
+      photo: "food/bingsu.jpg"
       korean: "빙수"
       text: "Glace pilée garnie de fruits, de haricot rouge ou de lait, à partager."
     - name: "Samgyetang"
+      photo: "food/samgyetang.jpg"
       korean: "삼계탕"
       text: "Petit poulet farci au riz et au ginseng, servi brûlant les jours les plus chauds de l’été, selon la tradition."
 
@@ -198,9 +213,11 @@ boire:
   title: "Boire un verre"
   items:
     - name: "Soju"
+      photo: "food/soju.jpg"
       korean: "소주"
       text: "L’alcool national, clair et légèrement sucré, servi en petits verres."
     - name: "Makgeolli"
+      photo: "food/makgeolli.jpg"
       korean: "막걸리"
       text: "Alcool de riz laiteux et pétillant, souvent servi avec des galettes (jeon)."
     - name: "Somaek"
