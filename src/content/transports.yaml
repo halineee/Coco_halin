@@ -113,9 +113,9 @@ seDeplacer:
       - label: "Siège rose"
         korean: "임산부 배려석"
         text: "Réservé aux femmes enceintes. On le laisse vide : une future maman n’ose pas toujours demander, et sa grossesse ne se voit pas forcément."
-      - label: "Bouts de voiture"
+      - label: "Sièges prioritaires"
         korean: "노약자석"
-        text: "Les petites banquettes aux extrémités de chaque voiture sont pour les personnes âgées, handicapées, les femmes enceintes et les parents avec de jeunes enfants."
+        text: "Les petites banquettes aux extrémités de chaque voiture sont pour les personnes âgées ou handicapées, les femmes enceintes et les parents avec de jeunes enfants."
   apps:
     title: "Applications utiles"
     items:
@@ -144,7 +144,7 @@ venirAuMariage:
       duration: "≈ 1 h 30"
       steps:
         - title: "AREX jusqu’à la gare de Séoul"
-          text: "Prenez l’AREX depuis l’aéroport d’Incheon jusqu’au terminus, Seoul Station (서울역)."
+          text: "Prenez l’AREX depuis l’aéroport d’Incheon jusqu’au terminus, la gare de Séoul (서울역)."
         - title: "Ligne 1 jusqu’à Hoegi (123)"
           text: "Changez pour la ligne 1 (bleu foncé), direction Cheongnyangni / Uijeongbu, et descendez à Hoegi (회기역)."
         - title: "Sortie 2, puis 170 m à pied"
@@ -182,25 +182,25 @@ venirAuMariage:
   arrivalTitle: "À l’arrivée"
   arrival:
     - "Rendez-vous au 7e étage, dans la salle Floche (플로체홀)."
-    - "Merci d’arriver entre 30 et 10 minutes avant le début de la cérémonie (17h30)."
+    - "Merci d’arriver 10 à 30 minutes avant le début de la cérémonie (17h30)."
     - "La cérémonie dure environ une heure et sera suivie d’un buffet."
 
 # ── 4. ENTRE LES RÉGIONS ─────────────────────────────────────
 entreRegions:
   title: "Entre les régions"
-  text: "Pour prolonger le voyage à Busan, Gyeongju, Jeonju ou Jeju, la Corée se parcourt très facilement en train rapide, en bus express ou en avion."
+  text: "Pour prolonger le voyage à Busan, Gyeongju, Jeonju, Gangneung ou Jeju, la Corée se parcourt très facilement en train rapide, en bus express ou en avion."
   options:
     - name: "KTX & SRT"
       korean: "고속열차"
       tagline: "Le train à grande vitesse"
       recommended: true
       duration: "Busan ≈ 2 h 30"
-      price: "Busan ≈ 60 000 ₩"
+      price: "Busan ≈ 55 000 à 60 000 ₩"
       pros:
-        - "Busan, Gyeongju (gare de Singyeongju) et Jeonju en 1 h 30 à 2 h 30"
+        - "Busan, Gyeongju (gare de Singyeongju), Jeonju et Gangneung en 1 h 30 à 2 h 30"
         - "Confortable, ponctuel, centre-ville à centre-ville"
-        - "Le KTX part de Seoul Station ou Yongsan, le SRT de Suseo (Gangnam)"
-      info: "Le KTX et le SRT sont gérés par deux compagnies différentes : comparez les horaires sur les deux sites. La carte T-money ne fonctionne pas pour ces trains."
+        - "Départs de la gare de Séoul, de Yongsan ou de Suseo (Gangnam) ; pour Gangneung, aussi de Cheongnyangni, à une station de Hoegi"
+      info: "Depuis septembre 2026, KTX et SRT sont réunis : tous les trains se réservent au même endroit, sur le site ou l’application de Korail. La carte T-money ne fonctionne pas pour ces trains."
     - name: "Bus express"
       korean: "고속버스"
       tagline: "Économique et très fréquent"
@@ -227,14 +227,12 @@ entreRegions:
       - title: "Sur le site de Korail, en anglais"
         text: "Le site officiel de Korail permet d’acheter un billet KTX avec une adresse e-mail, votre passeport et une carte bancaire."
       - title: "Ou sur l’application Korail+"
-        text: "L’application officielle (anciennement Korail Talk) permet de réserver et de garder son billet sur le téléphone. Pour le SRT, utilisez le site de SR, qui existe aussi en anglais."
+        text: "L’application officielle (anciennement Korail Talk) permet de réserver KTX et SRT au même endroit, et de garder son billet sur le téléphone."
       - title: "Pensez au Korail Pass"
         text: "Réservé aux visiteurs étrangers, il offre des trajets illimités pendant 2 à 5 jours. Pratique si vous enchaînez plusieurs villes."
       - title: "Réservez à l’avance"
         text: "Les week-ends et l’été, les trains se remplissent vite : réservez dès que possible. Aux bornes des gares, les menus existent aussi en anglais."
-    note: "Korail et SR (la compagnie du SRT) sont en train de fusionner : les sites et applications de réservation peuvent évoluer d’ici 2027."
+    note: "Le lundi 16 août 2027 devrait être férié (la fête de la Libération, le 15 août, tombe un dimanche) : le week-end du mariage sera un long week-end très chargé. Réservez trains et hôtels le plus tôt possible."
     links:
-      - label: "Korail (KTX)"
+      - label: "Korail (KTX et SRT)"
         url: "https://www.letskorail.com"
-      - label: "SR (SRT)"
-        url: "https://etk.srail.kr"

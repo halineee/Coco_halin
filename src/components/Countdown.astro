@@ -17,7 +17,7 @@ const initial = daysLeft(new Date(datetime));
   <p class="before script">{before}</p>
   <p class="number">
     <span class="digits" data-days>{initial}</span>
-    <span class="unit script">jours</span>
+    <span class="unit script" data-unit>{initial === 1 ? 'jour' : 'jours'}</span>
   </p>
   <p class="after script">{after}</p>
 </section>
@@ -32,6 +32,8 @@ const initial = daysLeft(new Date(datetime));
       el.innerHTML = `<p class="script" style="font-size: var(--text-script-sm)">${el.dataset.today}</p>`;
     } else if (out) {
       out.textContent = String(days);
+      const unit = el.querySelector('[data-unit]');
+      if (unit) unit.textContent = days === 1 ? 'jour' : 'jours';
     }
   }
 </script>

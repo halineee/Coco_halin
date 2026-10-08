@@ -74,7 +74,7 @@ quartiers:
     access: "Ligne 1 directe jusqu’à Hoegi"
     hotels:
       - name: "Four Seasons Hotel Seoul"
-        description: "Un palace face à la porte Gwanghwamun, à deux pas du palais Gyeongbokgung."
+        description: "Un palace à deux pas de la place Gwanghwamun et du palais Gyeongbokgung."
         price: "€€€"
         transport: "Station Gwanghwamun (ligne 5)"
         url: ""
@@ -137,7 +137,7 @@ quartiers:
       - name: "L7 Hongdae by Lotte"
         description: "Un hôtel lifestyle très apprécié, juste à côté de la station Hongik University."
         price: "€€"
-        transport: "Station Hongik University (ligne 2, AREX)"
+        transport: "Station Hongik University (ligne 2, AREX et ligne Gyeongui–Jungang, directe jusqu’à Hoegi)"
         url: ""
       - name: "Holiday Inn Express Seoul Hongdae"
         description: "Simple, efficace et bien noté, à prix doux."

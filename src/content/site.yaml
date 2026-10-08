@@ -45,7 +45,7 @@ home:
   countdownBefore: "Plus que"
   countdownAfter: "avant notre grand jour"
   countdownToday: "C’est aujourd’hui !"
-  bottomHint: "La suite se découvre en haut de la page."
+  bottomHint: "Pour la suite, utilisez le menu en haut de la page."
 
 venue:
   sectionTitle: "Le lieu"
@@ -81,7 +81,7 @@ venue:
   # Ajoutez, modifiez ou supprimez des lignes (une ligne = une note).
   notesTitle: "Bon à savoir"
   notes:
-    - "Merci d’arriver entre 30 et 10 minutes avant le début de la cérémonie."
+    - "Merci d’arriver 10 à 30 minutes avant le début de la cérémonie."
     - "La cérémonie dure environ une heure et sera suivie d’un buffet : soyez à l’heure pour ne rien manquer !"
 
 footer:

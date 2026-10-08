@@ -34,7 +34,7 @@ aVoir:
   - name: "Changdeokgung et le Jardin secret"
     photo: "destinations/seoul/05-changdeokgung.jpg"
     korean: "창덕궁 · 후원"
-    text: "Le plus harmonieux des palais, inscrit à l’UNESCO, et son jardin royal à visiter en visite guidée."
+    text: "Le plus harmonieux des palais, inscrit à l’UNESCO, et son jardin royal à découvrir en visite guidée."
   - name: "Dongdaemun Design Plaza (DDP)"
     photo: "destinations/seoul/06-ddp.jpg"
     korean: "동대문디자인플라자"
@@ -93,7 +93,7 @@ aFaire:
 
 conseils:
   duree: "4 à 5 jours"
-  ouLoger: "Jongno, Myeongdong ou Hongdae (voir la page Hôtels)"
+  ouLoger: "Dongdaemun, Jongno, Myeongdong ou Hongdae (voir la page Hôtels)"
   transport: "Métro et taxi"
   tips:
     - "Beaucoup de musées et palais ferment un jour par semaine (souvent le lundi ou le mardi) : vérifiez avant de partir."
@@ -112,7 +112,7 @@ suggestions:
     text: "L’une des plus anciennes tables de Séoul (1946), réputée pour ses nouilles froides de sarrasin et son bulgogi."
   - name: "Hadongkwan"
     korean: "하동관"
-    text: "Soupe de bœuf (gomtang) servie depuis 1939. Ouvert le midi seulement."
+    text: "Soupe de bœuf (gomtang) servie depuis 1939. Ouvert du matin jusqu’en milieu d’après-midi (vers 16 h), parfois moins quand tout est vendu."
   - name: "Jinokhwa Halmae Wonjo Dakhanmari"
     korean: "진옥화할매원조닭한마리"
     text: "Le poulet entier cuit à table dans son bouillon, dans une ruelle de Dongdaemun, depuis 1978."

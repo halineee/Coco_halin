@@ -23,7 +23,7 @@ codes:
     - title: "Une sonnette pour appeler"
       text: "Beaucoup de tables ont un petit bouton pour appeler le serveur. Sinon, un « Jeogiyo ! » (저기요) suffit."
     - title: "On paie à la caisse"
-      text: "En partant, à la caisse près de la porte. Les cartes bancaires sont acceptées partout."
+      text: "En partant, à la caisse près de la porte. Les cartes bancaires sont acceptées presque partout."
     - title: "Pas de pourboire"
       text: "Le pourboire ne se pratique pas en Corée."
     - title: "Deux portions minimum"
@@ -172,7 +172,7 @@ plats:
   superettes:
     title: "La culture des supérettes"
     photo: "food/superette.jpg"
-    text: "GS25, CU, 7-Eleven… On en trouve à chaque coin de rue, souvent ouvertes 24 h/24. On y achète des triangles de riz (samgak gimbap), des ramyeon à préparer sur place avec l’eau chaude en libre-service, des glaces et des boissons — et l’on s’installe aux petites tables devant la porte, les soirs d’été."
+    text: "GS25, CU, 7-Eleven… On en trouve à chaque coin de rue, souvent ouvertes 24 h/24. On y achète des triangles de riz (samgak kimbap), des ramyeon à préparer sur place avec l’eau chaude en libre-service, des glaces et des boissons — et l’on s’installe aux petites tables devant la porte, les soirs d’été."
 
 ete:
   title: "En plein mois d’août"

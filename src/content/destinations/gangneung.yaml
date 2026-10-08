@@ -1,10 +1,10 @@
 # Destination : Gangneung et Yangyang (côte Est, province de Gangwon)
 # Photos : src/assets/destinations/gangneung/
-order: 5
+order: 2
 name: "Gangneung"
 korean: "강릉 · 양양"
 tagline: "Plages, surf et café sur la côte Est"
-cardText: "La mer de l’Est à deux heures de Séoul : plages pour se baigner, surf à Yangyang et montagnes de Seorak."
+cardText: "La mer de l’Est à deux heures de Séoul : plages pour se baigner, surf à Yangyang et le parc du Seoraksan."
 intro: "En plein été, c’est là que les Séoulites vont se baigner : de longues plages de sable face à la mer de l’Est, une eau claire, des villages de surfeurs à Yangyang et les sommets du Seoraksan juste derrière. Gangneung est aussi la capitale coréenne du café."
 
 aVoir:
@@ -44,7 +44,7 @@ aGouter:
 aFaire:
   - name: "Se baigner"
     korean: "경포해변"
-    text: "Les plages surveillées de la côte Est ouvrent en général de début juillet à fin août : parfait autour du 14 août."
+    text: "Les plages surveillées de la côte Est ouvrent de début juillet à la mi-août ou un peu après (fermeture vers le 17 août en 2025, le 23 août en 2026) : venez plutôt juste avant le mariage, et vérifiez les dates de l’année."
   - name: "Prendre un cours de surf à Yangyang"
     korean: "양양 죽도해변"
     text: "Les vagues douces de Jukdo et des plages voisines sont idéales pour débuter, avec de nombreuses écoles de surf."
