@@ -1,0 +1,131 @@
+---
+// Questions pratiques (accordéon) sur la page d'accueil.
+// Le contenu se modifie dans src/content/site.yaml (rubrique « faq »).
+import site from '../content/site.yaml';
+import Icon from './Icon.astro';
+import { fr } from '../lib/text';
+import { url } from '../lib/url';
+
+const { faq, contact } = fr(site);
+const whatsappHref = contact?.whatsapp ? `https://wa.me/${contact.whatsapp.replace(/\D/g, '')}` : '';
+---
+
+<section class="faq container" aria-labelledby="faq-title">
+  <h2 id="faq-title" class="heading script" data-reveal>{faq.title}</h2>
+  <div class="list" data-reveal>
+    {
+      faq.items.map((item: any) => (
+        <details>
+          <summary>
+            <span>{item.q}</span>
+            <span class="plus" aria-hidden="true" />
+          </summary>
+          <div class="answer">
+            <p>{item.a}</p>
+            {item.lien && (
+              <a class="link" href={url(item.lien.href)}>
+                {item.lien.label} <Icon name="arrow-right" size={16} strokeWidth={1.4} />
+              </a>
+            )}
+            {item.whatsapp && whatsappHref && (
+              <a class="whatsapp" href={whatsappHref} target="_blank" rel="noopener noreferrer">
+                <Icon name="phone" size={18} strokeWidth={1.4} /> {contact.whatsappLabel}
+              </a>
+            )}
+          </div>
+        </details>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .faq {
+    padding-top: var(--space-2xl);
+  }
+
+  .heading {
+    font-size: var(--text-script-sm);
+    text-align: center;
+  }
+
+  .list {
+    margin-top: var(--space-md);
+    border-top: 1px solid var(--color-line);
+  }
+
+  details {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    min-height: 3.25rem;
+    padding: var(--space-sm) 0;
+    font-size: 1rem;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Petit « + » qui devient « − » à l'ouverture */
+  .plus {
+    position: relative;
+    flex: none;
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+
+  .plus::before,
+  .plus::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--color-ink);
+    transition: transform 0.3s var(--ease);
+  }
+
+  .plus::after {
+    transform: rotate(90deg);
+  }
+
+  details[open] .plus::after {
+    transform: rotate(0deg);
+  }
+
+  .answer {
+    padding: 0 0 var(--space-md);
+    font-size: var(--text-sm);
+    line-height: 1.7;
+    color: var(--color-ink-soft);
+  }
+
+  .link,
+  .whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: var(--space-xs);
+    color: var(--color-ink);
+    font-size: var(--text-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .whatsapp {
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: var(--color-card);
+  }
+</style>

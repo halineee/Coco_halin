@@ -1,0 +1,269 @@
+---
+// Formulaire de réponse (RSVP). Les réponses sont envoyées à un
+// formulaire Google : réglages dans src/content/site.yaml (« rsvp »).
+// Tant que l'adresse du formulaire Google est vide, rien ne s'affiche.
+import site from '../content/site.yaml';
+import { fr } from '../lib/text';
+
+const { rsvp } = fr(site);
+const gf = rsvp?.googleForm;
+const ready = Boolean(gf?.action && gf?.fields?.name);
+---
+
+{
+  ready && (
+    <section class="rsvp container" aria-labelledby="rsvp-title">
+      <h2 id="rsvp-title" class="heading script" data-reveal>
+        {rsvp.title}
+      </h2>
+      <p class="intro" data-reveal>
+        {rsvp.text}
+      </p>
+
+      <form class="form" data-rsvp data-action={gf.action} data-fields={JSON.stringify(gf.fields)} data-reveal>
+        <label class="field">
+          <span>Nom et prénom</span>
+          <input name="name" type="text" autocomplete="name" required />
+        </label>
+
+        <fieldset class="field">
+          <legend>Serez-vous présent·e ?</legend>
+          <div class="choices">
+            <label><input type="radio" name="attending" value="Oui" required /> <span>Oui, avec joie</span></label>
+            <label><input type="radio" name="attending" value="Non" /> <span>Non, hélas</span></label>
+          </div>
+        </fieldset>
+
+        <div class="if-yes">
+          <label class="field">
+            <span>Nombre de personnes (vous compris)</span>
+            <select name="guests">
+              {[1, 2, 3, 4, 5, 6].map((n) => (
+                <option value={String(n)}>{n}</option>
+              ))}
+            </select>
+          </label>
+
+          <fieldset class="field">
+            <legend>Et à l’after-party ?</legend>
+            <div class="choices">
+              <label><input type="radio" name="afterparty" value="Oui" /> <span>Oui</span></label>
+              <label><input type="radio" name="afterparty" value="Non" /> <span>Non</span></label>
+              <label><input type="radio" name="afterparty" value="Je ne sais pas encore" /> <span>Je ne sais pas encore</span></label>
+            </div>
+          </fieldset>
+
+          <label class="field">
+            <span>Allergies ou régime alimentaire</span>
+            <input name="diet" type="text" placeholder="Facultatif" />
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Un petit mot pour nous</span>
+          <textarea name="message" rows="3" placeholder="Facultatif" />
+        </label>
+
+        <button type="submit" class="submit">Envoyer ma réponse</button>
+        <p class="status" role="status" aria-live="polite" data-thanks={rsvp.thanks} data-error={rsvp.error} />
+      </form>
+    </section>
+  )
+}
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-rsvp]');
+  if (form) {
+    const fields = JSON.parse(form.dataset.fields || '{}') as Record<string, string>;
+    const status = form.querySelector<HTMLElement>('.status')!;
+    const ifYes = form.querySelector<HTMLElement>('.if-yes')!;
+
+    // Les questions « nombre de personnes », « after-party » et « allergies »
+    // ne s'affichent que si l'invité répond oui.
+    const toggle = () => {
+      const no = (form.elements.namedItem('attending') as RadioNodeList).value === 'Non';
+      ifYes.hidden = no;
+    };
+    form.addEventListener('change', toggle);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const body = new FormData();
+      const attending = data.get('attending');
+      for (const [key, entry] of Object.entries(fields)) {
+        if (!entry) continue;
+        if (attending === 'Non' && ['guests', 'afterparty', 'diet'].includes(key)) continue;
+        const value = data.get(key);
+        if (value) body.append(entry, String(value));
+      }
+      const button = form.querySelector('button')!;
+      button.disabled = true;
+      try {
+        // Google Forms n'autorise pas la lecture de la réponse : on envoie « à l'aveugle ».
+        await fetch(form.dataset.action!, { method: 'POST', mode: 'no-cors', body });
+        form.classList.add('sent');
+        status.textContent = status.dataset.thanks || '';
+      } catch {
+        status.textContent = status.dataset.error || '';
+        button.disabled = false;
+      }
+    });
+  }
+</script>
+
+<style>
+  .rsvp {
+    padding-top: var(--space-2xl);
+    text-align: center;
+  }
+
+  .heading {
+    font-size: var(--text-script-sm);
+  }
+
+  .intro {
+    margin-top: var(--space-xs);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+  }
+
+  .form {
+    display: grid;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+    padding: var(--space-lg) var(--space-md);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-card);
+    text-align: left;
+  }
+
+  .if-yes {
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  .if-yes[hidden] {
+    display: none;
+  }
+
+  .field {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: var(--text-sm);
+  }
+
+  .field > span,
+  legend {
+    padding: 0;
+    font-size: var(--text-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+
+  legend {
+    margin-bottom: 0.4rem;
+  }
+
+  input[type='text'],
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-sm);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font: inherit;
+    font-size: 1rem; /* évite le zoom automatique sur iPhone */
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  ::placeholder {
+    color: var(--color-ink-faint);
+  }
+
+  .choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .choices label {
+    position: relative;
+  }
+
+  .choices input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  .choices span {
+    display: inline-block;
+    padding: 0.55rem 1rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition:
+      background 0.2s,
+      color 0.2s;
+  }
+
+  .choices input:checked + span {
+    border-color: var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-card);
+  }
+
+  .choices input:focus-visible + span {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  .submit {
+    justify-self: center;
+    margin-top: var(--space-xs);
+    padding: 0.8rem 1.6rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--color-ink);
+    color: var(--color-card);
+    font: inherit;
+    font-size: var(--text-xs);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .submit:disabled {
+    opacity: 0.5;
+  }
+
+  .status {
+    text-align: center;
+    font-size: var(--text-sm);
+  }
+
+  .status:empty {
+    display: none;
+  }
+
+  /* Après l'envoi, on ne garde que le message de remerciement */
+  .sent > :not(.status) {
+    display: none;
+  }
+
+  .sent .status {
+    font-size: 1rem;
+  }
+</style>

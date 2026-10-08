@@ -17,6 +17,8 @@
 | Carnet de voyage 소개 문구 | `src/content/carnet.yaml` |
 | 도시 페이지 (볼거리, 먹거리, 할거리, 팁, 우리 추천 맛집) | `src/content/destinations/도시이름.yaml` + 사진은 `src/assets/destinations/` |
 | 먹거리 페이지 (À table !) | `src/content/a-table.yaml` |
+| 자주 묻는 질문(Questions pratiques), WhatsApp 번호 | `src/content/site.yaml` 의 `faq`, `contact` |
+| 참석 여부 폼(RSVP) | `src/content/site.yaml` 의 `rsvp` (아래 설명 참고) |
 | 메뉴 아이콘 그림 | `src/components/Icon.astro` |
 | Getting Married 타이틀, 하트라인, 꽃다발·편지, 마스킹테이프 | `src/assets/illustrations/` 안의 파일을 같은 이름으로 교체 |
 | 각 페이지 메인 제목 (Photos, Transports, Hôtels, Carnet de voyage) | `src/assets/illustrations/titres/` 안의 파일을 같은 이름으로 교체 |
@@ -26,6 +28,16 @@
 - 갤러리 사진은 **파일 이름 순서**(01.jpg, 02.jpg …)로 표시됩니다. 임시 사진은 지우고 내 사진을 넣으면 됩니다.
 - 장소·음식 사진은 위키미디어 공용의 자유 라이선스 사진입니다. 출처는 `src/content/credits.yaml` 과 사이트의 「Crédits photos」 페이지에 있습니다. 사진을 바꾸면 이 목록에서도 해당 줄을 지워 주세요.
 - 갤러리(Photos) 사진은 아직 임시 이미지(“photo à venir”)입니다.
+
+### 참석 여부(RSVP) 폼 연결하기
+
+답변은 구글 폼 → 구글 스프레드시트에 쌓입니다. (GitHub Pages는 서버가 없어서 GitHub에 직접 저장할 수 없어요.)
+
+1. [구글 폼](https://forms.google.com)에서 새 폼을 만들고, 아래 6개 질문을 **모두 단답형/장문형**으로 추가합니다 (필수 체크 X):
+   이름 · 참석 여부 · 인원 · 애프터파티 · 알레르기/식단 · 메시지
+2. 응답 탭 → 스프레드시트 연결
+3. 폼의 「보내기 → 링크」를 Claude에게 주면 `site.yaml` 의 `rsvp.googleForm` 을 채워 드립니다.
+   (`action` 이 비어 있으면 폼은 사이트에 표시되지 않습니다.)
 
 ### Feeling Passionate 폰트 사용하기
 

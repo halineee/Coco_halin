@@ -84,5 +84,63 @@ venue:
     - "Merci d’arriver 10 à 30 minutes avant le début de la cérémonie."
     - "La cérémonie dure environ une heure et sera suivie d’un buffet : soyez à l’heure pour ne rien manquer !"
 
+# ─────────────────────────────────────────────────────────────
+#  Contact WhatsApp : numéro au format international, sans « + »
+#  ni espaces (ex. "33612345678" pour 06 12 34 56 78 en France,
+#  "821012345678" pour un numéro coréen 010-1234-5678).
+#  Laissez vide pour masquer le bouton WhatsApp.
+# ─────────────────────────────────────────────────────────────
+contact:
+  whatsapp: ""
+  whatsappLabel: "Nous écrire sur WhatsApp"
+
+# ─────────────────────────────────────────────────────────────
+#  Questions pratiques (page d'accueil)
+#  q = la question, a = la réponse. « lien » est facultatif.
+# ─────────────────────────────────────────────────────────────
+faq:
+  title: "Questions pratiques"
+  items:
+    - q: "Que porter ?"
+      a: "Une tenue élégante mais légère, comme pour un cocktail : costume sans cravate, chemise, robe ou combinaison. Il fera très chaud dehors (souvent plus de 30 °C), mais la salle est climatisée : prévoyez une petite veste ou un châle. Le blanc est réservé à la mariée."
+    - q: "Comment se déroule la journée ?"
+      a: "La cérémonie commence à 17h30 et dure environ une heure. Elle est suivie d’un buffet sur place. Ensuite, nous prolongerons la soirée avec une after-party dans un restaurant ou un bar que nous réserverons pour l’occasion : le lieu vous sera communiqué plus tard."
+    - q: "Quand arriver en Corée ?"
+      a: "Avec la durée du vol (environ 13 à 14 h en direct) et le décalage horaire (+7 h), on arrive en général le lendemain de son départ de France : comptez un jour de plus. L’idéal est d’arriver un ou deux jours avant le mariage pour se remettre du décalage. Le lundi 16 août 2027 devrait être férié en Corée : le week-end sera très chargé, réservez tôt."
+    - q: "Faut-il un visa ?"
+      a: "Pas de visa pour un séjour touristique de moins de 90 jours avec un passeport français. Une autorisation en ligne (K-ETA) pourrait être demandée en 2027 : tous les détails sont dans le carnet de voyage."
+      lien:
+        label: "Le carnet de voyage"
+        href: "/carnet-de-voyage/"
+    - q: "Où dormir ?"
+      a: "Nous avons sélectionné des hôtels dans plusieurs quartiers. Pour le jour J, Dongdaemun est le plus pratique : la ligne 1 mène directement à Hoegi en une quinzaine de minutes."
+      lien:
+        label: "Nos hôtels"
+        href: "/hotels/"
+    - q: "Besoin d’aide pour réserver ?"
+      a: "Hôtel, train, taxi, restaurant… Si vous avez besoin d’un coup de main pour une réservation, écrivez-nous sur WhatsApp : nous vous aiderons avec plaisir."
+      whatsapp: true
+
+# ─────────────────────────────────────────────────────────────
+#  Réponse (RSVP) — formulaire de la page d'accueil
+#  Les réponses sont envoyées dans un formulaire Google (et donc
+#  dans un tableau Google Sheets). Tant que « action » est vide,
+#  le formulaire n'est pas affiché. Voir le README.
+# ─────────────────────────────────────────────────────────────
+rsvp:
+  title: "Serez-vous des nôtres ?"
+  text: "Merci de nous répondre dès que possible, cela nous aidera beaucoup pour l’organisation."
+  thanks: "Merci ! Votre réponse a bien été envoyée."
+  error: "Oups, l’envoi n’a pas fonctionné. Réessayez, ou écrivez-nous sur WhatsApp."
+  googleForm:
+    action: ""
+    fields:
+      name: ""
+      attending: ""
+      guests: ""
+      afterparty: ""
+      diet: ""
+      message: ""
+
 footer:
   signature: "Corentin & Halin · 14.08.2027 · Séoul"
