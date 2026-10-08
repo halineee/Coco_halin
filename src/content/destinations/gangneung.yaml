@@ -9,12 +9,14 @@ intro: "En plein été, c’est là que les Séoulites vont se baigner : de long
 
 aVoir:
   - name: "La plage de Gyeongpo"
+    photo: "destinations/gangneung/01-gyeongpo.jpg"
     korean: "경포해변"
     text: "La plus célèbre plage de la côte Est : près de deux kilomètres de sable fin, bordés de pins, avec le lac de Gyeongpo juste derrière."
   - name: "Anmok, la rue du café"
     korean: "안목해변 커피거리"
     text: "Une promenade en bord de mer alignée de cafés avec vue sur les vagues : Gangneung est la ville du café en Corée."
   - name: "Ojukheon"
+    photo: "destinations/gangneung/03-ojukheon.jpg"
     korean: "오죽헌"
     text: "Une maison traditionnelle entourée de bambous noirs, où sont nés l’artiste Shin Saimdang et le lettré Yulgok."
   - name: "Le temple de Naksansa"
@@ -43,6 +45,7 @@ aFaire:
     korean: "양양 죽도해변"
     text: "Les vagues douces de Jukdo et des plages voisines sont idéales pour débuter, avec de nombreuses écoles de surf."
   - name: "Le port de Jumunjin"
+    photo: "destinations/gangneung/05-jumunjin.jpg"
     korean: "주문진항"
     text: "Un port de pêche animé, avec son marché aux poissons et ses petits restaurants de fruits de mer."
 
