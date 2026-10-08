@@ -9,7 +9,7 @@ import { isTodo } from '../lib/text';
 
 interface Props {
   name: string;
-  neighborhood: string;
+  neighborhood?: string;
   image?: string;
   description?: string;
   price?: string;
@@ -20,17 +20,26 @@ const { name, neighborhood, image, description, price, transport, url } = Astro.
 
 const todo = isTodo(name);
 const photo = image ? getImage(image) : undefined;
-const Tag = url && !todo ? 'a' : 'article';
-const linkProps = Tag === 'a' ? { href: url, target: '_blank', rel: 'noopener noreferrer' } : {};
+// Sans lien fourni, on ouvre l'hôtel dans Google Maps
+const href = url || (todo ? '' : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name} Seoul`)}`);
+const Tag = href ? 'a' : 'article';
+const linkProps = Tag === 'a' ? { href, target: '_blank', rel: 'noopener noreferrer' } : {};
+const ctaLabel = url ? 'Voir l’hôtel' : 'Voir sur la carte';
 ---
 
 <Tag class:list={['hotel', { todo, link: Tag === 'a' }]} {...linkProps} data-reveal>
-  <div class="media">
-    {photo && <Image src={photo} alt="" widths={[400, 700, 1000]} sizes="(min-width: 56em) 30vw, (min-width: 40em) 45vw, 100vw" loading="lazy" />}
-    {price && <span class="price" aria-label={`Gamme de prix : ${price}`}>{price}</span>}
-  </div>
+  {
+    photo && (
+      <div class="media">
+        <Image src={photo} alt="" widths={[400, 700, 1000]} sizes="(min-width: 56em) 30vw, (min-width: 40em) 45vw, 100vw" loading="lazy" />
+      </div>
+    )
+  }
   <div class="body">
-    <p class="eyebrow">{neighborhood}</p>
+    <div class="top">
+      {neighborhood ? <p class="eyebrow">{neighborhood}</p> : <span />}
+      {price && <span class="price" aria-label={`Gamme de prix : ${price}`}>{price}</span>}
+    </div>
     <h3>{todo ? 'Hôtel à venir' : name}</h3>
     {description && !isTodo(description) && <p class="description">{description}</p>}
     {
@@ -43,7 +52,7 @@ const linkProps = Tag === 'a' ? { href: url, target: '_blank', rel: 'noopener no
     {
       Tag === 'a' && (
         <span class="cta">
-          Voir l’hôtel <Icon name="external" size={14} strokeWidth={1.6} />
+          {ctaLabel} <Icon name="external" size={14} strokeWidth={1.6} />
         </span>
       )
     }
@@ -80,13 +89,18 @@ const linkProps = Tag === 'a' ? { href: url, target: '_blank', rel: 'noopener no
     transition: transform 1.2s var(--ease);
   }
 
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xs);
+  }
+
   .price {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    padding: 0.25rem 0.6rem;
+    flex: none;
+    padding: 0.2rem 0.6rem;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--color-card) 90%, transparent);
+    background: var(--color-paper-deep);
     font-size: var(--text-xs);
     letter-spacing: 0.12em;
   }

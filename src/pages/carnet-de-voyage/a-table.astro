@@ -65,7 +65,23 @@ const sections = [
   <!-- Plats -->
   <section id="plats" class="block container container--wide">
     <SectionHeading eyebrow="02" title={c.plats.title} />
-    <div class="list"><PlaceList items={c.plats.items} /></div>
+    <p class="lead" data-reveal>{c.plats.text}</p>
+    <nav class="cat-nav" aria-label="Familles de plats">
+      {c.plats.categories.map((cat: any, i: number) => <a href={`#plats-${i}`}>{cat.title}</a>)}
+    </nav>
+    {
+      c.plats.categories.map((cat: any, i: number) => (
+        <div class="category" id={`plats-${i}`}>
+          <h3 class="cat-title script" data-reveal>{cat.title}</h3>
+          <div class="list"><PlaceList items={cat.items} /></div>
+        </div>
+      ))
+    }
+
+    <div class="superettes" data-reveal>
+      <h3 class="script">{c.plats.superettes.title}</h3>
+      <p>{c.plats.superettes.text}</p>
+    </div>
 
     <div class="summer" data-reveal>
       <h3 class="script">{c.ete.title}</h3>
@@ -262,6 +278,61 @@ const sections = [
     font-size: var(--text-sm);
     line-height: 1.6;
     color: var(--color-ink-soft);
+  }
+
+  /* Familles de plats */
+  .cat-nav {
+    display: flex;
+    gap: 0.4rem;
+    margin: var(--space-md) calc(-1 * var(--gutter)) 0;
+    padding: 0 var(--gutter);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .cat-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cat-nav a {
+    flex: none;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    background: var(--color-paper-deep);
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .category {
+    margin-top: var(--space-lg);
+    scroll-margin-top: calc(var(--header-height) + 1rem);
+  }
+
+  .cat-title {
+    font-size: var(--text-script-sm);
+  }
+
+  .category .list {
+    margin-top: var(--space-xs);
+  }
+
+  .superettes {
+    margin-top: var(--space-xl);
+    padding: var(--space-md);
+    border: 1px dashed var(--color-ink-faint);
+    border-radius: var(--radius-md);
+  }
+
+  .superettes h3 {
+    font-size: var(--text-script-sm);
+  }
+
+  .superettes p {
+    margin-top: var(--space-xs);
+    font-size: var(--text-sm);
+    line-height: 1.65;
   }
 
   /* Été */

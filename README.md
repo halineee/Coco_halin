@@ -13,7 +13,7 @@
 | 갤러리 ‘En attendant le grand jour…’ 사진 | `src/assets/photos/en-attendant/` 폴더에 사진 넣기 |
 | 갤러리 ‘Une histoire en images’ 사진 | `src/assets/photos/histoire/` 폴더에 사진 넣기 |
 | 갤러리 제목·문구, 사진 설명, 크게 보일 사진 | `src/content/photos.yaml` |
-| 호텔 (동네 설명, 호텔 카드) | `src/content/hotels.yaml` + 사진은 `src/assets/hotels/` |
+| 호텔 (동네 설명, 호텔 카드) | `src/content/hotels.yaml` (사진은 선택, `src/assets/hotels/`) |
 | Carnet de voyage 소개 문구 | `src/content/carnet.yaml` |
 | 도시 페이지 (볼거리, 먹거리, 할거리, 팁, 우리 추천 맛집) | `src/content/destinations/도시이름.yaml` + 사진은 `src/assets/destinations/` |
 | 먹거리 페이지 (À table !) | `src/content/a-table.yaml` |
