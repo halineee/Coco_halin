@@ -3,7 +3,6 @@ name: "Gyeongju"
 korean: "경주"
 tagline: "Le musée à ciel ouvert"
 cardText: "L’ancienne capitale du royaume de Silla, entre tumulus, temples et étangs."
-hero: "destinations/gyeongju.jpg"
 intro: "Capitale du royaume de Silla pendant près de mille ans, Gyeongju est une ville paisible où l’on croise des tombes royales en forme de collines au détour d’une rue."
 
 aVoir:
@@ -40,6 +39,15 @@ conseils:
   transport: "KTX jusqu’à Singyeongju (≈ 2 h depuis Séoul), puis bus ou taxi"
   tips:
     - "Facile à combiner avec Busan, à environ une heure de route."
+
+# Nos suggestions (adresses connues — vérifiez horaires et jours de fermeture)
+suggestions:
+  - name: "Hwangnam-ppang, la boutique historique"
+    korean: "황남빵"
+    text: "La maison qui a créé le pain de Gyeongju en 1939. À manger dans les jours qui suivent."
+  - name: "La rue du ssambap"
+    korean: "쌈밥거리"
+    text: "Près des tumulus de Daereungwon, une rue entière de restaurants de ssambap."
 
 adresses:
   - "À compléter : nos adresses à Gyeongju"

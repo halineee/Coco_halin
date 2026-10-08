@@ -1,4 +1,6 @@
 # Destination : Séoul
+# Photos : déposez-les dans src/assets/destinations/seoul/ (01.jpg, 02.jpg…).
+# La première sert aussi de vignette sur la carte du carnet.
 # « adresses » : vos adresses personnelles (restaurants, cafés…).
 # Une ligne commençant par « À compléter » s'affiche comme provisoire.
 order: 1
@@ -6,7 +8,6 @@ name: "Séoul"
 korean: "서울"
 tagline: "Palais, marchés et gratte-ciel"
 cardText: "La capitale, entre palais royaux, ruelles de hanok et quartiers branchés."
-hero: "destinations/seoul.jpg"
 intro: "Une ville immense où les palais du XIVe siècle côtoient les tours de verre, où l’on passe d’un marché fumant à une galerie d’art en quelques stations de métro."
 
 aVoir:
@@ -22,6 +23,21 @@ aVoir:
   - name: "Namsan et la N Seoul Tower"
     korean: "남산"
     text: "La plus belle vue sur la ville, idéalement au coucher du soleil."
+  - name: "Changdeokgung et le Jardin secret"
+    korean: "창덕궁 · 후원"
+    text: "Le plus harmonieux des palais, inscrit à l’UNESCO, et son jardin royal à visiter en visite guidée."
+  - name: "Dongdaemun Design Plaza (DDP)"
+    korean: "동대문디자인플라자"
+    text: "L’immense vaisseau d’aluminium imaginé par Zaha Hadid, entre expositions, design et marchés de nuit."
+  - name: "Le Musée national de Corée"
+    korean: "국립중앙박물관"
+    text: "Toute l’histoire du pays, des royaumes anciens à nos jours. Collections permanentes gratuites."
+  - name: "Le MMCA Séoul"
+    korean: "국립현대미술관 서울"
+    text: "Le musée national d’art moderne et contemporain, à deux pas du palais Gyeongbokgung."
+  - name: "Leeum, musée d’art Samsung"
+    korean: "리움미술관"
+    text: "Céramiques anciennes et art contemporain dans des bâtiments signés Mario Botta, Jean Nouvel et Rem Koolhaas, à Hannam-dong."
   - name: "Le fleuve Han"
     korean: "한강"
     text: "Pique-nique, vélo et soirées au bord de l’eau, comme les Séoulites."
@@ -54,6 +70,27 @@ conseils:
   tips:
     - "Beaucoup de musées et palais ferment un jour par semaine (souvent le lundi ou le mardi) : vérifiez avant de partir."
     - "En août, il fait chaud et humide : prévoyez les visites en extérieur le matin."
+
+# Nos suggestions (adresses connues — vérifiez horaires et jours de fermeture)
+suggestions:
+  - name: "Tosokchon Samgyetang"
+    korean: "토속촌 삼계탕"
+    text: "Le samgyetang le plus célèbre de Séoul, servi dans des maisons traditionnelles près de Gyeongbokgung. Venez tôt : la file d’attente est légendaire."
+  - name: "Myeongdong Kyoja"
+    korean: "명동교자"
+    text: "Nouilles coupées au couteau (kalguksu) et raviolis, depuis 1966 en plein Myeongdong."
+  - name: "Woo Lae Oak"
+    korean: "우래옥"
+    text: "L’une des plus anciennes tables de Séoul (1946), réputée pour ses nouilles froides de sarrasin et son bulgogi."
+  - name: "Hadongkwan"
+    korean: "하동관"
+    text: "Soupe de bœuf (gomtang) servie depuis 1939. Ouvert le midi seulement."
+  - name: "Jinokhwa Halmae Wonjo Dakhanmari"
+    korean: "진옥화할매원조닭한마리"
+    text: "Le poulet entier cuit à table dans son bouillon, dans une ruelle de Dongdaemun, depuis 1978."
+  - name: "Le marché de Gwangjang"
+    korean: "광장시장"
+    text: "Pour les galettes de haricot mungo, le yukhoe et l’ambiance des stands."
 
 adresses:
   - "À compléter : nos restaurants préférés"

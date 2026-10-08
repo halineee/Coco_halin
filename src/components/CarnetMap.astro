@@ -1,0 +1,211 @@
+---
+// Carte « étiquettes » du carnet : la Corée au centre, et chaque ville
+// reliée par un trait à une vignette ronde (photo + nom), comme les
+// légendes d'un graphique. Tout est cliquable.
+import { Image } from 'astro:assets';
+import map from '../lib/korea-map.json';
+import { destinations } from '../lib/destinations';
+import { getImage } from '../lib/images';
+import { url } from '../lib/url';
+
+// Repère de la scène : 100 unités de large, H de haut.
+const H = 106;
+const MAP_X = 25; // position et taille de la carte dans la scène
+const MAP_Y = 7;
+const MAP_W = 50;
+const k = MAP_W / map.width;
+const toStage = ([x, y]: number[]) => [MAP_X + x * k, MAP_Y + y * k];
+
+// Emplacement des vignettes (centre du cercle), à gauche ou à droite
+const R = 8; // rayon du cercle
+const slots: Record<string, { side: 'left' | 'right'; y: number }> = {
+  seoul: { side: 'left', y: 15 },
+  jeonju: { side: 'left', y: 50 },
+  jeju: { side: 'left', y: 86 },
+  gyeongju: { side: 'right', y: 34 },
+  busan: { side: 'right', y: 68 },
+};
+
+const items = destinations
+  .filter((d) => slots[d.slug] && (map.cities as Record<string, number[]>)[d.slug])
+  .map((d) => {
+    const [dx, dy] = toStage((map.cities as Record<string, number[]>)[d.slug]);
+    const { side, y } = slots[d.slug];
+    const cx = side === 'left' ? 12 : 88;
+    const endX = side === 'left' ? cx + R + 1.2 : cx - R - 1.2;
+    // coude à environ 45° puis trait horizontal jusqu'à la vignette
+    const run = Math.abs(y - dy);
+    let ex = side === 'left' ? dx - run : dx + run;
+    ex = side === 'left' ? Math.max(ex, endX + 2) : Math.min(ex, endX - 2);
+    const path = `M${dx.toFixed(2)} ${dy.toFixed(2)} L${ex.toFixed(2)} ${y} L${endX} ${y}`;
+    const photo = d.photos[0] ? getImage(d.photos[0]) : undefined;
+    return { d, dx, dy, cx, cy: y, side, path, photo };
+  });
+
+const waves = [
+  'M80 10 q1.5 -1.4 3 0 t3 0 t3 0',
+  'M84 14 q1.5 -1.4 3 0 t3 0',
+  'M48 84 q1.5 -1.4 3 0 t3 0 t3 0',
+];
+---
+
+<div class="carnet-map" style={`--h: ${H}`}>
+  <svg class="lines" viewBox={`0 0 100 ${H}`} aria-hidden="true">
+    {waves.map((w) => <path class="wave" d={w} />)}
+    <g transform={`translate(${MAP_X} ${MAP_Y}) scale(${k})`}>
+      <path class="land-shadow" d={map.d} transform="translate(7 9)" />
+      <path class="land" d={map.d} />
+    </g>
+    {items.map((it) => <path class="leader" d={it.path} />)}
+    {
+      items.map((it) =>
+        it.d.slug === 'seoul' ? (
+          <>
+            <path
+              class="heart"
+              transform={`translate(${it.dx} ${it.dy}) scale(0.5)`}
+              d="M0 2.6c-2.6-1.8-3.6-3-3.6-4.2a1.8 1.8 0 0 1 3.6-.4 1.8 1.8 0 0 1 3.6.4c0 1.2-1 2.4-3.6 4.2z"
+            />
+            <text class="wedding" x={it.dx + 2.6} y={it.dy + 0.9}>
+              le mariage
+            </text>
+          </>
+        ) : (
+          <circle class="dot" cx={it.dx} cy={it.dy} r="1.2" />
+        ),
+      )
+    }
+  </svg>
+
+  {
+    items.map((it) => (
+      <a
+        class:list={['pin', it.side]}
+        href={url(`/carnet-de-voyage/${it.d.slug}/`)}
+        style={`left: ${it.cx}%; top: ${(it.cy / H) * 100}%;`}
+      >
+        <span class="photo">
+          {it.photo && <Image src={it.photo} alt="" widths={[160, 320]} sizes="120px" loading="lazy" />}
+        </span>
+        <span class="name script">{it.d.name}</span>
+        <span class="korean" lang="ko">
+          {it.d.korean}
+        </span>
+      </a>
+    ))
+  }
+</div>
+
+<style>
+  .carnet-map {
+    position: relative;
+    width: 100%;
+    max-width: 36rem;
+    margin-inline: auto;
+    aspect-ratio: 100 / var(--h);
+    container-type: inline-size;
+  }
+
+  .lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .land {
+    fill: var(--color-card);
+    stroke: var(--color-ink);
+    stroke-width: 2.6;
+    stroke-linejoin: round;
+  }
+
+  .land-shadow {
+    fill: var(--color-line);
+    opacity: 0.7;
+  }
+
+  .wave {
+    fill: none;
+    stroke: var(--color-ink-faint);
+    stroke-width: 0.35;
+    stroke-linecap: round;
+  }
+
+  .leader {
+    fill: none;
+    stroke: var(--color-ink-soft);
+    stroke-width: 0.25;
+    stroke-dasharray: 0.9 0.7;
+  }
+
+  .dot {
+    fill: var(--color-ink);
+    stroke: var(--color-card);
+    stroke-width: 0.5;
+  }
+
+  .heart {
+    fill: var(--color-ink);
+    stroke: var(--color-card);
+    stroke-width: 0.8;
+  }
+
+  .wedding {
+    font-family: var(--font-sans);
+    font-size: 2.3px;
+    letter-spacing: 0.06em;
+    fill: var(--color-ink-soft);
+  }
+
+  /* Vignettes */
+  .pin {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 26cqi;
+    transform: translate(-50%, -8cqi);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .photo {
+    display: block;
+    width: 16cqi;
+    height: 16cqi;
+    overflow: hidden;
+    border: 0.6cqi solid var(--color-card);
+    border-radius: 50%;
+    background: var(--color-paper-deep);
+    box-shadow: 0 0.8cqi 2.4cqi -1cqi rgb(60 58 70 / 0.35);
+    transition: transform 0.35s var(--ease);
+  }
+
+  .photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .name {
+    margin-top: 1.2cqi;
+    font-size: max(1.15rem, 5.4cqi);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .korean {
+    margin-top: 0.6cqi;
+    font-size: max(0.625rem, 2.6cqi);
+    letter-spacing: 0.12em;
+    color: var(--color-ink-soft);
+  }
+
+  @media (hover: hover) {
+    .pin:hover .photo {
+      transform: scale(1.06) rotate(-3deg);
+    }
+  }
+</style>

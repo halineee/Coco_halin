@@ -3,7 +3,6 @@ name: "Jeju"
 korean: "제주"
 tagline: "L’île volcanique"
 cardText: "Volcans, plages, champs de mandariniers et sentiers le long de la mer."
-hero: "destinations/jeju.jpg"
 intro: "Au sud de la péninsule, l’île de Jeju est née des volcans : falaises de basalte, plages turquoise, cratères et le mont Hallasan, plus haut sommet du pays."
 
 aVoir:
@@ -43,6 +42,18 @@ conseils:
   transport: "Avion depuis Gimpo (≈ 1 h 10), puis voiture de location ou taxi"
   tips:
     - "Les transports en commun sont limités : louer une voiture est le plus simple (permis international nécessaire)."
+
+# Nos suggestions (adresses connues — vérifiez horaires et jours de fermeture)
+suggestions:
+  - name: "Donsadon"
+    korean: "돈사돈"
+    text: "Porc noir grillé au charbon de bois, très apprécié des habitants."
+  - name: "Myeongjin Jeonbok"
+    korean: "명진전복"
+    text: "Spécialiste de l’ormeau : riz en marmite de pierre, ormeaux grillés ou en bouillie de riz."
+  - name: "Le marché de Dongmun"
+    korean: "동문시장"
+    text: "Le grand marché de Jeju-si : agrumes, poissons et street food, avec un marché de nuit."
 
 adresses:
   - "À compléter : nos adresses à Jeju"

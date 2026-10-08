@@ -29,6 +29,7 @@ const cities = destinations
 
 <figure class:list={['korea-map', className]}>
   <svg viewBox={`-10 -10 ${map.width + 20} ${map.height + 20}`} role="group" aria-label="Carte de la Corée du Sud">
+    <path class="land-shadow" d={map.d} transform="translate(7 9)"></path>
     <path class="land" d={map.d}></path>
     {
       cities.map((c) => {
@@ -67,10 +68,15 @@ const cities = destinations
   }
 
   .land {
-    fill: var(--color-paper-deep);
-    stroke: var(--color-ink-soft);
-    stroke-width: 0.9;
+    fill: var(--color-card);
+    stroke: var(--color-ink);
+    stroke-width: 2.4;
     stroke-linejoin: round;
+  }
+
+  .land-shadow {
+    fill: var(--color-line);
+    opacity: 0.7;
   }
 
   .city {

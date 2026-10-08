@@ -3,104 +3,213 @@ import titleArt from '../../assets/illustrations/titres/carnet-de-voyage.svg';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageTitle from '../../components/PageTitle.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
-import KoreaMap from '../../components/KoreaMap.astro';
+import CarnetMap from '../../components/CarnetMap.astro';
 import DestinationCard from '../../components/DestinationCard.astro';
+import Icon from '../../components/Icon.astro';
 import rawContent from '../../content/carnet.yaml';
 import rawFood from '../../content/a-table.yaml';
-import { destinations } from '../../lib/destinations';
 import { fr } from '../../lib/text';
 import { url } from '../../lib/url';
 
 const content = fr(rawContent);
 const food = fr(rawFood);
+const bref = content.bref;
 ---
 
 <BaseLayout title={content.pageTitle} description={content.intro}>
   <PageTitle title={content.pageTitle} art={titleArt} intro={content.intro} />
 
-  <div class="layout container container--wide">
-    <div class="map-col" data-reveal>
-      <KoreaMap />
-      <p class="hint">{content.mapHint}</p>
+  <section class="map-block container container--wide" aria-label="Carte des destinations">
+    <div data-reveal>
+      <CarnetMap />
+    </div>
+    <p class="hint">{content.mapHint}</p>
+  </section>
+
+  <section class="block container container--wide">
+    <SectionHeading title={content.foodTitle} />
+    <div class="food">
+      <DestinationCard
+        href={url('/carnet-de-voyage/a-table/')}
+        label={food.tagline}
+        name={food.title}
+        korean={food.korean}
+        text={food.cardText}
+        image={food.hero}
+      />
+    </div>
+  </section>
+
+  <section class="block container container--wide" aria-labelledby="bref">
+    <SectionHeading id="bref" title={bref.title} text={bref.text} />
+    <div class="facts">
+      {
+        bref.items.map((item: any) => (
+          <div class="fact" data-reveal>
+            <span class="fact-icon">
+              <Icon name={item.icon} size={26} strokeWidth={1.2} />
+            </span>
+            <div>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </div>
+          </div>
+        ))
+      }
     </div>
 
-    <div class="cards-col">
-      <SectionHeading title={content.destinationsTitle} />
-      <div class="cards">
+    <div class="culture" data-reveal>
+      <h3 class="script">{bref.culture.title}</h3>
+      <ul>
+        {bref.culture.items.map((line: string) => <li>{line}</li>)}
+      </ul>
+    </div>
+
+    <div class="words" data-reveal>
+      <h3 class="script">{bref.mots.title}</h3>
+      <dl>
         {
-          destinations.map((d, i) => (
-            <DestinationCard
-              href={url(`/carnet-de-voyage/${d.slug}/`)}
-              index={i + 1}
-              name={d.name}
-              korean={d.korean}
-              text={d.cardText}
-              image={d.hero}
-            />
+          bref.mots.items.map((w: any) => (
+            <div>
+              <dt>{w.fr}</dt>
+              <dd>
+                <span class="ko" lang="ko">
+                  {w.ko}
+                </span>
+                <span class="say">{w.say}</span>
+              </dd>
+            </div>
           ))
         }
-      </div>
-
-      <div class="food">
-        <SectionHeading title={content.foodTitle} />
-        <DestinationCard
-          href={url('/carnet-de-voyage/a-table/')}
-          label={food.tagline}
-          name={food.title}
-          korean={food.korean}
-          text={food.cardText}
-          image={food.hero}
-        />
-      </div>
+      </dl>
     </div>
-  </div>
+  </section>
 </BaseLayout>
 
 <style>
-  .layout {
-    display: grid;
-    gap: var(--space-xl);
-  }
-
-  .map-col {
-    max-width: 22rem;
-    width: 100%;
-    margin-inline: auto;
+  .map-block {
+    padding-top: var(--space-md);
   }
 
   .hint {
-    margin-top: var(--space-sm);
+    margin-top: var(--space-md);
     text-align: center;
     font-size: var(--text-xs);
     color: var(--color-ink-soft);
   }
 
-  .cards {
-    display: grid;
-    gap: var(--space-md);
-    margin-top: var(--space-md);
+  .block {
+    padding-top: var(--space-2xl);
   }
 
   .food {
-    margin-top: var(--space-xl);
-  }
-
-  .food :global(.destination-card) {
+    max-width: 34rem;
     margin-top: var(--space-md);
   }
 
-  @media (min-width: 56em) {
-    .layout {
-      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-      align-items: start;
-    }
+  .facts {
+    display: grid;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+  }
 
-    .map-col {
-      position: sticky;
-      top: calc(var(--header-height) + 1.5rem);
-    }
+  .fact {
+    display: flex;
+    gap: var(--space-sm);
+    padding: var(--space-md);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-card);
+  }
 
-    .cards {
+  .fact-icon {
+    flex: none;
+    color: var(--color-ink-soft);
+  }
+
+  .fact h3 {
+    font-size: 1.05rem;
+    font-weight: 400;
+  }
+
+  .fact p {
+    margin-top: 0.25rem;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+  }
+
+  .culture,
+  .words {
+    margin-top: var(--space-xl);
+  }
+
+  .culture h3,
+  .words h3 {
+    font-size: var(--text-script-sm);
+  }
+
+  .culture ul {
+    display: grid;
+    gap: 0.5rem;
+    margin: var(--space-sm) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+  }
+
+  .culture li {
+    position: relative;
+    padding-left: 1.1rem;
+    line-height: 1.6;
+  }
+
+  .culture li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.8em;
+    width: 0.55rem;
+    height: 1px;
+    background: var(--color-ink-soft);
+  }
+
+  .words dl {
+    margin: var(--space-sm) 0 0;
+  }
+
+  .words dl div {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-sm);
+    align-items: baseline;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .words dt {
+    font-size: var(--text-sm);
+  }
+
+  .words dd {
+    margin: 0;
+    text-align: right;
+  }
+
+  .ko {
+    display: block;
+    font-size: 1.05rem;
+  }
+
+  .say {
+    display: block;
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    color: var(--color-ink-soft);
+  }
+
+  @media (min-width: 48em) {
+    .facts {
       grid-template-columns: repeat(2, 1fr);
     }
   }

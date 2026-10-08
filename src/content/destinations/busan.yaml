@@ -3,7 +3,6 @@ name: "Busan"
 korean: "부산"
 tagline: "La mer, les marchés et les collines"
 cardText: "La grande ville portuaire du sud : plages, poissons frais et villages colorés."
-hero: "destinations/busan.jpg"
 intro: "Deuxième ville du pays, Busan vit au rythme de la mer : longues plages, marchés aux poissons, temples face aux vagues et maisons colorées accrochées aux collines."
 
 aVoir:
@@ -48,6 +47,18 @@ conseils:
   transport: "KTX depuis Séoul (≈ 2 h 30), puis métro"
   tips:
     - "Les plages sont très fréquentées en août : allez-y tôt le matin."
+
+# Nos suggestions (adresses connues — vérifiez horaires et jours de fermeture)
+suggestions:
+  - name: "Le marché de Jagalchi"
+    korean: "자갈치시장"
+    text: "Choisissez votre poisson au rez-de-chaussée, il est préparé à l’étage."
+  - name: "Geukdong Dwaeji Gukbap"
+    korean: "극동돼지국밥"
+    text: "Une soupe de porc au bouillon plus clair, près de Haeundae. Prévoyez un peu d’attente."
+  - name: "Subyeon Choego Dwaeji Gukbap"
+    korean: "수변최고돼지국밥"
+    text: "Une adresse très populaire pour la soupe de porc typique de Busan."
 
 adresses:
   - "À compléter : nos adresses à Busan"

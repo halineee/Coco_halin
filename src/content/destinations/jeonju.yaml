@@ -3,7 +3,6 @@ name: "Jeonju"
 korean: "전주"
 tagline: "La capitale de la gastronomie"
 cardText: "Un grand village de hanok et la meilleure table du pays, berceau du bibimbap."
-hero: "destinations/jeonju.jpg"
 intro: "Réputée pour être la ville où l’on mange le mieux en Corée, Jeonju abrite aussi l’un des plus grands quartiers de maisons traditionnelles du pays."
 
 aVoir:
@@ -40,6 +39,18 @@ conseils:
   transport: "KTX (≈ 1 h 30 à 2 h) ou bus express depuis Séoul"
   tips:
     - "Le village est très fréquenté le week-end : préférez un jour de semaine."
+
+# Nos suggestions (adresses connues — vérifiez horaires et jours de fermeture)
+suggestions:
+  - name: "Hangukjip"
+    korean: "한국집"
+    text: "Le bibimbap de Jeonju servi dans un bol de laiton depuis 1952."
+  - name: "Gajok Hoegwan"
+    korean: "가족회관"
+    text: "Une maison familiale (depuis 1973) qui ne sert que deux plats : le bibimbap et le bibimbap au bœuf cru."
+  - name: "Sambaekjip"
+    korean: "삼백집"
+    text: "La référence pour la soupe de pousses de soja (kongnamul gukbap), parfaite au petit-déjeuner."
 
 adresses:
   - "À compléter : nos adresses à Jeonju"
