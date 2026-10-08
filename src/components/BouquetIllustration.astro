@@ -7,99 +7,153 @@ interface Props {
 }
 const { class: className } = Astro.props;
 
-// Rose stylisée : contour ondulé + spirale intérieure
+const pt = (cx: number, cy: number, r: number, a: number) =>
+  `${(cx + r * Math.cos(a)).toFixed(1)} ${(cy + r * Math.sin(a)).toFixed(1)}`;
+
+// Rose dessinée au trait : un petit cœur enroulé, puis des pétales en
+// forme de coupe qui se chevauchent (rayons légèrement irréguliers).
 function rose(cx: number, cy: number, r: number, rot = 0) {
-  const outer: string[] = [];
-  const steps = 60;
-  for (let i = 0; i <= steps; i++) {
-    const a = (i / steps) * Math.PI * 2 + rot;
-    const rr = r * (0.92 + 0.08 * Math.cos(a * 5));
-    outer.push(`${i === 0 ? 'M' : 'L'}${(cx + rr * Math.cos(a)).toFixed(1)} ${(cy + rr * Math.sin(a)).toFixed(1)}`);
+  const paths: string[] = [];
+  const jitter = (i: number) => 1 + 0.07 * Math.sin(i * 12.9898 + rot * 7.1);
+
+  // cœur : deux petites boucles
+  paths.push(`M${pt(cx, cy, r * 0.1, rot)} Q${pt(cx, cy, r * 0.32, rot + 1.6)} ${pt(cx, cy, r * 0.26, rot + 3.3)} Q${pt(cx, cy, r * 0.3, rot + 4.6)} ${pt(cx, cy, r * 0.2, rot + 5.6)}`);
+  paths.push(`M${pt(cx, cy, r * 0.34, rot + 0.4)} Q${pt(cx, cy, r * 0.5, rot + 1.9)} ${pt(cx, cy, r * 0.4, rot + 3.6)}`);
+
+  const rings = [
+    { radius: 0.62, count: 3, span: 2.5, tuck: 0.7, offset: 2.2 },
+    { radius: 0.84, count: 4, span: 2.0, tuck: 0.74, offset: 0.5 },
+    { radius: 1, count: 5, span: 1.6, tuck: 0.8, offset: 1.4 },
+  ];
+  let i = 0;
+  for (const ring of rings) {
+    for (let k = 0; k < ring.count; k++) {
+      const a0 = rot + ring.offset + (k / ring.count) * Math.PI * 2;
+      const a1 = a0 + ring.span;
+      const R = r * ring.radius * jitter(i++);
+      const c1 = a0 + ring.span * 0.25;
+      const c2 = a0 + ring.span * 0.75;
+      paths.push(
+        `M${pt(cx, cy, R * ring.tuck, a0)} C${pt(cx, cy, R * 1.12, c1)} ${pt(cx, cy, R * 1.12, c2)} ${pt(cx, cy, R * ring.tuck, a1)}`,
+      );
+    }
   }
-  const spiral: string[] = [];
-  const turns = 2.6;
-  const n = 70;
-  for (let i = 0; i <= n; i++) {
-    const t = i / n;
-    const a = t * turns * Math.PI * 2 + rot;
-    const rr = r * 0.12 + r * 0.66 * t;
-    spiral.push(`${i === 0 ? 'M' : 'L'}${(cx + rr * Math.cos(a)).toFixed(1)} ${(cy + rr * Math.sin(a)).toFixed(1)}`);
-  }
-  return { outer: outer.join(' ') + 'Z', spiral: spiral.join(' ') };
+  return paths;
 }
 
-// Feuille en amande avec nervure
-function leaf(x: number, y: number, len: number, angle: number) {
-  const rad = (angle * Math.PI) / 180;
-  const ex = x + len * Math.cos(rad);
-  const ey = y + len * Math.sin(rad);
-  const nx = -Math.sin(rad) * len * 0.32;
-  const ny = Math.cos(rad) * len * 0.32;
-  const mx = (x + ex) / 2;
-  const my = (y + ey) / 2;
+// Feuille légèrement courbée avec nervure
+function leaf(x: number, y: number, len: number, angleDeg: number, bend = 0.12) {
+  const a = (angleDeg * Math.PI) / 180;
+  const ex = x + len * Math.cos(a);
+  const ey = y + len * Math.sin(a);
+  const nx = -Math.sin(a);
+  const ny = Math.cos(a);
+  const w = len * 0.3;
+  const b = len * bend;
+  const mx = (x + ex) / 2 + nx * b;
+  const my = (y + ey) / 2 + ny * b;
+  const f = (v: number) => v.toFixed(1);
+  return [
+    `M${x} ${y} Q${f(mx + nx * w)} ${f(my + ny * w)} ${f(ex)} ${f(ey)} Q${f(mx - nx * w * 0.6)} ${f(my - ny * w * 0.6)} ${x} ${y}Z`,
+    `M${x} ${y} Q${f(mx + nx * w * 0.15)} ${f(my + ny * w * 0.15)} ${f(x + (ex - x) * 0.82)} ${f(y + (ey - y) * 0.82)}`,
+  ];
+}
+
+// Petites fleurs « gypsophile » : grappe de minuscules cercles
+function sprig(x: number, y: number, tx: number, ty: number) {
   return {
-    shape: `M${x} ${y} Q${(mx + nx).toFixed(1)} ${(my + ny).toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)} Q${(mx - nx).toFixed(1)} ${(my - ny).toFixed(1)} ${x} ${y}Z`,
-    rib: `M${x} ${y} L${((x + ex * 2) / 3).toFixed(1)} ${((y + ey * 2) / 3).toFixed(1)}`,
+    stem: `M${x} ${y} Q${(x + tx) / 2 + 4} ${(y + ty) / 2} ${tx} ${ty}`,
+    dots: [
+      [tx, ty],
+      [tx - 4, ty + 2],
+      [tx + 3, ty + 3.5],
+      [tx - 1, ty - 4],
+    ],
   };
 }
 
-const roses = [rose(52, 52, 15, 0.4), rose(82, 40, 12, 1.4), rose(70, 74, 13, 2.2), rose(33, 80, 9, 0.9)];
-const leaves = [leaf(40, 64, 22, 200), leaf(90, 58, 20, -30), leaf(84, 82, 18, 20), leaf(60, 30, 17, 250), leaf(48, 92, 16, 150)];
+const ROSES: [number, number, number, number][] = [
+  [66, 62, 18, 0.3],
+  [99, 54, 16, 1.6],
+  [88, 88, 17, 2.4],
+  [56, 94, 12.5, 0.9],
+  [120, 80, 12, 2.9],
+];
+const roses = ROSES.map(([x, y, r, rot]) => rose(x, y, r, rot));
+const leaves = [
+  leaf(52, 70, 30, 205),
+  leaf(76, 46, 26, 248, -0.14),
+  leaf(112, 58, 26, -38),
+  leaf(128, 88, 24, 12, -0.1),
+  leaf(64, 104, 22, 145),
+  leaf(104, 100, 22, 40),
+];
+const sprigs = [sprig(84, 70, 72, 28), sprig(110, 70, 142, 50), sprig(56, 80, 28, 70)];
 ---
 
 <svg
   class={className}
-  viewBox="0 0 230 210"
+  viewBox="0 0 260 230"
   fill="none"
   stroke="currentColor"
-  stroke-width="0.9"
+  stroke-width="0.85"
   stroke-linecap="round"
   stroke-linejoin="round"
   aria-hidden="true"
 >
   <!-- Enveloppe -->
-  <g transform="rotate(-9 150 130)">
-    <rect x="96" y="96" width="122" height="76" rx="2" />
-    <path d="M96 98 157 140 218 98" />
-    <path d="M96 172 142 131M218 172 172 131" />
-    <path d="M157 147c-4.4-3-6.4-5.2-6.4-7.6a3.2 3.2 0 0 1 6.4-.8 3.2 3.2 0 0 1 6.4.8c0 2.4-2 4.6-6.4 7.6z" />
+  <g transform="rotate(-10 185 140)">
+    <rect x="118" y="100" width="134" height="84" rx="2.5" />
+    <path d="M119 102 185 148 251 102" />
+    <path d="M119 183 168 142M251 183 202 142" />
+    <path d="M185 156c-5-3.4-7.2-5.8-7.2-8.4a3.6 3.6 0 0 1 7.2-.9 3.6 3.6 0 0 1 7.2.9c0 2.6-2.2 5-7.2 8.4z" />
   </g>
 
-  <!-- Tiges -->
-  <path d="M60 88c10 22 26 52 50 92M70 88c8 24 18 54 30 96M54 90c4 26 12 58 26 92M78 86c12 22 30 48 56 84" />
+  <!-- Tiges : partent du bouquet et descendent en diagonale -->
+  <path d="M70 98C80 118 94 140 100 150 106 162 112 182 116 204M82 100C90 120 96 138 99 148 104 164 116 184 128 200M94 98C98 118 100 136 100 148 102 166 108 186 110 206M108 96C106 116 102 134 101 148 104 166 124 182 138 194M60 100C74 120 90 138 98 150 100 166 102 186 100 206" />
+
+  <!-- Gypsophile -->
+  {
+    sprigs.map((s) => (
+      <>
+        <path d={s.stem} stroke-width="0.6" />
+        {s.dots.map(([dx, dy]) => (
+          <circle cx={dx} cy={dy} r="1.6" fill="var(--color-paper)" />
+        ))}
+      </>
+    ))
+  }
 
   <!-- Feuilles -->
   {
-    leaves.map((l) => (
+    leaves.map(([shape, rib]) => (
       <>
-        <path d={l.shape} />
-        <path d={l.rib} stroke-width="0.6" />
+        <path d={shape} fill="var(--color-paper)" />
+        <path d={rib} stroke-width="0.55" />
       </>
     ))
   }
 
-  <!-- Roses -->
+  <!-- Roses (fond plein pour masquer les traits derrière) -->
   {
-    roses.map((r) => (
-      <>
-        <path d={r.outer} fill="var(--color-paper)" />
-        <path d={r.spiral} stroke-width="0.75" />
-      </>
-    ))
+    roses.map((paths, i) => {
+      const [cx, cy, r] = ROSES[i];
+      return (
+        <>
+          <circle cx={cx} cy={cy} r={r * 0.92} fill="var(--color-paper)" stroke="none" />
+          {paths.map((d, j) => (
+            <path d={d} stroke-width={j < 2 ? 0.7 : 0.85} />
+          ))}
+        </>
+      );
+    })
   }
 
-  <!-- Petits boutons -->
-  <circle cx="98" cy="62" r="3" />
-  <path d="M95.5 64.5 90 70" />
-  <circle cx="26" cy="58" r="2.6" />
-  <path d="M28 60.5l6 5" />
-  <circle cx="64" cy="18" r="2.4" />
-  <path d="M64.5 20.5 66 28" />
-
-  <!-- Nœud -->
-  <path d="M68 128c-10-8-22-6-20 2s14 4 20-2zM68 128c6-10 20-14 20-5s-12 9-20 5zM68 128c-4 10-10 18-16 24M68 128c4 9 6 18 12 26" />
-  <circle cx="68" cy="128" r="2.2" fill="var(--color-paper)" />
+  <!-- Nœud autour des tiges -->
+  <path d="M100 150c-12-10-27-9-25 1s17 5 25-1zM100 150c7-13 24-17 24-6s-15 11-24 6z" fill="var(--color-paper)" />
+  <path d="M100 150c-5 12-12 22-20 30M100 150c5 11 8 22 15 32" />
+  <circle cx="100" cy="150" r="2.6" fill="var(--color-paper)" />
 
   <!-- Trait final avec boucle -->
-  <path d="M84 196c22-8 40 6 64-2 16-5 22-16 13-18-9-1-10 14 6 18 14 3 30-4 48-12" />
+  <path d="M100 218c26-9 46 6 74-2 18-5 25-18 15-20-10-1-11 15 7 20 16 4 34-4 56-14" />
 </svg>

@@ -47,6 +47,19 @@ const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(venue.mapE
       addressKorean={venue.addressKorean}
     />
   </div>
+
+  {
+    venue.notes?.length > 0 && (
+      <div class="notes" data-reveal>
+        <p class="eyebrow">{venue.notesTitle}</p>
+        <ul>
+          {venue.notes.map((note: string) => (
+            <li>{note}</li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
 </section>
 
 <style>
@@ -143,5 +156,32 @@ const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(venue.mapE
 
   .taxi {
     margin-top: var(--space-lg);
+  }
+
+  .notes {
+    margin-top: var(--space-lg);
+  }
+
+  .notes ul {
+    list-style: none;
+    margin: var(--space-sm) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-sm);
+  }
+
+  .notes li {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    line-height: 1.45;
+  }
+
+  .notes li + li::before {
+    content: '';
+    display: block;
+    width: 1.5rem;
+    height: 1px;
+    margin: 0 auto var(--space-sm);
+    background: var(--color-line);
   }
 </style>

@@ -19,7 +19,7 @@ const photo = getImage(site.home.heroPhoto);
     </h1>
 
     <figure class="polaroid">
-      <span class="tape" aria-hidden="true"></span>
+      <span class="tape-wrap" aria-hidden="true"><span class="tape"></span></span>
       <Image
         src={photo}
         alt={site.home.heroPhotoAlt}
@@ -37,7 +37,7 @@ const photo = getImage(site.home.heroPhoto);
 
 <style>
   .hero {
-    padding-top: var(--space-lg);
+    padding-top: var(--space-xl);
     padding-inline: var(--gutter);
   }
 
@@ -47,10 +47,10 @@ const photo = getImage(site.home.heroPhoto);
     width: 100%;
     max-width: 30rem;
     margin-inline: auto;
-    aspect-ratio: 1 / 0.98;
+    aspect-ratio: 1 / 1.02;
   }
 
-  /* Titre */
+  /* Titre — légèrement incliné dans le sens inverse du polaroid */
   .title {
     position: absolute;
     inset: 0;
@@ -67,30 +67,36 @@ const photo = getImage(site.home.heroPhoto);
   }
 
   .line-1 {
-    top: 0;
-    left: 27%;
-    transform: rotate(-4deg);
+    top: -3%;
+    left: 26%;
+    transform: rotate(8deg);
+    transform-origin: left center;
   }
 
   .line-2 {
     top: 21%;
     left: 40%;
-    transform: rotate(-4deg);
+    transform: rotate(8deg);
+    transform-origin: left center;
   }
 
+  /* Trait au cœur : descend vers le polaroid et s'y cache */
   .stage :global(.scribble) {
     position: absolute;
-    top: 13%;
-    left: 0;
-    width: 34%;
+    z-index: 1;
+    top: 9%;
+    left: -5%;
+    width: 44%;
     color: var(--color-ink-faint);
+    transform: rotate(18deg);
+    transform-origin: left center;
   }
 
   /* Polaroid */
   .polaroid {
     position: absolute;
     z-index: 2;
-    top: 30%;
+    top: 31%;
     left: 0;
     width: 50%;
     padding: 4.2% 4.2% 0;
@@ -105,31 +111,48 @@ const photo = getImage(site.home.heroPhoto);
     object-fit: cover;
   }
 
+  /* Légende : même inclinaison que la photo (héritée du polaroid) */
   .polaroid figcaption {
-    padding: 0.55em 0 0.6em;
+    padding: 0.5em 0 0.65em;
     text-align: center;
     font-size: 7cqi;
     color: var(--color-ink-soft);
-    transform: rotate(-4deg);
+  }
+
+  /* Ruban adhésif (washi tape) : translucide, bords déchirés, texture légère */
+  .tape-wrap {
+    position: absolute;
+    top: -6%;
+    left: 50%;
+    width: 44%;
+    height: 10%;
+    transform: translateX(-50%) rotate(3deg);
+    filter: drop-shadow(0 1px 1.5px rgb(60 58 70 / 0.12));
   }
 
   .tape {
-    position: absolute;
-    top: -5%;
-    left: 50%;
-    width: 42%;
-    height: 9%;
-    background: rgb(196 198 178 / 0.78);
-    transform: translateX(-50%) rotate(2deg);
-    clip-path: polygon(3% 0, 97% 4%, 100% 30%, 97% 60%, 100% 100%, 2% 96%, 0 65%, 3% 35%);
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(232 230 216 / 0.72);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.44 0 0 0 0 0.38 0 0 0 0.16 0'/%3E%3C/filter%3E%3Crect width='120' height='40' filter='url(%23n)'/%3E%3C/svg%3E"),
+      linear-gradient(180deg, rgb(255 255 255 / 0.35), rgb(255 255 255 / 0) 40%, rgb(0 0 0 / 0.03));
+    clip-path: polygon(
+      0% 4%, 2% 0%, 98% 0%, 100% 6%,
+      98.5% 14%, 100% 22%, 97.8% 31%, 99.6% 40%, 98% 49%, 100% 58%, 97.9% 67%, 99.5% 76%, 98.2% 86%, 100% 94%,
+      98% 100%, 2% 100%, 0% 95%,
+      1.8% 86%, 0% 77%, 2.1% 68%, 0.3% 58%, 2% 49%, 0% 40%, 1.9% 31%, 0.2% 22%, 1.8% 13%
+    );
   }
 
+  /* Bouquet : plus grand, glissé en partie sous le polaroid */
   .stage :global(.bouquet) {
     position: absolute;
     z-index: 1;
-    right: -3%;
-    bottom: 3%;
-    width: 58%;
+    right: -6%;
+    bottom: -1%;
+    width: 72%;
     color: var(--color-ink-soft);
   }
 

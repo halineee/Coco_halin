@@ -76,6 +76,11 @@ venue:
   taxiCard:
     title: "Pour le taxi"
     text: "Montrez simplement cet écran au chauffeur."
+  # Notes pratiques affichées sous la carte taxi.
+  # Ajoutez, modifiez ou supprimez des lignes (une ligne = une note).
+  notesTitle: "Bon à savoir"
+  notes:
+    - "Merci d’arriver entre 30 et 10 minutes avant le début de la cérémonie."
 
 footer:
   signature: "Corentin & Halin · 14.08.2027 · Séoul"
