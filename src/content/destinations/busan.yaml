@@ -7,15 +7,19 @@ intro: "Deuxième ville du pays, Busan vit au rythme de la mer : longues plages,
 
 aVoir:
   - name: "Haeundae"
+    photo: "destinations/busan/01-haeundae.jpg"
     korean: "해운대"
     text: "La plage la plus célèbre de Corée, et sa promenade le long de la mer."
   - name: "Gamcheon Culture Village"
+    photo: "destinations/busan/02-gamcheon.jpg"
     korean: "감천문화마을"
     text: "Un village de maisons pastel en escalier, devenu galerie à ciel ouvert."
   - name: "Haedong Yonggungsa"
+    photo: "destinations/busan/03-haedong-yonggungsa.jpg"
     korean: "해동용궁사"
     text: "Un temple bouddhiste posé sur les rochers, face à la mer."
   - name: "Le marché de Jagalchi"
+    photo: "destinations/busan/04-jagalchi.jpg"
     korean: "자갈치시장"
     text: "Le plus grand marché aux poissons du pays."
 
@@ -38,9 +42,11 @@ aFaire:
     korean: "해운대 블루라인파크"
     text: "Une petite ligne panoramique le long de la côte."
   - name: "Gwangalli le soir"
+    photo: "destinations/busan/05-gwangalli.jpg"
     korean: "광안리해수욕장"
     text: "La plage face au pont illuminé, avec ses bars et ses cafés."
   - name: "Huinnyeoul"
+    photo: "destinations/busan/06-huinnyeoul.jpg"
     korean: "흰여울문화마을"
     text: "Un village de falaises blanches au-dessus de la mer, idéal pour une balade."
 

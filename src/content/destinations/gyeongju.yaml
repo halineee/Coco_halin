@@ -10,12 +10,15 @@ aVoir:
     korean: "불국사"
     text: "Le temple le plus célèbre du pays, inscrit au patrimoine mondial de l’UNESCO."
   - name: "La grotte de Seokguram"
+    photo: "destinations/gyeongju/02-seokguram.jpg"
     korean: "석굴암"
     text: "Un bouddha de pierre au-dessus de Bulguksa, face à la mer."
   - name: "Daereungwon"
+    photo: "destinations/gyeongju/03-daereungwon.jpg"
     korean: "대릉원"
     text: "Un parc de tumulus royaux, comme de grandes collines vertes."
   - name: "Donggung et l’étang de Wolji"
+    photo: "destinations/gyeongju/04-donggung-wolji.jpg"
     korean: "동궁과 월지"
     text: "Un ancien palais qui se reflète dans l’eau, magnifique à la nuit tombée."
 
@@ -32,6 +35,7 @@ aGouter:
 
 aFaire:
   - name: "Hwangnidan-gil"
+    photo: "destinations/gyeongju/05-hwangnidan-gil.jpg"
     korean: "황리단길"
     text: "Une rue de hanok remplie de cafés, de librairies et de boutiques."
   - name: "Le lac de Bomun"

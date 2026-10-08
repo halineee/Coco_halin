@@ -7,12 +7,15 @@ intro: "Réputée pour être la ville où l’on mange le mieux en Corée, Jeonj
 
 aVoir:
   - name: "Le village de hanok"
+    photo: "destinations/jeonju/01-village-hanok.jpg"
     korean: "전주 한옥마을"
     text: "Des centaines de maisons traditionnelles, à parcourir à pied."
   - name: "Gyeonggijeon"
+    photo: "destinations/jeonju/02-gyeonggijeon.jpg"
     korean: "경기전"
     text: "Un sanctuaire royal et son jardin de bambous, au cœur du village."
   - name: "La cathédrale de Jeondong"
+    photo: "destinations/jeonju/03-cathedrale-jeondong.jpg"
     korean: "전동성당"
     text: "Une élégante église de brique, l’une des plus anciennes du pays."
 
