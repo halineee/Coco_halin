@@ -150,6 +150,7 @@ plats:
           korean: "핫도그"
           text: "Saucisse ou mozzarella dans une pâte croustillante, roulée dans le sucre : étonnant et addictif."
         - name: "Dakkochi"
+          photo: "food/dakkochi.jpg"
           korean: "닭꼬치"
           text: "Brochettes de poulet grillées et laquées d’une sauce sucrée ou pimentée, à grignoter en marchant."
 
@@ -160,6 +161,7 @@ plats:
           korean: "호떡"
           text: "Petite crêpe épaisse fourrée de sucre brun et de graines, servie brûlante."
         - name: "Kkwabaegi"
+          photo: "food/kkwabaegi.jpg"
           korean: "꽈배기"
           text: "Beignet torsadé roulé dans le sucre, moelleux et pas cher, que l’on achète tout chaud sur les marchés."
         - name: "Les boulangeries coréennes"
