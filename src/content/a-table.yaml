@@ -126,6 +126,10 @@ plats:
           photo: "food/haemul-pajeon.jpg"
           korean: "해물파전"
           text: "Grande galette aux oignons verts et fruits de mer, l’alliée du makgeolli, surtout les jours de pluie."
+        - name: "Hoe"
+          photo: "food/hoe.jpg"
+          korean: "회"
+          text: "Poisson cru finement tranché, à tremper dans une sauce pimentée (chogochujang) ou à envelopper dans une feuille de salade. À déguster au bord de la mer, à Busan, à Jeju ou sur la côte Est, avec un verre de soju."
 
     - title: "Street food"
       items:
