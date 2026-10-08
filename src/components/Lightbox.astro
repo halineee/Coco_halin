@@ -1,0 +1,74 @@
+---
+// Affichage plein écran des photos (PhotoSwipe).
+// S'applique à tout élément portant l'attribut data-lightbox :
+// chaque lien <a> à l'intérieur ouvre la photo en grand.
+---
+
+<script>
+  import PhotoSwipeLightbox from 'photoswipe/lightbox';
+  import 'photoswipe/style.css';
+
+  document.querySelectorAll<HTMLElement>('[data-lightbox]').forEach((gallery) => {
+    const lightbox = new PhotoSwipeLightbox({
+      gallery,
+      children: 'a[data-pswp-width]',
+      pswpModule: () => import('photoswipe'),
+      bgOpacity: 1,
+      showHideAnimationType: 'fade',
+      wheelToZoom: true,
+      padding: { top: 56, bottom: 40, left: 0, right: 0 },
+      indexIndicatorSep: ' / ',
+      closeTitle: 'Fermer',
+      zoomTitle: 'Agrandir',
+      arrowPrevTitle: 'Photo précédente',
+      arrowNextTitle: 'Photo suivante',
+      errorMsg: 'Cette photo n’a pas pu être chargée.',
+    });
+
+    // Le bouton « retour » du téléphone ferme la photo au lieu de quitter la page.
+    let historyPushed = false;
+    lightbox.on('afterInit', () => {
+      history.pushState({ lightbox: true }, '');
+      historyPushed = true;
+    });
+    lightbox.on('close', () => {
+      if (historyPushed) {
+        historyPushed = false;
+        history.back();
+      }
+    });
+    window.addEventListener('popstate', () => {
+      if (historyPushed && lightbox.pswp) {
+        historyPushed = false;
+        lightbox.pswp.close();
+      }
+    });
+
+    lightbox.init();
+  });
+</script>
+
+<style is:global>
+  .pswp {
+    --pswp-bg: #f2f1f5;
+    --pswp-placeholder-bg: #e8e6ee;
+    --pswp-icon-color: #55555b;
+    --pswp-icon-color-secondary: #f2f1f5;
+    --pswp-icon-stroke-color: #f2f1f5;
+    --pswp-icon-stroke-width: 1px;
+    --pswp-error-text-color: #55555b;
+  }
+
+  .pswp__counter {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--color-ink-soft);
+    text-shadow: none;
+    opacity: 1;
+  }
+
+  .pswp__img {
+    border-radius: 4px;
+  }
+</style>

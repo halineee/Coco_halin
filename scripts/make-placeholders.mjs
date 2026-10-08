@@ -1,11 +1,11 @@
 // Génère des images « en attente » (dégradés doux) pour tester la mise en page.
-// Usage : node scripts/make-placeholders.mjs <dossier> <nombre> <largeur> <hauteur> [prefixe]
+// Usage : node scripts/make-placeholders.mjs <dossier> <nombre> <largeur> <hauteur> [prefixe] [premier numéro]
 // Ces images sont à remplacer par vos vraies photos (même nom de fichier ou nouveaux noms).
 import sharp from 'sharp';
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 
-const [folder, count = '1', w = '1200', h = '1500', prefix = ''] = process.argv.slice(2);
+const [folder, count = '1', w = '1200', h = '1500', prefix = '', start = '1'] = process.argv.slice(2);
 if (!folder) {
   console.error('Usage : node scripts/make-placeholders.mjs <dossier> <nombre> <largeur> <hauteur>');
   process.exit(1);
@@ -23,7 +23,7 @@ const palettes = [
 const dir = join('src/assets', folder);
 mkdirSync(dir, { recursive: true });
 
-for (let i = 0; i < Number(count); i++) {
+for (let i = Number(start) - 1; i < Number(start) - 1 + Number(count); i++) {
   const [c1, c2, c3] = palettes[i % palettes.length];
   const W = Number(w);
   const H = Number(h);

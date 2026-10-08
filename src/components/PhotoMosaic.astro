@@ -1,0 +1,128 @@
+---
+// Mosaïque éditoriale : la taille de chaque case dépend du format de la
+// photo (portrait, paysage, carré). Une photo marquée « grande » dans
+// src/content/photos.yaml occupe une case plus large.
+import { Image } from 'astro:assets';
+import type { GalleryPhoto } from '../lib/gallery';
+
+interface Props {
+  photos: GalleryPhoto[];
+  label: string;
+}
+const { photos, label } = Astro.props;
+
+// Évite les trous sur mobile (2 colonnes) : entre deux photos pleine
+// largeur, s'il reste un nombre impair de petites photos, la dernière
+// passe en pleine largeur.
+const isWide = (p: GalleryPhoto) => p.size === 'grande' || p.orientation === 'paysage';
+const stretch = new Set<number>();
+let run: number[] = [];
+photos.forEach((photo, i) => {
+  if (isWide(photo)) {
+    if (run.length % 2 === 1) stretch.add(run[run.length - 1]);
+    run = [];
+  } else {
+    run.push(i);
+  }
+});
+if (run.length % 2 === 1) stretch.add(run[run.length - 1]);
+---
+
+<ul class="mosaic" data-lightbox aria-label={label}>
+  {
+    photos.map((photo, i) => (
+      <li class:list={['tile', photo.orientation, { grande: photo.size === 'grande', etiree: stretch.has(i) }]} data-reveal style={`--reveal-delay: ${(i % 3) * 0.08}s`}>
+        <a href={photo.full.src} data-pswp-width={photo.full.width} data-pswp-height={photo.full.height}>
+          <Image
+            src={photo.image}
+            alt={photo.alt}
+            widths={[320, 520, 800, 1100]}
+            sizes={isWide(photo) || stretch.has(i) ? '(min-width: 48em) 50vw, 100vw' : '(min-width: 48em) 25vw, 50vw'}
+            loading="lazy"
+          />
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .mosaic {
+    --row: 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: var(--row);
+    grid-auto-flow: row dense;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tile {
+    grid-row: span 4;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    background: var(--color-paper-deep);
+  }
+
+  /* Sur mobile, les petites photos vont par paires de même hauteur */
+  .tile.carre {
+    grid-row: span 4;
+  }
+
+  .tile.paysage {
+    grid-column: span 2;
+    grid-row: span 5;
+  }
+
+  .tile.grande {
+    grid-column: span 2;
+    grid-row: span 7;
+  }
+
+  .tile.etiree {
+    grid-column: span 2;
+    grid-row: span 6;
+  }
+
+  .tile a {
+    display: block;
+    height: 100%;
+    cursor: zoom-in;
+  }
+
+  .tile :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s var(--ease);
+  }
+
+  @media (hover: hover) {
+    .tile:hover :global(img) {
+      transform: scale(1.035);
+    }
+  }
+
+  @media (min-width: 48em) {
+    .mosaic {
+      --row: 3.25rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.9rem;
+    }
+
+    .tile.carre {
+      grid-row: span 3;
+    }
+
+    .tile.grande {
+      grid-row: span 8;
+    }
+
+    .tile.etiree {
+      grid-column: auto;
+      grid-row: span 4;
+    }
+  }
+</style>

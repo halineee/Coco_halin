@@ -1,0 +1,33 @@
+---
+// Sous-titre manuscrit d'une section (ex. « Le lieu », « En attendant le grand jour… »).
+interface Props {
+  title: string;
+  text?: string;
+  align?: 'left' | 'center';
+  as?: 'h2' | 'h3';
+  id?: string;
+}
+const { title, text, align = 'left', as: Tag = 'h2', id } = Astro.props;
+---
+
+<div class:list={['section-heading', align]} data-reveal>
+  <Tag class="script" id={id}>{title}</Tag>
+  {text && <p>{text}</p>}
+</div>
+
+<style>
+  .section-heading.center {
+    text-align: center;
+  }
+
+  .script {
+    font-size: var(--text-script-sm);
+    line-height: 1.15;
+  }
+
+  p {
+    margin-top: var(--space-xs);
+    font-size: var(--text-sm);
+    color: var(--color-ink-soft);
+  }
+</style>

@@ -1,12 +1,51 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageTitle from '../components/PageTitle.astro';
-import Placeholder from '../components/Placeholder.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import PhotoCarousel from '../components/PhotoCarousel.astro';
+import PhotoMosaic from '../components/PhotoMosaic.astro';
+import Lightbox from '../components/Lightbox.astro';
+import content from '../content/photos.yaml';
+import { loadGallery } from '../lib/gallery';
+
+const prewedding = await loadGallery(content.enAttendant.folder, content.details, 'Corentin et Halin');
+const story = await loadGallery(content.histoire.folder, content.details, 'Souvenir');
 ---
 
-<BaseLayout title="Photos">
-  <PageTitle title="Photos" />
-  <div class="container container--wide">
-    <Placeholder label="En préparation">La galerie arrive bientôt.</Placeholder>
-  </div>
+<BaseLayout title={content.pageTitle}>
+  <PageTitle title={content.pageTitle} />
+
+  <section class="block" aria-labelledby="en-attendant">
+    <div class="container container--wide">
+      <SectionHeading id="en-attendant" title={content.enAttendant.title} />
+    </div>
+    <PhotoCarousel photos={prewedding} label={content.enAttendant.title} />
+  </section>
+
+  <p class="transition container container--wide script" data-reveal>{content.transition}</p>
+
+  <section class="block container container--wide" aria-labelledby="histoire">
+    <SectionHeading id="histoire" title={content.histoire.title} text={content.histoire.text} />
+    <div class="mosaic-wrap">
+      <PhotoMosaic photos={story} label={content.histoire.title} />
+    </div>
+  </section>
+
+  <Lightbox />
 </BaseLayout>
+
+<style>
+  .block {
+    padding-top: var(--space-md);
+  }
+
+  .transition {
+    padding-block: var(--space-xl) var(--space-lg);
+    font-size: var(--text-script-sm);
+    color: var(--color-ink-soft);
+  }
+
+  .mosaic-wrap {
+    margin-top: var(--space-lg);
+  }
+</style>

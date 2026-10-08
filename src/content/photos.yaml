@@ -1,0 +1,31 @@
+# ─────────────────────────────────────────────────────────────
+#  Page Photos
+#
+#  Pour ajouter des photos : déposez-les simplement dans le dossier
+#  indiqué (src/assets/…). Elles s'affichent dans l'ordre de leur
+#  nom de fichier : 01.jpg, 02.jpg, 03.jpg…
+#
+#  Les détails ci-dessous sont facultatifs (description, taille).
+# ─────────────────────────────────────────────────────────────
+
+pageTitle: "Photos"
+
+enAttendant:
+  title: "En attendant le grand jour…"
+  folder: "photos/en-attendant"
+
+transition: "Et bien plus encore…"
+
+histoire:
+  title: "Une histoire en images"
+  text: "Tous ces moments qui nous ont menés jusqu’ici."
+  folder: "photos/histoire"
+
+# Détails facultatifs, photo par photo (chemin à partir de src/assets/).
+#   alt    : courte description (lue par les lecteurs d'écran)
+#   taille : "grande" pour mettre une photo en valeur dans la mosaïque
+details:
+  "photos/histoire/01.jpg":
+    taille: "grande"
+  # "photos/histoire/05.jpg":
+  #   alt: "Notre premier voyage à Busan"
