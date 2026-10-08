@@ -1,0 +1,42 @@
+---
+// Grand titre manuscrit en haut des pages (« Photos », « Transports »…).
+interface Props {
+  title: string;
+  eyebrow?: string;
+  intro?: string;
+}
+const { title, eyebrow, intro } = Astro.props;
+---
+
+<div class="page-title container container--wide">
+  {eyebrow && <p class="eyebrow" data-reveal>{eyebrow}</p>}
+  <h1 class="script" data-reveal>{title}</h1>
+  {intro && <p class="intro serif" data-reveal style="--reveal-delay: 0.12s">{intro}</p>}
+</div>
+
+<style>
+  .page-title {
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-lg);
+  }
+
+  .eyebrow {
+    margin-bottom: var(--space-sm);
+  }
+
+  h1 {
+    font-size: var(--text-script-lg);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-left: -0.05em;
+  }
+
+  .intro {
+    max-width: 30rem;
+    margin-top: var(--space-md);
+    font-size: var(--text-lg);
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--color-ink-soft);
+  }
+</style>

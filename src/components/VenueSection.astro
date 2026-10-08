@@ -1,0 +1,147 @@
+---
+// Section « Le lieu » : nom, carte, adresse, liens vers les applications.
+import site from '../content/site.yaml';
+import MapLinks from './MapLinks.astro';
+import TaxiCard from './TaxiCard.astro';
+import Icon from './Icon.astro';
+
+const { venue } = site;
+const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(venue.mapEmbedQuery)}&z=16&hl=fr&output=embed`;
+---
+
+<section class="venue container" aria-labelledby="le-lieu">
+  <h2 id="le-lieu" class="heading script" data-reveal>{venue.sectionTitle}</h2>
+
+  <div class="name" data-reveal>
+    <p class="venue-name serif">{venue.name}</p>
+    <p class="eyebrow">{venue.nameDetail}</p>
+  </div>
+
+  <div class="map-frame" data-reveal>
+    <span class="map-fallback" aria-hidden="true"><Icon name="pin" size={36} /></span>
+    <iframe
+      src={embedSrc}
+      title={`Carte : ${venue.name}`}
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+
+  <div class="address-row" data-reveal>
+    <address>
+      {venue.addressLines.map((line: string) => <span>{line}</span>)}
+      <span class="korean" lang="ko">{venue.addressKorean}</span>
+    </address>
+    <p class="station">{venue.nearestStation}</p>
+  </div>
+
+  <div data-reveal>
+    <MapLinks links={venue.mapLinks} />
+    <p class="map-note">{venue.mapNote}</p>
+  </div>
+
+  <div class="taxi" data-reveal>
+    <TaxiCard
+      title={venue.taxiCard.title}
+      text={venue.taxiCard.text}
+      nameKorean={venue.nameKorean}
+      addressKorean={venue.addressKorean}
+    />
+  </div>
+</section>
+
+<style>
+  .venue {
+    padding-top: var(--space-2xl);
+    text-align: center;
+  }
+
+  .heading {
+    font-size: var(--text-script-sm);
+  }
+
+  .name {
+    margin-top: var(--space-md);
+  }
+
+  .venue-name {
+    font-size: var(--text-xl);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+  }
+
+  .name .eyebrow {
+    margin-top: 0.3rem;
+  }
+
+  .map-frame {
+    position: relative;
+    margin-top: var(--space-lg);
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    background: var(--color-paper-deep);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .map-fallback {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--color-ink-faint);
+  }
+
+  iframe {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    /* Carte en noir et blanc, pour rester dans l'esprit du site */
+    filter: grayscale(1) contrast(0.92) brightness(1.04);
+  }
+
+  .address-row {
+    margin-top: var(--space-md);
+  }
+
+  address {
+    font-style: normal;
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    line-height: 1.4;
+  }
+
+  address span {
+    display: block;
+  }
+
+  address .korean {
+    margin-top: 0.25rem;
+    font-family: system-ui, sans-serif;
+    font-size: var(--text-sm);
+    color: var(--color-ink-soft);
+  }
+
+  .station {
+    margin-top: var(--space-xs);
+    font-size: var(--text-sm);
+    color: var(--color-ink-soft);
+  }
+
+  .venue :global(.map-links) {
+    margin-top: var(--space-md);
+  }
+
+  .map-note {
+    max-width: 22rem;
+    margin: var(--space-xs) auto 0;
+    font-size: var(--text-xs);
+    line-height: 1.5;
+    color: var(--color-ink-soft);
+  }
+
+  .taxi {
+    margin-top: var(--space-lg);
+  }
+</style>

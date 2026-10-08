@@ -1,0 +1,105 @@
+---
+// Dessin au trait : bouquet + enveloppe (inspiré de la maquette Canva).
+// Pour utiliser votre propre illustration exportée de Canva, remplacez ce
+// composant par une balise <img> (voir README).
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+
+// Rose stylisée : contour ondulé + spirale intérieure
+function rose(cx: number, cy: number, r: number, rot = 0) {
+  const outer: string[] = [];
+  const steps = 60;
+  for (let i = 0; i <= steps; i++) {
+    const a = (i / steps) * Math.PI * 2 + rot;
+    const rr = r * (0.92 + 0.08 * Math.cos(a * 5));
+    outer.push(`${i === 0 ? 'M' : 'L'}${(cx + rr * Math.cos(a)).toFixed(1)} ${(cy + rr * Math.sin(a)).toFixed(1)}`);
+  }
+  const spiral: string[] = [];
+  const turns = 2.6;
+  const n = 70;
+  for (let i = 0; i <= n; i++) {
+    const t = i / n;
+    const a = t * turns * Math.PI * 2 + rot;
+    const rr = r * 0.12 + r * 0.66 * t;
+    spiral.push(`${i === 0 ? 'M' : 'L'}${(cx + rr * Math.cos(a)).toFixed(1)} ${(cy + rr * Math.sin(a)).toFixed(1)}`);
+  }
+  return { outer: outer.join(' ') + 'Z', spiral: spiral.join(' ') };
+}
+
+// Feuille en amande avec nervure
+function leaf(x: number, y: number, len: number, angle: number) {
+  const rad = (angle * Math.PI) / 180;
+  const ex = x + len * Math.cos(rad);
+  const ey = y + len * Math.sin(rad);
+  const nx = -Math.sin(rad) * len * 0.32;
+  const ny = Math.cos(rad) * len * 0.32;
+  const mx = (x + ex) / 2;
+  const my = (y + ey) / 2;
+  return {
+    shape: `M${x} ${y} Q${(mx + nx).toFixed(1)} ${(my + ny).toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)} Q${(mx - nx).toFixed(1)} ${(my - ny).toFixed(1)} ${x} ${y}Z`,
+    rib: `M${x} ${y} L${((x + ex * 2) / 3).toFixed(1)} ${((y + ey * 2) / 3).toFixed(1)}`,
+  };
+}
+
+const roses = [rose(52, 52, 15, 0.4), rose(82, 40, 12, 1.4), rose(70, 74, 13, 2.2), rose(33, 80, 9, 0.9)];
+const leaves = [leaf(40, 64, 22, 200), leaf(90, 58, 20, -30), leaf(84, 82, 18, 20), leaf(60, 30, 17, 250), leaf(48, 92, 16, 150)];
+---
+
+<svg
+  class={className}
+  viewBox="0 0 230 210"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="0.9"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+>
+  <!-- Enveloppe -->
+  <g transform="rotate(-9 150 130)">
+    <rect x="96" y="96" width="122" height="76" rx="2" />
+    <path d="M96 98 157 140 218 98" />
+    <path d="M96 172 142 131M218 172 172 131" />
+    <path d="M157 147c-4.4-3-6.4-5.2-6.4-7.6a3.2 3.2 0 0 1 6.4-.8 3.2 3.2 0 0 1 6.4.8c0 2.4-2 4.6-6.4 7.6z" />
+  </g>
+
+  <!-- Tiges -->
+  <path d="M60 88c10 22 26 52 50 92M70 88c8 24 18 54 30 96M54 90c4 26 12 58 26 92M78 86c12 22 30 48 56 84" />
+
+  <!-- Feuilles -->
+  {
+    leaves.map((l) => (
+      <>
+        <path d={l.shape} />
+        <path d={l.rib} stroke-width="0.6" />
+      </>
+    ))
+  }
+
+  <!-- Roses -->
+  {
+    roses.map((r) => (
+      <>
+        <path d={r.outer} fill="var(--color-paper)" />
+        <path d={r.spiral} stroke-width="0.75" />
+      </>
+    ))
+  }
+
+  <!-- Petits boutons -->
+  <circle cx="98" cy="62" r="3" />
+  <path d="M95.5 64.5 90 70" />
+  <circle cx="26" cy="58" r="2.6" />
+  <path d="M28 60.5l6 5" />
+  <circle cx="64" cy="18" r="2.4" />
+  <path d="M64.5 20.5 66 28" />
+
+  <!-- Nœud -->
+  <path d="M68 128c-10-8-22-6-20 2s14 4 20-2zM68 128c6-10 20-14 20-5s-12 9-20 5zM68 128c-4 10-10 18-16 24M68 128c4 9 6 18 12 26" />
+  <circle cx="68" cy="128" r="2.2" fill="var(--color-paper)" />
+
+  <!-- Trait final avec boucle -->
+  <path d="M84 196c22-8 40 6 64-2 16-5 22-16 13-18-9-1-10 14 6 18 14 3 30-4 48-12" />
+</svg>

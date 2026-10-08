@@ -1,0 +1,81 @@
+# ─────────────────────────────────────────────────────────────
+#  Informations générales du site
+#  Modifiez librement les textes entre guillemets.
+# ─────────────────────────────────────────────────────────────
+
+couple:
+  names: "Corentin & Halin"
+
+wedding:
+  # Date utilisée pour le compte à rebours (format AAAA-MM-JJTHH:MM, heure de Séoul)
+  datetime: "2027-08-14T17:30:00+09:00"
+  dateDisplay: "14 / 08 / 2027"
+  dayDisplay: "Samedi 14 août 2027"
+  timeDisplay: "17h30"
+  city: "à Séoul"
+
+# Navigation principale (l'ordre ici = l'ordre des icônes)
+navigation:
+  - label: "Accueil"
+    href: "/"
+    icon: "rings"
+  - label: "Photos"
+    href: "/photos/"
+    icon: "polaroid"
+  - label: "Transports"
+    href: "/transports/"
+    icon: "plane"
+  - label: "Hôtels"
+    href: "/hotels/"
+    icon: "hotel"
+  - label: "Voyage"
+    href: "/carnet-de-voyage/"
+    icon: "map"
+
+home:
+  heroTitle: ["Getting", "Married"]
+  heroPhoto: "photos/accueil/polaroid.jpg"
+  heroPhotoAlt: "Corentin et Halin à Paris"
+  intro:
+    - "Après tant de souvenirs partagés,"
+    - "une nouvelle histoire commence."
+    - "Et nous aimerions la commencer"
+    - "entourés de ceux qui nous sont chers."
+  tagline: "Un jour à célébrer, un voyage à partager."
+  countdownBefore: "Plus que"
+  countdownAfter: "avant notre grand jour"
+  countdownToday: "C’est aujourd’hui !"
+  bottomHint: "La suite se découvre en haut de la page."
+
+venue:
+  sectionTitle: "Le lieu"
+  name: "Bella Luce"
+  nameDetail: "Wedding Hall · Séoul"
+  nameKorean: "벨라루체웨딩홀 서울점"
+  addressLines:
+    - "61 Mangu-ro, Dongdaemun-gu"
+    - "Séoul, Corée du Sud"
+  addressKorean: "서울특별시 동대문구 망우로 61"
+  nearestStation: "À quelques minutes de la station Hoegi (회기역)"
+  # Carte intégrée (Google Maps, affichée en noir et blanc)
+  mapEmbedQuery: "서울특별시 동대문구 망우로 61 벨라루체웨딩홀"
+  # Liens vers les applications de cartes.
+  # Astuce : dans chaque application, cherchez le lieu, touchez « Partager »
+  # puis « Copier le lien » et collez-le ici pour un lien exact.
+  mapLinks:
+    - label: "Naver Map"
+      icon: "naver"
+      url: "https://map.naver.com/p/search/%EB%B2%A8%EB%9D%BC%EB%A3%A8%EC%B2%B4%EC%9B%A8%EB%94%A9%ED%99%80%20%EC%84%9C%EC%9A%B8%EC%A0%90"
+    - label: "Kakao Map"
+      icon: "kakao"
+      url: "https://map.kakao.com/link/search/%EB%B2%A8%EB%9D%BC%EB%A3%A8%EC%B2%B4%EC%9B%A8%EB%94%A9%ED%99%80%20%EC%84%9C%EC%9A%B8%EC%A0%90"
+    - label: "Google Maps"
+      icon: "google"
+      url: "https://www.google.com/maps/search/?api=1&query=%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EB%8F%99%EB%8C%80%EB%AC%B8%EA%B5%AC%20%EB%A7%9D%EC%9A%B0%EB%A1%9C%2061"
+  mapNote: "En Corée, Naver Map et Kakao Map sont bien plus précis que Google Maps pour les itinéraires."
+  taxiCard:
+    title: "Pour le taxi"
+    text: "Montrez simplement cet écran au chauffeur."
+
+footer:
+  signature: "Corentin & Halin · 14.08.2027 · Séoul"

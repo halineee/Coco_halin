@@ -1,0 +1,97 @@
+---
+// Carte à montrer au chauffeur de taxi (adresse en coréen, en grand).
+interface Props {
+  title: string;
+  text: string;
+  nameKorean: string;
+  addressKorean: string;
+}
+const { title, text, nameKorean, addressKorean } = Astro.props;
+---
+
+<aside class="taxi-card" aria-label={title}>
+  <p class="eyebrow">{title}</p>
+  <p class="hint">{text}</p>
+  <p class="korean" lang="ko">
+    <span class="name">{nameKorean}</span>
+    <span class="address">{addressKorean}</span>
+  </p>
+  <button type="button" class="copy" data-copy={`${addressKorean} ${nameKorean}`}>
+    <svg viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="11" y="11" width="14" height="15" rx="1.5" /><path d="M21 11V7.5A1.5 1.5 0 0 0 19.5 6h-11A1.5 1.5 0 0 0 7 7.5v12A1.5 1.5 0 0 0 8.5 21H11" /></svg>
+    <span data-label>Copier l’adresse</span>
+  </button>
+</aside>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.taxi-card .copy').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const label = button.querySelector('[data-label]');
+      try {
+        await navigator.clipboard.writeText(button.dataset.copy ?? '');
+        if (label) label.textContent = 'Adresse copiée';
+      } catch {
+        if (label) label.textContent = 'Copie impossible';
+      }
+      setTimeout(() => label && (label.textContent = 'Copier l’adresse'), 2200);
+    });
+  });
+</script>
+
+<style>
+  .taxi-card {
+    padding: var(--space-md) var(--space-md) var(--space-sm);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-card);
+    text-align: center;
+  }
+
+  .hint {
+    margin-top: 0.2rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--text-base);
+    color: var(--color-ink-soft);
+  }
+
+  .korean {
+    margin-top: var(--space-sm);
+    color: var(--color-ink);
+    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .name {
+    display: block;
+    font-size: 1.45rem;
+  }
+
+  .address {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 1.05rem;
+  }
+
+  .copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    margin-top: var(--space-xs);
+    padding: 0 0.9rem;
+    border: 0;
+    background: none;
+    font-size: var(--text-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    cursor: pointer;
+  }
+
+  @media (hover: hover) {
+    .copy:hover {
+      color: var(--color-ink);
+    }
+  }
+</style>

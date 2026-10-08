@@ -1,0 +1,93 @@
+---
+// Boutons vers Naver Map, Kakao Map et Google Maps.
+interface Props {
+  links: { label: string; icon: 'naver' | 'kakao' | 'google'; url: string }[];
+}
+const { links } = Astro.props;
+---
+
+<ul class="map-links">
+  {
+    links.map((link) => (
+      <li>
+        <a href={link.url} target="_blank" rel="noopener noreferrer">
+          <span class:list={['tile', link.icon]} aria-hidden="true">
+            {link.icon === 'naver' && (
+              <svg viewBox="0 0 24 24" width="20" height="20"><path d="M6 5h4.2l3.6 5.6V5H18v14h-4.2l-3.6-5.6V19H6z" fill="currentColor" /></svg>
+            )}
+            {link.icon === 'kakao' && (
+              <svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 21.5c-4.2-4.4-6.3-7.6-6.3-10.4a6.3 6.3 0 0 1 12.6 0c0 2.8-2.1 6-6.3 10.4z" fill="#2c6be0" /><circle cx="12" cy="11" r="2.4" fill="#fee500" /></svg>
+            )}
+            {link.icon === 'google' && (
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 21.5c-4.2-4.4-6.3-7.6-6.3-10.4a6.3 6.3 0 0 1 12.6 0c0 2.8-2.1 6-6.3 10.4z" /><circle cx="12" cy="11" r="2.2" /></svg>
+            )}
+          </span>
+          <span class="label">{link.label}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .map-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xs);
+  }
+
+  a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.25rem;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: background 0.3s var(--ease);
+  }
+
+  @media (hover: hover) {
+    a:hover {
+      background: var(--color-paper-deep);
+    }
+    a:hover .tile {
+      transform: translateY(-2px);
+    }
+  }
+
+  .tile {
+    display: grid;
+    place-items: center;
+    width: 2.9rem;
+    height: 2.9rem;
+    border-radius: 0.8rem;
+    box-shadow: 0 4px 12px -6px rgb(60 58 70 / 0.35);
+    transition: transform 0.3s var(--ease);
+  }
+
+  .naver {
+    background: #03c75a;
+    color: #fff;
+  }
+
+  .kakao {
+    background: #fee500;
+  }
+
+  .google {
+    background: var(--color-card);
+    color: var(--color-ink);
+  }
+
+  .label {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    color: var(--color-ink-soft);
+    white-space: nowrap;
+  }
+</style>

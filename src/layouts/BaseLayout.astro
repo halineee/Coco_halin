@@ -1,0 +1,118 @@
+---
+// Gabarit commun à toutes les pages : <head>, navigation, pied de page.
+import '../styles/global.css';
+import site from '../content/site.yaml';
+import SiteHeader from '../components/SiteHeader.astro';
+import BackToTop from '../components/BackToTop.astro';
+import HeartDivider from '../components/HeartDivider.astro';
+import { url } from '../lib/url';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = 'Corentin & Halin se marient à Séoul le 14 août 2027. Informations, voyage et bonnes adresses.' } = Astro.props;
+const fullTitle = title ? `${title} · ${site.couple.names}` : `${site.couple.names} · 14.08.2027 · Séoul`;
+const ogImage = new URL(url('/og-image.jpg'), Astro.site);
+---
+
+<!doctype html>
+<html lang="fr" id="top">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <!-- Site privé : on demande aux moteurs de recherche de ne pas l'indexer -->
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#f2f1f5" />
+    <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+
+    <!-- Aperçu lors du partage du lien (KakaoTalk, WhatsApp, SMS…) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="fr_FR" />
+
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#contenu">Aller au contenu</a>
+    <SiteHeader />
+
+    <main id="contenu">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <BackToTop />
+        <HeartDivider class="footer-divider" />
+        <p class="signature">{site.footer.signature}</p>
+      </div>
+    </footer>
+
+    <script>
+      // Apparition douce des éléments marqués data-reveal
+      const items = document.querySelectorAll('[data-reveal]');
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { rootMargin: '0px 0px -8% 0px' },
+        );
+        items.forEach((item) => observer.observe(item));
+      } else {
+        items.forEach((item) => item.classList.add('is-visible'));
+      }
+    </script>
+  </body>
+</html>
+
+<style>
+  main {
+    display: block;
+    min-height: 60vh;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -3rem;
+    z-index: 100;
+    padding: 0.5rem 1rem;
+    background: var(--color-card);
+    border-radius: var(--radius-sm);
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  .site-footer {
+    padding-block: var(--space-2xl) max(var(--space-lg), env(safe-area-inset-bottom));
+    text-align: center;
+  }
+
+  .site-footer :global(.footer-divider) {
+    margin-top: var(--space-lg);
+  }
+
+  .signature {
+    margin-top: var(--space-sm);
+    font-size: var(--text-xs);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-ink-faint);
+  }
+</style>

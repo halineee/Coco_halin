@@ -1,0 +1,114 @@
+---
+// Barre de navigation fixe en haut de chaque page (icônes + libellés).
+// Les liens sont définis dans src/content/site.yaml → navigation.
+import site from '../content/site.yaml';
+import Icon from './Icon.astro';
+import HeartDivider from './HeartDivider.astro';
+import { url, isActive } from '../lib/url';
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <nav class="container container--wide" aria-label="Navigation principale">
+    <ul>
+      {
+        site.navigation.map((item: { label: string; href: string; icon: any }) => {
+          const active = isActive(item.href, currentPath);
+          return (
+            <li>
+              <a href={url(item.href)} aria-current={active ? 'page' : undefined} class:list={{ active }}>
+                <Icon name={item.icon} size={30} />
+                <span>{item.label}</span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+    <HeartDivider />
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--color-paper) 88%, transparent);
+    backdrop-filter: blur(10px) saturate(1.1);
+    -webkit-backdrop-filter: blur(10px) saturate(1.1);
+    view-transition-name: site-header;
+  }
+
+  nav {
+    padding-top: max(0.6rem, env(safe-area-inset-top));
+    padding-bottom: 0.35rem;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  a {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    min-height: 3.6rem;
+    padding: 0.2rem 0 0.45rem;
+    text-decoration: none;
+    color: var(--color-ink-soft);
+    transition: color 0.3s var(--ease);
+  }
+
+  a span {
+    font-size: 0.5875rem;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  a::after {
+    content: '';
+    position: absolute;
+    bottom: 0.15rem;
+    left: 50%;
+    width: 1.1rem;
+    height: 1px;
+    background: currentColor;
+    transform: translateX(-50%) scaleX(0);
+    transition: transform 0.35s var(--ease);
+  }
+
+  a.active {
+    color: var(--color-ink);
+  }
+
+  a.active::after {
+    transform: translateX(-50%) scaleX(1);
+  }
+
+  @media (hover: hover) {
+    a:hover {
+      color: var(--color-ink);
+    }
+  }
+
+  @media (min-width: 48em) {
+    ul {
+      max-width: 40rem;
+      margin-inline: auto;
+    }
+
+    a span {
+      font-size: 0.625rem;
+    }
+  }
+</style>

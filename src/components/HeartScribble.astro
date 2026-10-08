@@ -1,0 +1,22 @@
+---
+// Petit trait manuscrit avec un cœur (en haut à gauche du titre).
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<svg
+  class={className}
+  viewBox="0 0 160 46"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+>
+  <path
+    d="M2 30C20 25 42 29 60 37C50 29 45 19 52 14.5 56.5 11.8 60 15.5 60 19.5 60 15.5 63.5 11.8 68 14.5 75 19 70 29 60 37 76 41.5 100 40 120 34 135 30 148 29.5 158 31.5"
+  />
+</svg>

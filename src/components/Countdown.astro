@@ -1,0 +1,66 @@
+---
+// Compte à rebours « Plus que XXX jours ». Le nombre est recalculé chaque
+// jour directement dans le navigateur du visiteur.
+interface Props {
+  datetime: string;
+  before: string;
+  after: string;
+  today: string;
+}
+const { datetime, before, after, today } = Astro.props;
+
+const daysLeft = (target: Date) => Math.max(0, Math.ceil((target.getTime() - Date.now()) / 86_400_000));
+const initial = daysLeft(new Date(datetime));
+---
+
+<section class="countdown container" data-countdown={datetime} data-today={today} data-reveal>
+  <p class="before script">{before}</p>
+  <p class="number">
+    <span class="digits" data-days>{initial}</span>
+    <span class="unit script">jours</span>
+  </p>
+  <p class="after script">{after}</p>
+</section>
+
+<script>
+  const el = document.querySelector<HTMLElement>('[data-countdown]');
+  if (el) {
+    const target = new Date(el.dataset.countdown!);
+    const days = Math.ceil((target.getTime() - Date.now()) / 86_400_000);
+    const out = el.querySelector('[data-days]');
+    if (days <= 0) {
+      el.innerHTML = `<p class="script" style="font-size: var(--text-script-sm)">${el.dataset.today}</p>`;
+    } else if (out) {
+      out.textContent = String(days);
+    }
+  }
+</script>
+
+<style>
+  .countdown {
+    padding-top: var(--space-2xl);
+    text-align: center;
+  }
+
+  .before,
+  .after,
+  .unit {
+    font-size: var(--text-script-sm);
+  }
+
+  .number {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0.9rem;
+    margin-block: 0.35rem 0.2rem;
+  }
+
+  .digits {
+    font-family: var(--font-mono);
+    font-size: 2rem;
+    letter-spacing: 0.3em;
+    margin-right: -0.3em;
+    color: var(--color-ink-soft);
+  }
+</style>

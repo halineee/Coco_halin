@@ -1,0 +1,29 @@
+---
+// Le séparateur « trait — cœur — trait » de la maquette Canva.
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+import Icon from './Icon.astro';
+---
+
+<div class:list={['heart-divider', className]} aria-hidden="true">
+  <span></span>
+  <Icon name="heart" size={14} strokeWidth={1.6} />
+  <span></span>
+</div>
+
+<style>
+  .heart-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    color: var(--color-ink-faint);
+  }
+
+  span {
+    flex: 1;
+    height: 1px;
+    background: var(--color-line);
+  }
+</style>

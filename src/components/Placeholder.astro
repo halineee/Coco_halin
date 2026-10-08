@@ -1,0 +1,39 @@
+---
+// Marqueur « À compléter » : signale clairement un contenu provisoire.
+interface Props {
+  label?: string;
+}
+const { label = 'À compléter' } = Astro.props;
+---
+
+<div class="placeholder">
+  <span class="badge">{label}</span>
+  <div class="content"><slot /></div>
+</div>
+
+<style>
+  .placeholder {
+    position: relative;
+    padding: var(--space-md);
+    border: 1px dashed var(--color-ink-faint);
+    border-radius: var(--radius-md);
+    color: var(--color-ink-soft);
+  }
+
+  .badge {
+    position: absolute;
+    top: -0.65rem;
+    left: var(--space-md);
+    padding: 0 0.5rem;
+    background: var(--color-paper);
+    font-size: var(--text-xs);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .content {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--text-lg);
+  }
+</style>

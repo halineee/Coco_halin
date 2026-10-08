@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageTitle from '../components/PageTitle.astro';
+import { url } from '../lib/url';
+---
+
+<BaseLayout title="Page introuvable">
+  <PageTitle title="Oups…" intro="Cette page semble s’être égarée en chemin." />
+  <div class="container container--wide">
+    <a class="serif" href={url('/')}>Revenir à l’accueil</a>
+  </div>
+</BaseLayout>

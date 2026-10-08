@@ -1,0 +1,68 @@
+/* ─────────────────────────────────────────────────────────────
+   Design tokens — toutes les couleurs, polices et espacements
+   du site sont définis ici. Changer une valeur ici la change
+   partout.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* Couleurs */
+  --color-paper: #f2f1f5;        /* fond lavande très pâle (Canva) */
+  --color-paper-deep: #e8e6ee;   /* fond légèrement plus soutenu (cartes) */
+  --color-card: #fbfbfd;         /* blanc cassé (polaroid, cartes) */
+  --color-ink: #55555b;          /* texte principal, gris anthracite doux */
+  --color-ink-soft: #85848c;     /* texte secondaire */
+  --color-ink-faint: #b4b3ba;    /* traits, séparateurs */
+  --color-line: #c9c8cf;
+
+  /* Polices
+     --font-script : titres manuscrits (Feeling Passionate dans Canva).
+       Si vous ajoutez le fichier de la police Feeling Passionate,
+       elle sera utilisée automatiquement (voir styles/fonts.css).
+     --font-serif  : textes éditoriaux, sous-titres
+     --font-sans   : informations pratiques
+     --font-mono   : chiffres (compte à rebours, prix) */
+  --font-script: 'Feeling Passionate', 'Comforter Brush', cursive;
+  --font-serif: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-sans: 'Jost', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Courier Prime', 'Courier New', monospace;
+
+  /* Tailles de texte (fluides : petites sur mobile, un peu plus grandes sur ordinateur) */
+  --text-xs: 0.6875rem;
+  --text-sm: 0.8125rem;
+  --text-base: 1rem;
+  --text-lg: 1.1875rem;
+  --text-xl: clamp(1.4rem, 1.2rem + 1vw, 1.75rem);
+  --text-script-sm: clamp(1.6rem, 1.4rem + 1vw, 2rem);
+  --text-script-md: clamp(2.1rem, 1.8rem + 1.5vw, 2.75rem);
+  --text-script-lg: clamp(3.6rem, 2.8rem + 4vw, 6rem);
+  --text-script-xl: clamp(4.6rem, 3.4rem + 6vw, 8rem);
+
+  /* Espacements */
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.875rem;
+  --space-md: 1.25rem;
+  --space-lg: 2rem;
+  --space-xl: 3.5rem;
+  --space-2xl: 5.5rem;
+
+  /* Mise en page */
+  --gutter: 1.5rem;              /* marge latérale sur mobile */
+  --content-width: 34rem;        /* largeur max du texte */
+  --wide-width: 64rem;           /* largeur max des grilles */
+
+  --radius-sm: 4px;
+  --radius-md: 14px;
+  --shadow-soft: 0 10px 30px -12px rgb(60 58 70 / 0.28);
+  --shadow-lift: 0 18px 40px -16px rgb(60 58 70 / 0.35);
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --header-height: 5.25rem;
+}
+
+@media (min-width: 48em) {
+  :root {
+    --gutter: 2.5rem;
+    --header-height: 5.75rem;
+  }
+}

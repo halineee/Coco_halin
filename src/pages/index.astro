@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PolaroidHero from '../components/PolaroidHero.astro';
+import EventDetails from '../components/EventDetails.astro';
+import VenueSection from '../components/VenueSection.astro';
+import Countdown from '../components/Countdown.astro';
+import site from '../content/site.yaml';
+
+const { wedding, home } = site;
+---
+
+<BaseLayout>
+  <PolaroidHero />
+  <EventDetails />
+  <VenueSection />
+  <Countdown
+    datetime={wedding.datetime}
+    before={home.countdownBefore}
+    after={home.countdownAfter}
+    today={home.countdownToday}
+  />
+  <p class="bottom-hint container" data-reveal>{home.bottomHint}</p>
+</BaseLayout>
+
+<style>
+  .bottom-hint {
+    padding-top: var(--space-2xl);
+    text-align: center;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--text-base);
+    color: var(--color-ink-soft);
+  }
+</style>

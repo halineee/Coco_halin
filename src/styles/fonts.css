@@ -1,0 +1,23 @@
+/* Polices auto-hébergées (aucune requête vers Google : plus rapide et
+   respectueux de la vie privée). */
+@import '@fontsource/comforter-brush/400.css';
+@import '@fontsource/cormorant-garamond/400.css';
+@import '@fontsource/cormorant-garamond/400-italic.css';
+@import '@fontsource/cormorant-garamond/500.css';
+@import '@fontsource/jost/300.css';
+@import '@fontsource/jost/400.css';
+@import '@fontsource/jost/500.css';
+@import '@fontsource/courier-prime/400.css';
+
+/* ── Feeling Passionate (police Canva) ───────────────────────
+   Pour l'utiliser :
+   1. Vérifiez que votre licence autorise l'usage sur un site web.
+   2. Placez le fichier dans public/fonts/FeelingPassionate.woff2
+   3. Supprimez les deux lignes de commentaire qui entourent le bloc ci-dessous.
+
+@font-face {
+  font-family: 'Feeling Passionate';
+  src: url('/Coco_halin/fonts/FeelingPassionate.woff2') format('woff2');
+  font-display: swap;
+}
+──────────────────────────────────────────────────────────── */

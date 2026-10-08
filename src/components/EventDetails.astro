@@ -1,0 +1,60 @@
+---
+// Date, lieu et message d'introduction.
+import site from '../content/site.yaml';
+const { wedding, home } = site;
+---
+
+<section class="details container">
+  <p class="date script" data-reveal>
+    <time datetime={wedding.datetime}>
+      <span class="visually-hidden">{wedding.dayDisplay}, </span>
+      <span aria-hidden="true">{wedding.dateDisplay}</span>
+      <span class="time">{wedding.timeDisplay}</span>
+    </time>
+  </p>
+  <p class="city script" data-reveal style="--reveal-delay: 0.1s">{wedding.city}</p>
+
+  <p class="intro script" data-reveal>
+    {home.intro.map((line: string) => <span>{line}</span>)}
+  </p>
+
+  <p class="tagline serif" data-reveal>{home.tagline}</p>
+</section>
+
+<style>
+  .details {
+    padding-top: var(--space-xl);
+    text-align: center;
+  }
+
+  .date {
+    font-size: var(--text-script-sm);
+    letter-spacing: 0.02em;
+  }
+
+  .time {
+    margin-left: 0.9em;
+  }
+
+  .city {
+    margin-top: 0.35rem;
+    font-size: var(--text-script-sm);
+  }
+
+  .intro {
+    margin-top: var(--space-xl);
+    font-size: clamp(1.55rem, 1.3rem + 1vw, 1.9rem);
+    line-height: 1.35;
+  }
+
+  .intro span {
+    display: block;
+  }
+
+  .tagline {
+    margin-top: var(--space-lg);
+    font-size: var(--text-lg);
+    font-style: italic;
+    color: var(--color-ink-soft);
+  }
+</style>
