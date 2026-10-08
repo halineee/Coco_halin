@@ -117,11 +117,18 @@ const sections = [
       d.adresses && d.adresses.length > 0 && (
         <div class="adresses" data-reveal>
           <h3 class="script">Nos adresses</h3>
-          <ul>
-            {d.adresses.map((a) => (
-              <li class:list={{ todo: isTodo(a) }}>{a}</li>
-            ))}
-          </ul>
+          {d.adresses.some((a) => typeof a !== 'string') && (
+            <PlaceList items={d.adresses.filter((a) => typeof a !== 'string')} city={d.korean} maps />
+          )}
+          {d.adresses.some((a) => typeof a === 'string') && (
+            <ul>
+              {d.adresses
+                .filter((a): a is string => typeof a === 'string')
+                .map((a) => (
+                  <li class:list={{ todo: isTodo(a) }}>{a}</li>
+                ))}
+            </ul>
+          )}
         </div>
       )
     }

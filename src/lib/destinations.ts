@@ -31,7 +31,7 @@ export interface Destination {
   aFaire: Place[];
   conseils: { duree: string; ouLoger: string; transport: string; tips?: string[] };
   suggestions?: Place[];
-  adresses?: string[];
+  adresses?: (string | Place)[];
 }
 
 const files = import.meta.glob<{ default: Omit<Destination, 'slug' | 'photos'> }>('/src/content/destinations/*.yaml', { eager: true });
