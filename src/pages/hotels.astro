@@ -6,6 +6,7 @@ import HotelCard from '../components/HotelCard.astro';
 import Icon from '../components/Icon.astro';
 import rawContent from '../content/hotels.yaml';
 import { fr } from '../lib/text';
+import { url } from '../lib/url';
 
 const content = fr(rawContent);
 ---
@@ -25,6 +26,22 @@ const content = fr(rawContent);
     </ul>
     {content.note && <p class="note">{content.note}</p>}
   </div>
+
+  {
+    content.groupStay?.text && (
+      <aside class="container container--wide" data-reveal>
+        <div class="group-stay">
+          <p class="group-title script">{content.groupStay.title}</p>
+          <p class="group-text">{content.groupStay.text}</p>
+          {content.groupStay.link && (
+            <a class="group-link" href={url(content.groupStay.link.href)}>
+              {content.groupStay.link.label} <Icon name="arrow-right" size={16} strokeWidth={1.4} />
+            </a>
+          )}
+        </div>
+      </aside>
+    )
+  }
 
   <!-- Navigation entre les quartiers (reste visible en haut lors du défilement) -->
   <nav class="quartier-nav" aria-label="Quartiers" data-quartier-nav>
@@ -136,6 +153,38 @@ const content = fr(rawContent);
   .symbol {
     color: var(--color-ink);
     letter-spacing: 0.08em;
+  }
+
+  /* Logement de groupe */
+  .group-stay {
+    margin-top: var(--space-lg);
+    padding: var(--space-md);
+    border: 1px dashed var(--color-ink-faint);
+    border-radius: var(--radius-md);
+    background: var(--color-card);
+  }
+
+  .group-title {
+    font-size: var(--text-script-sm);
+    line-height: 1.15;
+  }
+
+  .group-text {
+    margin-top: var(--space-xs);
+    font-size: var(--text-sm);
+    line-height: 1.65;
+  }
+
+  .group-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: var(--space-sm);
+    color: var(--color-ink);
+    font-size: var(--text-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
   }
 
   .note {

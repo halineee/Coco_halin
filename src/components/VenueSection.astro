@@ -2,7 +2,6 @@
 // Section « Le lieu » : nom, carte, adresse, liens vers les applications.
 import site from '../content/site.yaml';
 import MapLinks from './MapLinks.astro';
-import TaxiCard from './TaxiCard.astro';
 import Icon from './Icon.astro';
 import { fr } from '../lib/text';
 
@@ -41,27 +40,6 @@ const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(venue.mapE
     <p class="map-note">{venue.mapNote}</p>
   </div>
 
-  <div class="taxi" data-reveal>
-    <TaxiCard
-      title={venue.taxiCard.title}
-      text={venue.taxiCard.text}
-      nameKorean={venue.nameKorean}
-      addressKorean={venue.addressKorean}
-    />
-  </div>
-
-  {
-    venue.notes?.length > 0 && (
-      <div class="notes" data-reveal>
-        <h3 class="heading script">{venue.notesTitle}</h3>
-        <ul>
-          {venue.notes.map((note: string) => (
-            <li>{note}</li>
-          ))}
-        </ul>
-      </div>
-    )
-  }
 </section>
 
 <style>
@@ -159,35 +137,5 @@ const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(venue.mapE
     font-size: var(--text-xs);
     line-height: 1.5;
     color: var(--color-ink-soft);
-  }
-
-  .taxi {
-    margin-top: var(--space-lg);
-  }
-
-  .notes {
-    margin-top: var(--space-xl);
-  }
-
-  .notes ul {
-    list-style: none;
-    margin: var(--space-sm) 0 0;
-    padding: 0;
-    display: grid;
-    gap: var(--space-sm);
-  }
-
-  .notes li {
-    font-size: var(--text-base);
-    line-height: 1.6;
-  }
-
-  .notes li + li::before {
-    content: '';
-    display: block;
-    width: 1.5rem;
-    height: 1px;
-    margin: 0 auto var(--space-sm);
-    background: var(--color-line);
   }
 </style>

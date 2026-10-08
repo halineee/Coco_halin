@@ -5,6 +5,7 @@ import EventDetails from '../components/EventDetails.astro';
 import VenueSection from '../components/VenueSection.astro';
 import Countdown from '../components/Countdown.astro';
 import Faq from '../components/Faq.astro';
+import HomeNotes from '../components/HomeNotes.astro';
 import Rsvp from '../components/Rsvp.astro';
 import site from '../content/site.yaml';
 
@@ -15,14 +16,15 @@ const { wedding, home } = site;
   <PolaroidHero />
   <EventDetails />
   <VenueSection />
-  <Faq />
-  <Rsvp />
   <Countdown
     datetime={wedding.datetime}
     before={home.countdownBefore}
     after={home.countdownAfter}
     today={home.countdownToday}
   />
+  <HomeNotes />
+  <Rsvp />
+  <Faq />
   <p class="bottom-hint container" data-reveal>{home.bottomHint}</p>
 </BaseLayout>
 

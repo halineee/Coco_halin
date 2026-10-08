@@ -23,6 +23,14 @@ pageTitle: "Hôtels"
 intro: "Notre sélection d’hôtels, quartier par quartier, pour choisir l’ambiance qui vous ressemble."
 note: "Une sélection d’hôtels bien notés par les voyageurs, du plus simple au plus luxueux. Autour du lieu de réception, il y a surtout de petits hôtels très simples : nous vous conseillons plutôt Dongdaemun, à environ 15 minutes en métro direct. Les gammes de prix sont indicatives."
 
+# Encadré « logement de groupe » en haut de la page (laisser vide pour masquer)
+groupStay:
+  title: "Un Airbnb tous ensemble ?"
+  text: "Nous pensons réserver un grand logement de groupe (Airbnb) pour les nuits du 13 et du 14 août (arrivée le 13, départ le 15). Si cela vous intéresse, dites-le-nous dans le formulaire de réponse de la page d’accueil, ou écrivez-nous directement sur WhatsApp."
+  link:
+    label: "Répondre"
+    href: "/#rsvp-title"
+
 priceLegend:
   - symbol: "€"
     label: "Abordable"

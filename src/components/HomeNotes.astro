@@ -1,0 +1,54 @@
+---
+// « Bon à savoir » : notes pratiques pour le jour J (page d'accueil).
+// Le contenu se modifie dans src/content/site.yaml (venue.notes).
+import site from '../content/site.yaml';
+import { fr } from '../lib/text';
+
+const { venue } = fr(site);
+---
+
+{
+  venue.notes?.length > 0 && (
+    <section class="notes container" data-reveal>
+      <h2 class="heading script">{venue.notesTitle}</h2>
+      <ul>
+        {venue.notes.map((note: string) => (
+          <li>{note}</li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  .notes {
+    padding-top: var(--space-2xl);
+    text-align: center;
+  }
+
+  .heading {
+    font-size: var(--text-script-sm);
+  }
+
+  ul {
+    display: grid;
+    gap: var(--space-sm);
+    margin: var(--space-sm) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+
+  li + li::before {
+    content: '';
+    display: block;
+    width: 1.5rem;
+    height: 1px;
+    margin: 0 auto var(--space-sm);
+    background: var(--color-line);
+  }
+</style>

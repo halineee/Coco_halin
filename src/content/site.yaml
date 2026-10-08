@@ -113,7 +113,7 @@ faq:
         label: "Le carnet de voyage"
         href: "/carnet-de-voyage/"
     - q: "Où dormir ?"
-      a: "Nous avons sélectionné des hôtels dans plusieurs quartiers. Pour le jour J, Dongdaemun est le plus pratique : la ligne 1 mène directement à Hoegi en une quinzaine de minutes."
+      a: "Nous avons sélectionné des hôtels dans plusieurs quartiers. Pour le jour J, Dongdaemun est le plus pratique : la ligne 1 mène directement à Hoegi en une quinzaine de minutes. Nous pensons aussi réserver un grand Airbnb de groupe pour les nuits du 13 et du 14 août : si cela vous intéresse, dites-le-nous dans le formulaire ci-dessus ou sur WhatsApp."
       lien:
         label: "Nos hôtels"
         href: "/hotels/"
@@ -129,6 +129,7 @@ faq:
 rsvp:
   title: "Serez-vous des nôtres ?"
   text: "Merci de nous répondre dès que possible, cela nous aidera beaucoup pour l’organisation."
+  airbnbQuestion: "Intéressé·e par l’Airbnb de groupe (nuits du 13 et du 14 août) ?"
   thanks: "Merci ! Votre réponse a bien été envoyée."
   error: "Oups, l’envoi n’a pas fonctionné. Réessayez, ou écrivez-nous sur WhatsApp."
   googleForm:
@@ -140,6 +141,7 @@ rsvp:
       name: ""
       attending: ""
       guests: ""
+      airbnb: ""
 
 footer:
   signature: "Corentin & Halin · 14.08.2027 · Séoul"

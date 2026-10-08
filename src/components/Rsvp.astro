@@ -44,6 +44,16 @@ const ready = Boolean(gf?.action && gf?.fields?.name);
             </select>
           </label>
 
+          {gf.fields.airbnb && (
+            <fieldset class="field">
+              <legend>{rsvp.airbnbQuestion}</legend>
+              <div class="choices">
+                <label><input type="radio" name="airbnb" value={gf.yes || 'Oui'} /> <span>Oui, ça m’intéresse</span></label>
+                <label><input type="radio" name="airbnb" value={gf.no || 'Non'} /> <span>Non merci</span></label>
+              </div>
+            </fieldset>
+          )}
+
         </div>
 
         <button type="submit" class="submit">Envoyer ma réponse</button>
@@ -74,7 +84,7 @@ const ready = Boolean(gf?.action && gf?.fields?.name);
       const declined = form.querySelector<HTMLInputElement>('[data-no]')!.checked;
       for (const [key, entry] of Object.entries(fields)) {
         if (!entry) continue;
-        if (declined && key === 'guests') continue;
+        if (declined && (key === 'guests' || key === 'airbnb')) continue;
         const value = data.get(key);
         if (value) body.append(entry, String(value));
       }
