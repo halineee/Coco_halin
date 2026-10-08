@@ -20,16 +20,23 @@ aVoir:
     text: "Un ancien palais qui se reflète dans l’eau, magnifique à la nuit tombée."
 
 aGouter:
-  - name: "Le pain de Gyeongju"
-    korean: "황남빵"
-    text: "Petite pâtisserie fourrée à la pâte de haricot rouge, la spécialité de la ville."
+  - name: "Le chalbori-ppang"
+    korean: "찰보리빵"
+    text: "Deux petites crêpes moelleuses à l’orge, fourrées de pâte de haricot rouge."
   - name: "Le ssambap"
     korean: "쌈밥"
-    text: "Riz et multiples accompagnements à envelopper dans des feuilles."
+    text: "Riz et multiples accompagnements à envelopper dans des feuilles de salade."
+  - name: "Le Gyodong beopju"
+    korean: "교동법주"
+    text: "Un alcool de riz traditionnel transmis dans la famille Choi de Gyeongju depuis des siècles."
 
 aFaire:
   - name: "Hwangnidan-gil"
+    korean: "황리단길"
     text: "Une rue de hanok remplie de cafés, de librairies et de boutiques."
+  - name: "Le lac de Bomun"
+    korean: "보문호"
+    text: "Une balade ou un tour à vélo autour du lac, bordé de cerisiers."
   - name: "Louer un vélo"
     text: "La ville est plate et les sites sont proches : idéal à vélo."
 
@@ -44,10 +51,10 @@ conseils:
 suggestions:
   - name: "Hwangnam-ppang, la boutique historique"
     korean: "황남빵"
-    text: "La maison qui a créé le pain de Gyeongju en 1939. À manger dans les jours qui suivent."
-  - name: "La rue du ssambap"
-    korean: "쌈밥거리"
-    text: "Près des tumulus de Daereungwon, une rue entière de restaurants de ssambap."
+    text: "La maison qui a créé le pain de Gyeongju en 1939 : petites pâtisseries fourrées au haricot rouge, à manger dans les jours qui suivent."
+  - name: "Le village de Gyochon"
+    korean: "교촌마을"
+    text: "Le village traditionnel de la famille Choi, berceau du Gyodong beopju, près du pont Woljeonggyo."
 
 adresses:
   - "À compléter : nos adresses à Gyeongju"

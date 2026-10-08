@@ -45,6 +45,7 @@ aVoir:
 aGouter:
   - name: "Le marché de Gwangjang"
     korean: "광장시장"
+    carte: true
     text: "Galettes de haricot mungo (bindaetteok), kimbap et stands animés."
   - name: "Le barbecue coréen"
     korean: "삼겹살"
@@ -57,8 +58,10 @@ aFaire:
   - name: "Porter le hanbok"
     text: "À louer près des palais, le temps d’une promenade."
   - name: "Seongsu-dong"
+    korean: "성수동"
     text: "Anciens ateliers devenus cafés, concept stores et pop-up stores."
   - name: "Myeongdong et Dongdaemun"
+    korean: "명동 · 동대문"
     text: "Cosmétiques, mode et shopping jusque tard le soir."
   - name: "Un spa coréen (jjimjilbang)"
     text: "Bains, saunas et salles de repos : une expérience très locale."

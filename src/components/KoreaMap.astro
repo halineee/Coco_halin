@@ -19,6 +19,8 @@ const labelSide: Record<string, 'left' | 'right'> = {
   busan: 'left',
   jeju: 'right',
 };
+const regions = Object.entries(map.regions as Record<string, { d: string; fill: string }>);
+const currentRegion = current ? (map.cityRegion as Record<string, string>)[current] : undefined;
 const cities = destinations
   .filter((d) => d.slug in map.cities)
   .map((d) => {
@@ -29,8 +31,17 @@ const cities = destinations
 
 <figure class:list={['korea-map', className]}>
   <svg viewBox={`-10 -10 ${map.width + 20} ${map.height + 20}`} role="group" aria-label="Carte de la Corée du Sud">
-    <path class="land-shadow" d={map.d} transform="translate(7 9)"></path>
-    <path class="land" d={map.d}></path>
+    <path class="land-shadow" d={map.outline} transform="translate(7 9)"></path>
+    {
+      regions.map(([id, r]) => (
+        <path
+          class:list={['region', { active: id === currentRegion, dim: currentRegion && id !== currentRegion }]}
+          d={r.d}
+          style={`fill: ${r.fill}`}
+        />
+      ))
+    }
+    <path class="land" d={map.outline}></path>
     {
       cities.map((c) => {
         const active = c.slug === current;
@@ -67,8 +78,23 @@ const cities = destinations
     overflow: visible;
   }
 
+  .region {
+    stroke: var(--color-card);
+    stroke-width: 2;
+    stroke-linejoin: round;
+    transition: opacity 0.3s var(--ease);
+  }
+
+  .region.dim {
+    opacity: 0.45;
+  }
+
+  .region.active {
+    fill: #d9cfe3 !important;
+  }
+
   .land {
-    fill: var(--color-card);
+    fill: none;
     stroke: var(--color-ink);
     stroke-width: 2.4;
     stroke-linejoin: round;

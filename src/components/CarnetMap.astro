@@ -10,14 +10,15 @@ import { url } from '../lib/url';
 
 // Repère de la scène : 100 unités de large, H de haut.
 const H = 106;
-const MAP_X = 25; // position et taille de la carte dans la scène
+const MAP_X = 23; // position et taille de la carte dans la scène
 const MAP_Y = 7;
-const MAP_W = 50;
+const MAP_W = 54;
 const k = MAP_W / map.width;
 const toStage = ([x, y]: number[]) => [MAP_X + x * k, MAP_Y + y * k];
 
 // Emplacement des vignettes (centre du cercle), à gauche ou à droite
-const R = 8; // rayon du cercle
+const R = 7.5; // rayon du cercle
+const regions = Object.entries(map.regions as Record<string, { d: string; fill: string; label: number[] | null; short: string }>);
 const slots: Record<string, { side: 'left' | 'right'; y: number }> = {
   seoul: { side: 'left', y: 15 },
   jeonju: { side: 'left', y: 50 },
@@ -31,7 +32,7 @@ const items = destinations
   .map((d) => {
     const [dx, dy] = toStage((map.cities as Record<string, number[]>)[d.slug]);
     const { side, y } = slots[d.slug];
-    const cx = side === 'left' ? 12 : 88;
+    const cx = side === 'left' ? 11 : 89;
     const endX = side === 'left' ? cx + R + 1.2 : cx - R - 1.2;
     // coude à environ 45° puis trait horizontal jusqu'à la vignette
     const run = Math.abs(y - dy);
@@ -53,8 +54,18 @@ const waves = [
   <svg class="lines" viewBox={`0 0 100 ${H}`} aria-hidden="true">
     {waves.map((w) => <path class="wave" d={w} />)}
     <g transform={`translate(${MAP_X} ${MAP_Y}) scale(${k})`}>
-      <path class="land-shadow" d={map.d} transform="translate(7 9)" />
-      <path class="land" d={map.d} />
+      <path class="land-shadow" d={map.outline} transform="translate(7 9)" />
+      {regions.map(([id, r]) => <path class="region" d={r.d} style={`fill: ${r.fill}`} data-region={id} />)}
+      <path class="land" d={map.outline} />
+      {
+        regions
+          .filter(([, r]) => r.label)
+          .map(([, r]) => (
+            <text class="region-label" x={r.label![0]} y={r.label![1]} text-anchor="middle">
+              {r.short}
+            </text>
+          ))
+      }
     </g>
     {items.map((it) => <path class="leader" d={it.path} />)}
     {
@@ -114,11 +125,26 @@ const waves = [
     overflow: visible;
   }
 
+  .region {
+    stroke: var(--color-card);
+    stroke-width: 2.2;
+    stroke-linejoin: round;
+  }
+
   .land {
-    fill: var(--color-card);
+    fill: none;
     stroke: var(--color-ink);
     stroke-width: 2.6;
     stroke-linejoin: round;
+  }
+
+  .region-label {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    fill: var(--color-ink-soft);
+    opacity: 0.85;
   }
 
   .land-shadow {

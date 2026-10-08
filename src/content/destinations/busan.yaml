@@ -35,10 +35,13 @@ aGouter:
 
 aFaire:
   - name: "Le train côtier de Haeundae"
+    korean: "해운대 블루라인파크"
     text: "Une petite ligne panoramique le long de la côte."
   - name: "Gwangalli le soir"
+    korean: "광안리해수욕장"
     text: "La plage face au pont illuminé, avec ses bars et ses cafés."
   - name: "Huinnyeoul"
+    korean: "흰여울문화마을"
     text: "Un village de falaises blanches au-dessus de la mer, idéal pour une balade."
 
 conseils:

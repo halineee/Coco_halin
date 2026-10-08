@@ -8,6 +8,12 @@ export interface Place {
   name: string;
   korean?: string;
   text: string;
+  /** Afficher les liens de carte (true) ou non (false). Par défaut : selon la rubrique. */
+  carte?: boolean;
+  /** Recherche personnalisée pour les cartes (en coréen de préférence) */
+  recherche?: string;
+  /** Photo facultative (chemin à partir de src/assets/) */
+  photo?: string;
 }
 
 export interface Destination {

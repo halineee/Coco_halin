@@ -25,12 +25,15 @@ aGouter:
     text: "Soupe de pousses de soja et riz, parfaite au petit-déjeuner."
   - name: "Les maisons de makgeolli"
     korean: "막걸리 골목"
+    carte: true
+    recherche: "전주 막걸리골목"
     text: "On commande une bouilloire de makgeolli, et les petits plats arrivent avec."
 
 aFaire:
   - name: "Se promener en hanbok"
     text: "Le village de hanok s’y prête particulièrement."
   - name: "Le marché de nuit de Nambu"
+    korean: "남부시장"
     text: "Stands de street food et ambiance animée le week-end."
 
 conseils:

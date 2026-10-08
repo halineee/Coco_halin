@@ -34,6 +34,7 @@ aFaire:
   - name: "Les sentiers Olle"
     text: "Des chemins de randonnée qui font le tour de l’île, par étapes."
   - name: "Les plages de Hyeopjae et Hamdeok"
+    korean: "협재 · 함덕"
     text: "Sable clair et eau turquoise, parfaites en été."
 
 conseils:
