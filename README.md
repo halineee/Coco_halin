@@ -10,11 +10,15 @@
 | 이름, 날짜, 소개 문구, 장소, 지도 링크, 메뉴 | `src/content/site.yaml` |
 | 홈 폴라로이드 사진 | `src/assets/photos/accueil/polaroid.jpg` 를 같은 이름으로 교체 |
 | 색상, 폰트, 간격 | `src/styles/tokens.css` |
+| 갤러리 ‘En attendant le grand jour…’ 사진 | `src/assets/photos/en-attendant/` 폴더에 사진 넣기 |
+| 갤러리 ‘Une histoire en images’ 사진 | `src/assets/photos/histoire/` 폴더에 사진 넣기 |
+| 갤러리 제목·문구, 사진 설명, 크게 보일 사진 | `src/content/photos.yaml` |
 | 메뉴 아이콘 그림 | `src/components/Icon.astro` |
 | Getting Married 타이틀, 하트라인, 꽃다발·편지, 마스킹테이프 | `src/assets/illustrations/` 안의 파일을 같은 이름으로 교체 |
 
 - 사진은 `src/assets/` 아래에 넣으면 자동으로 최적화(압축·크기 조절)됩니다. 원본 그대로 넣어도 됩니다.
 - `.yaml` 파일은 `이름: "값"` 형식입니다. 따옴표 안의 글자만 바꾸면 됩니다. 들여쓰기(띄어쓰기)는 그대로 유지해 주세요.
+- 갤러리 사진은 **파일 이름 순서**(01.jpg, 02.jpg …)로 표시됩니다. 임시 사진은 지우고 내 사진을 넣으면 됩니다.
 - 현재 사진은 모두 임시 이미지(“photo à venir”)입니다.
 
 ### Feeling Passionate 폰트 사용하기
