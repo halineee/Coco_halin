@@ -190,6 +190,39 @@ cafes:
     - "On commande au comptoir, et l’usage est de prendre une boisson par personne."
     - "Les cafés servent rarement de l’alcool : pour un verre, direction un bar ou un restaurant."
     - "Beaucoup ouvrent tard, et les cafés-boulangeries sont parfaits pour le petit-déjeuner."
+  # Les grandes chaînes de cafés coréennes (une ligne par chaîne)
+  chains:
+    title: "Les chaînes coréennes"
+    text: "Au-delà de Starbucks, la Corée a ses propres chaînes, présentes à chaque coin de rue. Petit guide pour s’y retrouver."
+    groups:
+      - title: "Petits prix, grands gobelets"
+        text: "Parfaites pour un café glacé à emporter. Peu de places assises en général."
+        items:
+          - name: "Mega Coffee"
+            korean: "메가커피"
+          - name: "Compose Coffee"
+            korean: "컴포즈커피"
+          - name: "Paik’s Coffee"
+            korean: "빽다방"
+          - name: "Ediya Coffee"
+            korean: "이디야커피"
+      - title: "Pour s’installer"
+        text: "Des salles spacieuses où l’on reste volontiers, pour discuter ou se reposer."
+        items:
+          - name: "A Twosome Place"
+            korean: "투썸플레이스"
+            note: "réputée pour ses gâteaux"
+          - name: "Hollys"
+            korean: "할리스"
+          - name: "Tom N Toms"
+            korean: "탐앤탐스"
+            note: "et ses bretzels"
+          - name: "Paul Bassett"
+            korean: "폴 바셋"
+            note: "café de spécialité et glace au lait"
+      - title: "Et Starbucks ?"
+        text: "Il y en a partout, avec des boissons de saison et des objets que l’on ne trouve qu’en Corée."
+        items: []
   streets:
     title: "Quartiers de cafés"
     items:

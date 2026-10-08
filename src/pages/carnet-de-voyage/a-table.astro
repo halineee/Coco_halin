@@ -102,6 +102,33 @@ const sections = [
     <ul class="tips" data-reveal>
       {c.cafes.tips.map((tip: string) => <li>{tip}</li>)}
     </ul>
+    {
+      c.cafes.chains && (
+        <>
+          <h3 class="eyebrow sub-eyebrow">{c.cafes.chains.title}</h3>
+          <p class="chains-intro" data-reveal>{c.cafes.chains.text}</p>
+          <div class="chains">
+            {c.cafes.chains.groups.map((g: any) => (
+              <div class="chain-group" data-reveal>
+                <p class="chain-title">{g.title}</p>
+                <p class="chain-text">{g.text}</p>
+                {g.items?.length > 0 && (
+                  <ul class="chain-list">
+                    {g.items.map((it: any) => (
+                      <li>
+                        <span class="chain-name">{it.name}</span>
+                        <span class="chain-ko" lang="ko">{it.korean}</span>
+                        {it.note && <span class="chain-note">{it.note}</span>}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+        </>
+      )
+    }
     <h3 class="eyebrow sub-eyebrow">{c.cafes.streets.title}</h3>
     <ul class="streets">
       {
@@ -405,6 +432,80 @@ const sections = [
   .sub-eyebrow {
     margin-top: var(--space-lg);
     font-weight: 400;
+  }
+
+  .chains-intro {
+    margin-top: var(--space-xs);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+  }
+
+  .chains {
+    display: grid;
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+  }
+
+  @media (min-width: 48em) {
+    .chains {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .chain-group {
+    padding: var(--space-md);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-card);
+  }
+
+  .chain-title {
+    font-size: 1.1rem;
+  }
+
+  .chain-text {
+    margin-top: 0.3rem;
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+  }
+
+  .chain-list {
+    margin-top: var(--space-sm);
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .chain-list li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.15rem 0.5rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .chain-list li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .chain-name {
+    font-size: 0.98rem;
+  }
+
+  .chain-ko {
+    font-size: var(--text-xs);
+    color: var(--color-ink-faint);
+  }
+
+  .chain-note {
+    flex-basis: 100%;
+    font-size: var(--text-xs);
+    font-style: italic;
+    color: var(--color-ink-soft);
   }
 
   .streets {
