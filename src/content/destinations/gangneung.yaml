@@ -1,0 +1,67 @@
+# Destination : Gangneung et Yangyang (côte Est, province de Gangwon)
+# Photos : src/assets/destinations/gangneung/
+order: 5
+name: "Gangneung"
+korean: "강릉 · 양양"
+tagline: "Plages, surf et café sur la côte Est"
+cardText: "La mer de l’Est à deux heures de Séoul : plages pour se baigner, surf à Yangyang et montagnes de Seorak."
+intro: "En plein été, c’est là que les Séoulites vont se baigner : de longues plages de sable face à la mer de l’Est, une eau claire, des villages de surfeurs à Yangyang et les sommets du Seoraksan juste derrière. Gangneung est aussi la capitale coréenne du café."
+
+aVoir:
+  - name: "La plage de Gyeongpo"
+    korean: "경포해변"
+    text: "La plus célèbre plage de la côte Est : près de deux kilomètres de sable fin, bordés de pins, avec le lac de Gyeongpo juste derrière."
+  - name: "Anmok, la rue du café"
+    korean: "안목해변 커피거리"
+    text: "Une promenade en bord de mer alignée de cafés avec vue sur les vagues : Gangneung est la ville du café en Corée."
+  - name: "Ojukheon"
+    korean: "오죽헌"
+    text: "Une maison traditionnelle entourée de bambous noirs, où sont nés l’artiste Shin Saimdang et le lettré Yulgok."
+  - name: "Le temple de Naksansa"
+    korean: "낙산사"
+    text: "Un temple bouddhiste perché sur les falaises de Yangyang, face au lever du soleil sur la mer."
+  - name: "Le parc national du Seoraksan"
+    korean: "설악산국립공원"
+    text: "Les plus belles montagnes du pays, avec un téléphérique et des sentiers jusqu’au rocher d’Ulsanbawi."
+
+aGouter:
+  - name: "Le sundubu de Chodang"
+    korean: "초당순두부"
+    text: "Tofu soyeux préparé à l’eau de mer, la grande spécialité du village de Chodang à Gangneung."
+  - name: "Le mulhoe"
+    korean: "물회"
+    text: "Poisson cru dans un bouillon glacé, sucré et pimenté : le plat d’été des ports de la côte Est."
+  - name: "Le café de Gangneung"
+    korean: "강릉 커피"
+    text: "Torréfacteurs et cafés de spécialité, à déguster face à la mer."
+
+aFaire:
+  - name: "Se baigner"
+    korean: "경포해변"
+    text: "Les plages surveillées de la côte Est ouvrent en général de début juillet à fin août : parfait autour du 14 août."
+  - name: "Prendre un cours de surf à Yangyang"
+    korean: "양양 죽도해변"
+    text: "Les vagues douces de Jukdo et des plages voisines sont idéales pour débuter, avec de nombreuses écoles de surf."
+  - name: "Le port de Jumunjin"
+    korean: "주문진항"
+    text: "Un port de pêche animé, avec son marché aux poissons et ses petits restaurants de fruits de mer."
+
+conseils:
+  duree: "1 à 2 jours (possible dans la journée depuis Séoul)"
+  ouLoger: "Près de la plage de Gyeongpo, ou à Yangyang pour le surf"
+  transport: "KTX depuis Séoul (≈ 1 h 45 à 2 h), ou bus express pour Yangyang et Sokcho"
+  tips:
+    - "En août, réservez train et hébergement tôt : c’est la haute saison des plages."
+    - "Les plages sont surveillées aux heures d’ouverture officielles : baignez-vous dans les zones balisées."
+
+# Nos suggestions (adresses connues — vérifiez horaires et jours de fermeture)
+suggestions:
+  - name: "Le village de sundubu de Chodang"
+    korean: "초당순두부마을"
+    text: "Une rue entière de restaurants spécialisés dans le tofu de Gangneung, à deux pas de Gyeongpo."
+  - name: "Le marché central de Gangneung"
+    korean: "강릉중앙시장"
+    text: "Street food, poissons séchés et galettes, au cœur de la ville."
+
+adresses:
+  - "À compléter : nos adresses sur la côte Est"
