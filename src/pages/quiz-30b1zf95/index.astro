@@ -13,6 +13,7 @@ const questions = quiz.questions.map((q: any) => ({
   photo: q.photo ? `${base}${q.photo.startsWith('/') ? q.photo : `/${q.photo}`}` : '',
 }));
 const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY };
+const startPhoto = quiz.photo ? `${base}${quiz.photo}` : '';
 const messagePhoto = quiz.message?.photo ? `${base}${quiz.message.photo}` : '';
 ---
 
@@ -22,6 +23,7 @@ const messagePhoto = quiz.message?.photo ? `${base}${quiz.message.photo}` : '';
 
     <!-- 1. Accueil -->
     <section class="screen" data-screen="start">
+      {startPhoto && <img class="start-photo" src={startPhoto} alt="Corentin, Halin et Bami" width="600" height="600" />}
       <h1 class="title">{quiz.titre}</h1>
       <p class="lead">{quiz.intro}</p>
       <ul class="rules">
@@ -463,6 +465,16 @@ const messagePhoto = quiz.message?.photo ? `${base}${quiz.message.photo}` : '';
     font-size: clamp(2.3rem, 9vw, 3rem);
     line-height: 1.15;
     text-align: center;
+  }
+
+  .start-photo {
+    width: 11rem;
+    height: 11rem;
+    margin: 0 auto 1rem;
+    border: 6px solid var(--color-card);
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: var(--shadow-soft);
   }
 
   .lead {
