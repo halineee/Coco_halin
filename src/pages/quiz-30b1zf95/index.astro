@@ -13,6 +13,7 @@ const questions = quiz.questions.map((q: any) => ({
   photo: q.photo ? `${base}${q.photo.startsWith('/') ? q.photo : `/${q.photo}`}` : '',
 }));
 const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY };
+const messagePhoto = quiz.message?.photo ? `${base}${quiz.message.photo}` : '';
 ---
 
 <QuizLayout title={quiz.titre}>
@@ -54,6 +55,7 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
 
     <!-- 3. Un petit mot pour les mariés -->
     <section class="screen" data-screen="message" hidden>
+      {messagePhoto && <img class="photo couple-photo" src={messagePhoto} alt="Corentin et Halin" loading="lazy" />}
       <h1 class="title">{quiz.message?.titre}</h1>
       <p class="lead">{quiz.message?.texte}</p>
       <textarea class="message" rows="6" maxlength="1000" placeholder="Facultatif" aria-label={quiz.message?.titre} data-message-input></textarea>
@@ -784,6 +786,13 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
   }
 
   /* Petit mot */
+  .couple-photo {
+    margin: 0 0 1rem;
+    max-height: 50vh;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+
   .message {
     width: 100%;
     margin-top: 1.25rem;

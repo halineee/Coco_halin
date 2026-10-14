@@ -34,6 +34,7 @@ export const quiz = {
   message: {
     titre: 'Un petit mot pour nous ?',
     texte: 'Un souhait, un conseil, un souvenir… Nous les lirons tous avec émotion.',
+    photo: '/quiz-photos/nous.jpg', // facultatif : supprimez cette ligne pour retirer la photo
   },
 
   questions: [
