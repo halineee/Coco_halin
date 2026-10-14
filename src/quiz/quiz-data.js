@@ -124,6 +124,17 @@ export const quiz = {
     },
     {
       type: 'choix',
+      question: 'Laquelle de ces aventures n’avons-nous JAMAIS vécue ensemble ?',
+      choix: [
+        'Se faire un masque au concombre',
+        'Transporter une machine à laver dans le métro',
+        'Rester bloqués dehors, enfermés hors de chez nous',
+        'Faire des montagnes russes',
+      ],
+      reponse: 4,
+    },
+    {
+      type: 'choix',
       question: 'Où a eu lieu la demande en mariage ?',
       choix: ['En Norvège', 'À Paris', 'En Islande', 'À Séoul'],
       reponse: 3,
