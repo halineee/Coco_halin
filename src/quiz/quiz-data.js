@@ -150,6 +150,7 @@ export const quiz = {
     {
       type: 'nombre',
       question: 'Depuis combien de mois Bami partage-t-il notre vie ?',
+      photo: '/quiz-photos/bami.jpg',
       reponse: 7,
       unite: 'mois',
     },
