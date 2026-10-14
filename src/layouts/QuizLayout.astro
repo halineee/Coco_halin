@@ -1,0 +1,25 @@
+---
+// Gabarit minimal des pages cachées du quiz : mêmes couleurs et polices
+// que le site, mais sans menu ni pied de page, et jamais indexé.
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#f2f1f5" />
+    <link rel="icon" href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/favicon.svg`} type="image/svg+xml" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,609 @@
+---
+// Page cachée : quiz des invités (accès par QR code uniquement).
+// Les questions se modifient dans src/quiz/quiz-data.js,
+// l'adresse Google Apps Script dans src/quiz/config.js.
+import QuizLayout from '../../layouts/QuizLayout.astro';
+import { quiz } from '../../quiz/quiz-data.js';
+import { APPS_SCRIPT_URL, STORAGE_KEY } from '../../quiz/config.js';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+// Les chemins de photos commencent par « / » : on ajoute le préfixe du site.
+const questions = quiz.questions.map((q: any) => ({
+  ...q,
+  photo: q.photo ? `${base}${q.photo.startsWith('/') ? q.photo : `/${q.photo}`}` : '',
+}));
+const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY };
+---
+
+<QuizLayout title={quiz.titre}>
+  <main class="quiz">
+    <p class="couple script">Corentin &amp; Halin</p>
+
+    <!-- 1. Accueil -->
+    <section class="screen" data-screen="start">
+      <h1 class="title">{quiz.titre}</h1>
+      <p class="lead">{quiz.intro}</p>
+      <ul class="rules">
+        <li>{questions.length} questions</li>
+        <li>Le chronomètre démarre dès que vous commencez</li>
+        <li>En cas d’égalité, le plus rapide l’emporte</li>
+      </ul>
+      <form class="start-form" data-start>
+        <label for="quiz-name">Votre prénom et nom</label>
+        <input id="quiz-name" name="name" type="text" autocomplete="name" maxlength="60" required />
+        <button type="submit" class="btn primary">Commencer</button>
+      </form>
+    </section>
+
+    <!-- 2. Questions (remplies par le script) -->
+    <section class="screen" data-screen="question" hidden>
+      <div class="progress" aria-hidden="true"><span data-progress-bar></span></div>
+      <p class="step" data-step></p>
+      <h2 class="question" data-question></h2>
+      <img class="photo" data-photo alt="" hidden />
+      <div class="choices" data-choices role="radiogroup"></div>
+      <div class="number" data-number hidden>
+        <input type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-label="Votre réponse" data-number-input />
+        <span class="unit" data-unit></span>
+      </div>
+      <button type="button" class="btn primary next" data-next disabled>Suivant</button>
+    </section>
+
+    <!-- 3. Fin -->
+    <section class="screen" data-screen="done" hidden>
+      <h1 class="title">Merci <span data-done-name></span> !</h1>
+      <div class="score-card">
+        <p class="score-label">Bonnes réponses</p>
+        <p class="score"><span data-score></span><small> / <span data-total></span></small></p>
+        <p class="score-label">Temps</p>
+        <p class="time" data-time></p>
+      </div>
+      <p class="save-status" data-save-status></p>
+      <button type="button" class="btn ghost" data-retry hidden>Réessayer l’envoi</button>
+      <p class="see-you">Rendez-vous à l’annonce des résultats !</p>
+    </section>
+  </main>
+
+  <script type="application/json" id="quiz-data" set:html={JSON.stringify(payload)} />
+</QuizLayout>
+
+<script>
+  type Question = {
+    type: 'choix' | 'nombre';
+    question: string;
+    photo?: string;
+    choix?: string[];
+    reponse: number;
+    tolerance?: number;
+    unite?: string;
+  };
+  type Result = {
+    name: string;
+    score: number;
+    total: number;
+    seconds: number;
+    answers: (number | string | null)[];
+    deviceId: string;
+    submittedAt: string;
+    saved: boolean;
+  };
+
+  const data = JSON.parse(document.getElementById('quiz-data')!.textContent || '{}');
+  const questions: Question[] = data.questions;
+  const endpoint: string = data.endpoint;
+  const KEY: string = data.storageKey;
+  const KEY_RESULT = `${KEY}:result`;
+  const KEY_PROGRESS = `${KEY}:progress`;
+  const KEY_DEVICE = `${KEY}:device`;
+
+  const $ = <T extends HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
+
+  // ── Petit stockage local (ne plante jamais) ──
+  const store = {
+    get(key: string) {
+      try {
+        return JSON.parse(localStorage.getItem(key) || 'null');
+      } catch {
+        return null;
+      }
+    },
+    set(key: string, value: unknown) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+      } catch {}
+    },
+    remove(key: string) {
+      try {
+        localStorage.removeItem(key);
+      } catch {}
+    },
+  };
+
+  const deviceId: string =
+    store.get(KEY_DEVICE) ||
+    (() => {
+      const id = Math.random().toString(36).slice(2) + Date.now().toString(36);
+      store.set(KEY_DEVICE, id);
+      return id;
+    })();
+
+  // ── État de la partie (sauvegardé : un rechargement reprend où l'on en était) ──
+  type Progress = { name: string; start: number; index: number; answers: (number | string | null)[] };
+  let progress: Progress | null = store.get(KEY_PROGRESS);
+
+  const show = (name: string) => {
+    document.querySelectorAll<HTMLElement>('[data-screen]').forEach((s) => (s.hidden = s.dataset.screen !== name));
+    window.scrollTo(0, 0);
+  };
+
+  const formatTime = (s: number) => {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return m > 0 ? `${m} min ${String(sec).padStart(2, '0')} s` : `${sec} s`;
+  };
+
+  const isCorrect = (q: Question, a: number | string | null) => {
+    if (a === null || a === '') return false;
+    if (q.type === 'choix') return Number(a) === q.reponse;
+    const n = Number(String(a).replace(',', '.'));
+    return Number.isFinite(n) && Math.abs(n - q.reponse) <= (q.tolerance || 0);
+  };
+
+  // ── Écran de fin ──
+  const renderDone = (r: Result) => {
+    $('[data-done-name]').textContent = r.name.split(' ')[0];
+    $('[data-score]').textContent = String(r.score);
+    $('[data-total]').textContent = String(r.total);
+    $('[data-time]').textContent = formatTime(r.seconds);
+    const status = $('[data-save-status]');
+    const retry = $('[data-retry]');
+    if (r.saved) {
+      status.textContent = '✓ Votre réponse a bien été enregistrée.';
+      status.className = 'save-status ok';
+      retry.hidden = true;
+    } else {
+      status.textContent = endpoint
+        ? 'L’envoi n’a pas abouti : montrez simplement cet écran aux mariés.'
+        : 'Montrez cet écran aux mariés pour l’annonce des résultats.';
+      status.className = 'save-status warn';
+      retry.hidden = !endpoint;
+    }
+    show('done');
+  };
+
+  // ── Envoi vers Google Sheets (Apps Script) ──
+  const send = async (r: Result) => {
+    if (!endpoint) return false;
+    const body = JSON.stringify({
+      name: r.name,
+      score: r.score,
+      total: r.total,
+      seconds: r.seconds,
+      deviceId: r.deviceId,
+      answers: r.answers,
+      submittedAt: r.submittedAt,
+    });
+    try {
+      // text/plain : requête « simple », sans blocage CORS.
+      const res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body });
+      const json = await res.json().catch(() => null);
+      return Boolean(json?.ok);
+    } catch {
+      // Dernier recours : envoi sans lecture de la réponse.
+      try {
+        await fetch(endpoint, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body });
+        return true;
+      } catch {
+        return false;
+      }
+    }
+  };
+
+  const finish = async () => {
+    if (!progress) return;
+    const seconds = Math.max(1, Math.round((Date.now() - progress.start) / 1000));
+    const score = questions.reduce((n, q, i) => n + (isCorrect(q, progress!.answers[i]) ? 1 : 0), 0);
+    const result: Result = {
+      name: progress.name,
+      score,
+      total: questions.length,
+      seconds,
+      answers: progress.answers,
+      deviceId,
+      submittedAt: new Date().toISOString(),
+      saved: false,
+    };
+    // On enregistre d'abord sur le téléphone : impossible de rejouer, même hors ligne.
+    store.set(KEY_RESULT, result);
+    store.remove(KEY_PROGRESS);
+    renderDone(result);
+    $('[data-save-status]').textContent = 'Envoi en cours…';
+    $('[data-save-status]').className = 'save-status';
+    result.saved = await send(result);
+    store.set(KEY_RESULT, result);
+    renderDone(result);
+  };
+
+  // ── Affichage d'une question ──
+  const choicesEl = $('[data-choices]');
+  const numberWrap = $('[data-number]');
+  const numberInput = $<HTMLInputElement>('[data-number-input]');
+  const nextBtn = $<HTMLButtonElement>('[data-next]');
+
+  const renderQuestion = () => {
+    if (!progress) return;
+    const i = progress.index;
+    const q = questions[i];
+    $('[data-step]').textContent = `Question ${i + 1} sur ${questions.length}`;
+    $('[data-progress-bar]').style.width = `${(i / questions.length) * 100}%`;
+    $('[data-question]').textContent = q.question;
+
+    const photo = $<HTMLImageElement>('[data-photo]');
+    photo.hidden = !q.photo;
+    if (q.photo) photo.src = q.photo;
+    else photo.removeAttribute('src');
+
+    const current = progress.answers[i];
+    choicesEl.innerHTML = '';
+    if (q.type === 'choix') {
+      numberWrap.hidden = true;
+      choicesEl.hidden = false;
+      (q.choix || []).forEach((label, k) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'choice';
+        b.setAttribute('role', 'radio');
+        b.setAttribute('aria-checked', String(current === k + 1));
+        b.innerHTML = `<span class="letter">${'ABCD'[k] || k + 1}</span><span class="label"></span>`;
+        b.querySelector('.label')!.textContent = label;
+        b.addEventListener('click', () => {
+          progress!.answers[i] = k + 1;
+          store.set(KEY_PROGRESS, progress);
+          choicesEl.querySelectorAll('.choice').forEach((c, j) => c.setAttribute('aria-checked', String(j === k)));
+          nextBtn.disabled = false;
+        });
+        choicesEl.appendChild(b);
+      });
+      nextBtn.disabled = current == null;
+    } else {
+      choicesEl.hidden = true;
+      numberWrap.hidden = false;
+      numberInput.value = current == null ? '' : String(current);
+      $('[data-unit]').textContent = q.unite || '';
+      nextBtn.disabled = numberInput.value.trim() === '';
+      setTimeout(() => numberInput.focus(), 50);
+    }
+    nextBtn.textContent = i === questions.length - 1 ? 'Valider mes réponses' : 'Suivant';
+    show('question');
+  };
+
+  numberInput.addEventListener('input', () => {
+    if (!progress) return;
+    numberInput.value = numberInput.value.replace(/[^0-9.,-]/g, '');
+    progress.answers[progress.index] = numberInput.value.trim() || null;
+    store.set(KEY_PROGRESS, progress);
+    nextBtn.disabled = numberInput.value.trim() === '';
+  });
+  numberInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !nextBtn.disabled) nextBtn.click();
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if (!progress) return;
+    if (progress.index < questions.length - 1) {
+      progress.index += 1;
+      store.set(KEY_PROGRESS, progress);
+      renderQuestion();
+    } else {
+      nextBtn.disabled = true;
+      finish();
+    }
+  });
+
+  // ── Démarrage ──
+  $<HTMLFormElement>('[data-start]').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = $<HTMLInputElement>('#quiz-name').value.trim();
+    if (!name) return;
+    progress = { name, start: Date.now(), index: 0, answers: questions.map(() => null) };
+    store.set(KEY_PROGRESS, progress);
+    renderQuestion();
+  });
+
+  $('[data-retry]').addEventListener('click', async () => {
+    const r: Result | null = store.get(KEY_RESULT);
+    if (!r) return;
+    $('[data-save-status]').textContent = 'Envoi en cours…';
+    r.saved = await send(r);
+    store.set(KEY_RESULT, r);
+    renderDone(r);
+  });
+
+  // ── Au chargement : déjà joué ? partie en cours ? ──
+  const previous: Result | null = store.get(KEY_RESULT);
+  if (previous) {
+    renderDone(previous);
+    // Si l'envoi avait échoué, on retente discrètement.
+    if (!previous.saved && endpoint) {
+      send(previous).then((ok) => {
+        if (ok) {
+          previous.saved = true;
+          store.set(KEY_RESULT, previous);
+          renderDone(previous);
+        }
+      });
+    }
+  } else if (progress) {
+    renderQuestion();
+  }
+</script>
+
+<style>
+  /* Grandes tailles : lisible par tous, facile à toucher */
+  .quiz {
+    width: 100%;
+    max-width: 34rem;
+    margin: 0 auto;
+    padding: 1.5rem 1.25rem 3rem;
+    font-size: 1.2rem;
+    font-weight: 400;
+  }
+
+  .couple {
+    font-family: var(--font-script);
+    font-size: 1.9rem;
+    text-align: center;
+  }
+
+  .screen {
+    margin-top: 1.25rem;
+  }
+
+  .screen[hidden] {
+    display: none;
+  }
+
+  .title {
+    font-family: var(--font-script);
+    font-weight: 400;
+    font-size: clamp(2.3rem, 9vw, 3rem);
+    line-height: 1.15;
+    text-align: center;
+  }
+
+  .lead {
+    margin-top: 1rem;
+    text-align: center;
+    line-height: 1.55;
+  }
+
+  .rules {
+    display: grid;
+    gap: 0.4rem;
+    margin: 1.5rem 0 0;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    background: var(--color-paper-deep);
+    list-style: none;
+    font-size: 1.05rem;
+  }
+
+  .rules li::before {
+    content: '♡ ';
+  }
+
+  .start-form {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .start-form label {
+    font-size: 1.1rem;
+  }
+
+  input[type='text'] {
+    width: 100%;
+    min-height: 3.75rem;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--color-line);
+    border-radius: 12px;
+    background: var(--color-card);
+    color: var(--color-ink);
+    font: inherit;
+    font-size: 1.35rem;
+  }
+
+  input[type='text']:focus {
+    border-color: var(--color-ink);
+    outline: none;
+  }
+
+  .btn {
+    width: 100%;
+    min-height: 4rem;
+    padding: 0.9rem 1.25rem;
+    border: 2px solid var(--color-ink);
+    border-radius: 999px;
+    font-size: 1.3rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .btn.primary {
+    background: var(--color-ink);
+    color: var(--color-card);
+  }
+
+  .btn.ghost {
+    margin-top: 1rem;
+    background: transparent;
+  }
+
+  .btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  /* Progression */
+  .progress {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--color-paper-deep);
+    overflow: hidden;
+  }
+
+  .progress span {
+    display: block;
+    height: 100%;
+    background: var(--color-ink);
+    transition: width 0.4s var(--ease);
+  }
+
+  .step {
+    margin-top: 0.75rem;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    color: var(--color-ink-soft);
+  }
+
+  .question {
+    margin-top: 0.5rem;
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .photo {
+    width: 100%;
+    max-height: 45vh;
+    margin-top: 1rem;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+  }
+
+  .choices {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .choices[hidden] {
+    display: none;
+  }
+
+  /* Boutons créés par le script : styles globaux */
+  .choices :global(.choice) {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    width: 100%;
+    min-height: 4.25rem;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--color-line);
+    border-radius: 14px;
+    background: var(--color-card);
+    font-size: 1.3rem;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .choices :global(.choice .letter) {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.4rem;
+    height: 2.4rem;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  .choices :global(.choice[aria-checked='true']) {
+    border-color: var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-card);
+  }
+
+  .number {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .number[hidden] {
+    display: none;
+  }
+
+  .number input {
+    max-width: 12rem;
+    min-height: 4.5rem;
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .unit {
+    font-size: 1.3rem;
+  }
+
+  .next {
+    margin-top: 2rem;
+  }
+
+  /* Écran final */
+  .score-card {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-card);
+    text-align: center;
+  }
+
+  .score-label {
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+
+  .score {
+    font-size: 4.5rem;
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .score small {
+    font-size: 2rem;
+    color: var(--color-ink-soft);
+  }
+
+  .time {
+    font-size: 2.2rem;
+  }
+
+  .save-status {
+    margin-top: 1.25rem;
+    text-align: center;
+    font-size: 1.1rem;
+  }
+
+  .save-status.ok {
+    color: #3f7a55;
+  }
+
+  .save-status.warn {
+    color: #9a5b2e;
+  }
+
+  .see-you {
+    margin-top: 2rem;
+    font-family: var(--font-script);
+    font-size: 1.8rem;
+    text-align: center;
+  }
+</style>

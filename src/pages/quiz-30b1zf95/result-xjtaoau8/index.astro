@@ -1,0 +1,456 @@
+---
+// Page cachée : annonce des résultats du quiz (écran d'ordinateur ou TV).
+// Ajouter « ?demo » à l'adresse pour une répétition avec des données fictives.
+import QuizLayout from '../../../layouts/QuizLayout.astro';
+import { APPS_SCRIPT_URL } from '../../../quiz/config.js';
+import { quiz } from '../../../quiz/quiz-data.js';
+---
+
+<QuizLayout title="Résultats du quiz">
+  <main class="results" data-endpoint={APPS_SCRIPT_URL} data-total={quiz.questions.length}>
+    <header class="top">
+      <p class="couple script">Corentin &amp; Halin</p>
+      <h1 class="title script">Les résultats du quiz</h1>
+      <p class="meta" data-meta>Chargement…</p>
+    </header>
+
+    <!-- Podium : 2e – 1er – 3e -->
+    <section class="podium" aria-live="polite">
+      <div class="place p2" data-place="2">
+        <div class="card">
+          <p class="rank">2<sup>e</sup></p>
+          <p class="name" data-name></p>
+          <p class="detail" data-detail></p>
+        </div>
+        <div class="step"></div>
+      </div>
+      <div class="place p1" data-place="1">
+        <div class="card">
+          <p class="crown" aria-hidden="true">♛</p>
+          <p class="rank">1<sup>er</sup></p>
+          <p class="name" data-name></p>
+          <p class="detail" data-detail></p>
+        </div>
+        <div class="step"></div>
+      </div>
+      <div class="place p3" data-place="3">
+        <div class="card">
+          <p class="rank">3<sup>e</sup></p>
+          <p class="name" data-name></p>
+          <p class="detail" data-detail></p>
+        </div>
+        <div class="step"></div>
+      </div>
+    </section>
+
+    <div class="controls">
+      <button type="button" class="btn primary" data-reveal disabled>Révéler la 3<sup>e</sup> place</button>
+      <button type="button" class="btn" data-toggle-table>Classement complet</button>
+      <button type="button" class="btn" data-refresh>Actualiser</button>
+    </div>
+    <p class="hint">Astuce : la barre d’espace révèle aussi la place suivante.</p>
+
+    <section class="table-wrap" data-table hidden>
+      <table>
+        <thead>
+          <tr><th>#</th><th>Nom</th><th>Bonnes réponses</th><th>Temps</th></tr>
+        </thead>
+        <tbody data-rows></tbody>
+      </table>
+    </section>
+  </main>
+  <canvas class="confetti" data-confetti aria-hidden="true"></canvas>
+</QuizLayout>
+
+<script>
+  type Row = { name: string; score: number; total: number; seconds: number; time?: string };
+
+  const root = document.querySelector<HTMLElement>('.results')!;
+  const endpoint = root.dataset.endpoint || '';
+  const totalQuestions = Number(root.dataset.total || 0);
+  const demo = new URLSearchParams(location.search).has('demo');
+  const meta = root.querySelector<HTMLElement>('[data-meta]')!;
+  const revealBtn = root.querySelector<HTMLButtonElement>('[data-reveal]')!;
+
+  let rows: Row[] = [];
+  // Ordre d'annonce : 3e, 2e, puis 1er
+  const order = [3, 2, 1];
+  let revealed = 0;
+
+  const formatTime = (s: number) => {
+    const m = Math.floor(s / 60);
+    const sec = Math.round(s % 60);
+    return m > 0 ? `${m} min ${String(sec).padStart(2, '0')}` : `${sec} s`;
+  };
+
+  // Classement : plus de bonnes réponses, puis temps le plus court.
+  const rank = (list: Row[]) =>
+    [...list].sort((a, b) => b.score - a.score || a.seconds - b.seconds);
+
+  const demoRows: Row[] = [
+    { name: 'Mamie Jeanne', score: 4, total: 5, seconds: 152 },
+    { name: 'Thomas', score: 5, total: 5, seconds: 98 },
+    { name: 'Sophie', score: 5, total: 5, seconds: 121 },
+    { name: 'Oncle Pierre', score: 3, total: 5, seconds: 75 },
+    { name: 'Julie', score: 4, total: 5, seconds: 88 },
+    { name: 'Marc', score: 2, total: 5, seconds: 140 },
+  ];
+
+  async function load() {
+    meta.textContent = 'Chargement…';
+    try {
+      if (demo) {
+        rows = rank(demoRows);
+      } else if (!endpoint) {
+        throw new Error('no-endpoint');
+      } else {
+        const res = await fetch(`${endpoint}?t=${Date.now()}`);
+        const json = await res.json();
+        rows = rank((json.rows || []).map((r: any) => ({ ...r, score: Number(r.score), seconds: Number(r.seconds) })));
+      }
+      meta.textContent = `${rows.length} participant${rows.length > 1 ? 's' : ''}${demo ? ' · mode démonstration' : ''}`;
+    } catch (e) {
+      rows = [];
+      meta.textContent =
+        (e as Error).message === 'no-endpoint'
+          ? 'Adresse Google Apps Script non renseignée (src/quiz/config.js). Ajoutez « ?demo » à l’adresse pour une démonstration.'
+          : 'Impossible de charger les résultats. Vérifiez la connexion puis « Actualiser ».';
+    }
+    renderTable();
+    renderPodium();
+  }
+
+  function renderPodium() {
+    order.forEach((place) => {
+      const el = root.querySelector<HTMLElement>(`[data-place="${place}"]`)!;
+      const r = rows[place - 1];
+      el.querySelector('[data-name]')!.textContent = r ? r.name : '—';
+      el.querySelector('[data-detail]')!.textContent = r
+        ? `${r.score} / ${r.total || totalQuestions} · ${formatTime(r.seconds)}`
+        : '';
+      el.classList.toggle('empty', !r);
+    });
+    updateButton();
+  }
+
+  function updateButton() {
+    const next = order[revealed];
+    revealBtn.disabled = rows.length === 0 || next === undefined;
+    if (next === undefined) revealBtn.innerHTML = 'Bravo à tous !';
+    else revealBtn.innerHTML = next === 1 ? 'Révéler le grand gagnant' : `Révéler la ${next}<sup>e</sup> place`;
+  }
+
+  function reveal() {
+    const place = order[revealed];
+    if (place === undefined || rows.length === 0) return;
+    root.querySelector(`[data-place="${place}"]`)!.classList.add('shown');
+    revealed += 1;
+    confetti(place === 1 ? 260 : 90);
+    updateButton();
+  }
+
+  function renderTable() {
+    const tbody = root.querySelector<HTMLElement>('[data-rows]')!;
+    tbody.innerHTML = '';
+    rows.forEach((r, i) => {
+      const tr = document.createElement('tr');
+      [String(i + 1), r.name, `${r.score} / ${r.total || totalQuestions}`, formatTime(r.seconds)].forEach((v) => {
+        const td = document.createElement('td');
+        td.textContent = v;
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+  }
+
+  // ── Confettis (sans bibliothèque) ──
+  const canvas = document.querySelector<HTMLCanvasElement>('[data-confetti]')!;
+  const ctx = canvas.getContext('2d')!;
+  const colors = ['#c9b8e8', '#f2c4d6', '#f6e3a1', '#b9dcc8', '#a9c6ea', '#ffffff'];
+  type P = { x: number; y: number; vx: number; vy: number; r: number; c: string; a: number; va: number; life: number };
+  let parts: P[] = [];
+  let running = false;
+
+  function confetti(n: number) {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    canvas.width = innerWidth * devicePixelRatio;
+    canvas.height = innerHeight * devicePixelRatio;
+    for (let i = 0; i < n; i++) {
+      parts.push({
+        x: innerWidth * (0.2 + Math.random() * 0.6),
+        y: innerHeight * 0.35,
+        vx: (Math.random() - 0.5) * 14,
+        vy: -Math.random() * 14 - 4,
+        r: 5 + Math.random() * 7,
+        c: colors[(Math.random() * colors.length) | 0],
+        a: Math.random() * Math.PI,
+        va: (Math.random() - 0.5) * 0.3,
+        life: 0,
+      });
+    }
+    if (!running) {
+      running = true;
+      requestAnimationFrame(tick);
+    }
+  }
+
+  function tick() {
+    const d = devicePixelRatio;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    parts.forEach((p) => {
+      p.vy += 0.35;
+      p.vx *= 0.99;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.a += p.va;
+      p.life += 1;
+      ctx.save();
+      ctx.translate(p.x * d, p.y * d);
+      ctx.rotate(p.a);
+      ctx.fillStyle = p.c;
+      ctx.fillRect((-p.r / 2) * d, (-p.r / 4) * d, p.r * d, (p.r / 2) * d);
+      ctx.restore();
+    });
+    parts = parts.filter((p) => p.y < innerHeight + 40 && p.life < 400);
+    if (parts.length) requestAnimationFrame(tick);
+    else {
+      running = false;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  // ── Boutons et clavier ──
+  revealBtn.addEventListener('click', reveal);
+  root.querySelector('[data-toggle-table]')!.addEventListener('click', () => {
+    const t = root.querySelector<HTMLElement>('[data-table]')!;
+    t.hidden = !t.hidden;
+    if (!t.hidden) t.scrollIntoView({ behavior: 'smooth' });
+  });
+  root.querySelector('[data-refresh]')!.addEventListener('click', () => {
+    revealed = 0;
+    root.querySelectorAll('.place').forEach((p) => p.classList.remove('shown'));
+    load();
+  });
+  document.addEventListener('keydown', (e) => {
+    if ((e.key === ' ' || e.key === 'ArrowRight') && !(e.target instanceof HTMLButtonElement)) {
+      e.preventDefault();
+      reveal();
+    }
+  });
+
+  load();
+</script>
+
+<style>
+  /* Pensé pour un grand écran (ordinateur, télévision) */
+  .results {
+    width: 100%;
+    max-width: 90rem;
+    margin: 0 auto;
+    padding: 2.5vh 3vw 4rem;
+    text-align: center;
+  }
+
+  .couple {
+    font-family: var(--font-script);
+    font-size: clamp(1.6rem, 2.4vw, 2.6rem);
+  }
+
+  .title {
+    font-family: var(--font-script);
+    font-weight: 400;
+    font-size: clamp(2.8rem, 6vw, 6rem);
+    line-height: 1.05;
+  }
+
+  .meta {
+    margin-top: 0.5rem;
+    font-size: clamp(1rem, 1.3vw, 1.4rem);
+    color: var(--color-ink-soft);
+  }
+
+  .podium {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: end;
+    gap: 2vw;
+    margin-top: 4vh;
+    min-height: 52vh;
+  }
+
+  .place {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .step {
+    border-radius: 18px 18px 0 0;
+    background: var(--color-paper-deep);
+  }
+
+  .p1 .step {
+    height: 16vh;
+    background: #e3dcef;
+  }
+
+  .p2 .step {
+    height: 10vh;
+  }
+
+  .p3 .step {
+    height: 6vh;
+  }
+
+  .card {
+    margin-bottom: 1.5vh;
+    padding: 2.5vh 1.5vw;
+    border: 1px solid var(--color-line);
+    border-radius: 22px;
+    background: var(--color-card);
+    box-shadow: var(--shadow-soft);
+    opacity: 0;
+    transform: translateY(30px) scale(0.92);
+    transition:
+      opacity 0.7s var(--ease),
+      transform 0.7s cubic-bezier(0.2, 1.4, 0.4, 1);
+  }
+
+  .place.shown .card {
+    opacity: 1;
+    transform: none;
+  }
+
+  .crown {
+    font-size: clamp(2rem, 4vw, 4rem);
+    line-height: 1;
+    color: #c9a54a;
+  }
+
+  .rank {
+    font-size: clamp(2.2rem, 4.4vw, 4.4rem);
+    font-weight: 300;
+    line-height: 1;
+  }
+
+  .rank sup {
+    font-size: 0.45em;
+  }
+
+  .name {
+    margin-top: 1vh;
+    font-size: clamp(1.6rem, 3.4vw, 3.6rem);
+    font-weight: 500;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+
+  .p1 .name {
+    font-size: clamp(2rem, 4.4vw, 4.6rem);
+  }
+
+  .detail {
+    margin-top: 0.6vh;
+    font-size: clamp(1rem, 1.6vw, 1.7rem);
+    color: var(--color-ink-soft);
+  }
+
+  .place.empty .card {
+    border-style: dashed;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 4vh;
+  }
+
+  .btn {
+    min-height: 3.6rem;
+    padding: 0.8rem 2rem;
+    border: 2px solid var(--color-ink);
+    border-radius: 999px;
+    background: transparent;
+    font-size: clamp(1.05rem, 1.4vw, 1.4rem);
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .btn.primary {
+    background: var(--color-ink);
+    color: var(--color-card);
+  }
+
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  .hint {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    color: var(--color-ink-faint);
+  }
+
+  .table-wrap {
+    margin: 5vh auto 0;
+    max-width: 60rem;
+  }
+
+  .table-wrap[hidden] {
+    display: none;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: clamp(1.1rem, 1.6vw, 1.6rem);
+  }
+
+  th {
+    padding: 0.6rem;
+    font-size: 0.75em;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    border-bottom: 2px solid var(--color-line);
+  }
+
+  /* Lignes créées par le script : styles globaux */
+  table :global(td) {
+    padding: 0.7rem 0.6rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  table :global(tbody tr:nth-child(-n + 3) td) {
+    font-weight: 500;
+  }
+
+  .confetti {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Sur téléphone (test) : podium empilé */
+  @media (max-width: 40em) {
+    .podium {
+      grid-template-columns: 1fr;
+      min-height: 0;
+    }
+
+    .p1 {
+      order: -1;
+    }
+
+    .step {
+      display: none;
+    }
+  }
+</style>
