@@ -98,17 +98,13 @@ export const quiz = {
       choix: ['Environ 5 000 km', 'Environ 9 000 km', 'Environ 13 000 km', 'Environ 17 000 km'],
       reponse: 2,
     },
-    // ── Photo de bébés : à activer quand la photo est prête ──
-    //   1) déposez la photo dans public/quiz-photos/bebes.jpg
-    //   2) indiquez le bon numéro dans « reponse »
-    //   3) retirez les « // » au début des 6 lignes ci-dessous
-    // {
-    //   type: 'choix',
-    //   question: 'Lequel de ces bébés est Halin ?',
-    //   photo: '/quiz-photos/bebes.jpg',
-    //   choix: ['Le bébé n° 1', 'Le bébé n° 2', 'Le bébé n° 3', 'Le bébé n° 4'],
-    //   reponse: 1,
-    // },
+    {
+      type: 'choix',
+      question: 'Sur laquelle de ces photos ce n’est PAS Halin enfant ?',
+      photo: '/quiz-photos/bebes.jpg',
+      choix: ['La photo n° 1', 'La photo n° 2', 'La photo n° 3', 'La photo n° 4'],
+      reponse: 3,
+    },
     {
       type: 'nombre',
       question: 'En 2019, quel mois Halin a-t-elle rencontré les parents de Coco pour la première fois ?',
