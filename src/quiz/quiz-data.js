@@ -93,12 +93,10 @@ export const quiz = {
       reponse: 1,
     },
     {
-      type: 'nombre',
-      question: 'Combien de kilomètres séparent Séoul de Paris ?',
-      aide: 'À vol d’oiseau. À 1 000 km près, c’est gagné !',
-      reponse: 9000,
-      tolerance: 1000,
-      unite: 'km',
+      type: 'choix',
+      question: 'Combien de kilomètres séparent Séoul de Paris (à vol d’oiseau) ?',
+      choix: ['Environ 5 000 km', 'Environ 9 000 km', 'Environ 13 000 km', 'Environ 17 000 km'],
+      reponse: 2,
     },
     // ── Photo de bébés : à activer quand la photo est prête ──
     //   1) déposez la photo dans public/quiz-photos/bebes.jpg
