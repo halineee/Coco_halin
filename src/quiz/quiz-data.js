@@ -46,7 +46,7 @@ export const quiz = {
     {
       type: 'choix',
       question: 'Où a eu lieu notre premier rendez-vous ?',
-      choix: ['Au bord d’un lac', 'Au restaurant', 'Dans une église', 'En boîte de nuit'],
+      choix: ['Au bord d’un lac', 'Au restaurant', 'Dans une cathédrale', 'En boîte de nuit'],
       reponse: 3,
     },
     {
@@ -94,6 +94,25 @@ export const quiz = {
     },
     {
       type: 'nombre',
+      question: 'Combien de kilomètres séparent Séoul de Paris ?',
+      aide: 'À vol d’oiseau. À 1 000 km près, c’est gagné !',
+      reponse: 9000,
+      tolerance: 1000,
+      unite: 'km',
+    },
+    // ── Photo de bébés : à activer quand la photo est prête ──
+    //   1) déposez la photo dans public/quiz-photos/bebes.jpg
+    //   2) indiquez le bon numéro dans « reponse »
+    //   3) retirez les « // » au début des 6 lignes ci-dessous
+    // {
+    //   type: 'choix',
+    //   question: 'Lequel de ces bébés est Halin ?',
+    //   photo: '/quiz-photos/bebes.jpg',
+    //   choix: ['Le bébé n° 1', 'Le bébé n° 2', 'Le bébé n° 3', 'Le bébé n° 4'],
+    //   reponse: 1,
+    // },
+    {
+      type: 'nombre',
       question: 'En 2019, quel mois Halin a-t-elle rencontré les parents de Coco pour la première fois ?',
       aide: 'Le numéro du mois, de 1 à 12',
       reponse: 8,
@@ -107,13 +126,14 @@ export const quiz = {
     },
     {
       type: 'choix',
+      question: 'Où a eu lieu la demande en mariage ?',
+      choix: ['En Norvège', 'À Paris', 'En Islande', 'À Séoul'],
+      reponse: 3,
+    },
+    {
+      type: 'choix',
       question: 'Quelle a été la phrase de Coco pour sa demande en mariage ?',
-      choix: [
-        '« 날씨가 좋아서… » (Il fait beau, alors…)',
-        '« 사랑해 » (Je t’aime)',
-        '« 나랑 결혼해줄래? » (Veux-tu m’épouser ?)',
-        '« 내 아를 낳아도 » (Donne-moi un enfant !)',
-      ],
+      choix: ['« Il fait beau, alors… »', '« Je t’aime. »', '« Veux-tu m’épouser ? »', '« Fais-moi un bébé ! »'],
       reponse: 1,
     },
     {
@@ -133,6 +153,12 @@ export const quiz = {
       question: 'Quel est le cadeau de Coco que Halin préfère ?',
       choix: ['Un sac de luxe', 'La bague de fiançailles', 'Un collier', 'Un bouquet de fleurs'],
       reponse: 3,
+    },
+    {
+      type: 'choix',
+      question: 'Et pour finir : quelle est la date de notre mariage en Corée ?',
+      choix: ['Le 15 août 2027', 'Le 14 août 2027', 'Le 17 août 2027', 'Le 21 août 2027'],
+      reponse: 2,
     },
   ],
 };

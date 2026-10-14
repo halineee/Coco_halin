@@ -155,7 +155,10 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
   const isCorrect = (q: Question, a: Answer) => {
     if (a === null || a === '') return false;
     if (q.type === 'choix') return Number(a) === q.reponse;
-    const n = Number(String(a).replace(',', '.'));
+    // « 9.000 », « 9,000 » ou « 9 000 » = 9000 (séparateur de milliers)
+    let txt = String(a).replace(/\s/g, '');
+    if (/^-?\d{1,3}([.,]\d{3})+$/.test(txt)) txt = txt.replace(/[.,]/g, '');
+    const n = Number(txt.replace(',', '.'));
     return Number.isFinite(n) && Math.abs(n - q.reponse) <= (q.tolerance || 0);
   };
 
