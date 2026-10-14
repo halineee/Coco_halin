@@ -25,12 +25,13 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
       <p class="lead">{quiz.intro}</p>
       <ul class="rules">
         <li>{questions.length} questions</li>
-        <li>Le chronomètre démarre dès que vous commencez</li>
-        <li>En cas d’égalité, le plus rapide l’emporte</li>
+        <li>Prenez tout votre temps</li>
+        <li>Une seule participation par téléphone</li>
       </ul>
       <form class="start-form" data-start>
-        <label for="quiz-name">Votre prénom et nom</label>
-        <input id="quiz-name" name="name" type="text" autocomplete="name" maxlength="60" required />
+        <label for="quiz-name">Votre prénom ou un surnom</label>
+        <p class="name-hint">Un surnom rigolo ? Nous essaierons de deviner qui se cache derrière !</p>
+        <input id="quiz-name" name="name" type="text" autocomplete="off" maxlength="40" required />
         <button type="submit" class="btn primary">Commencer</button>
       </form>
     </section>
@@ -55,8 +56,6 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
       <div class="score-card">
         <p class="score-label">Bonnes réponses</p>
         <p class="score"><span data-score></span><small> / <span data-total></span></small></p>
-        <p class="score-label">Temps</p>
-        <p class="time" data-time></p>
       </div>
       <p class="save-status" data-save-status></p>
       <button type="button" class="btn ghost" data-retry hidden>Réessayer l’envoi</button>
@@ -136,11 +135,6 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
     window.scrollTo(0, 0);
   };
 
-  const formatTime = (s: number) => {
-    const m = Math.floor(s / 60);
-    const sec = s % 60;
-    return m > 0 ? `${m} min ${String(sec).padStart(2, '0')} s` : `${sec} s`;
-  };
 
   const isCorrect = (q: Question, a: number | string | null) => {
     if (a === null || a === '') return false;
@@ -151,10 +145,9 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
 
   // ── Écran de fin ──
   const renderDone = (r: Result) => {
-    $('[data-done-name]').textContent = r.name.split(' ')[0];
+    $('[data-done-name]').textContent = r.name;
     $('[data-score]').textContent = String(r.score);
     $('[data-total]').textContent = String(r.total);
-    $('[data-time]').textContent = formatTime(r.seconds);
     const status = $('[data-save-status]');
     const retry = $('[data-retry]');
     if (r.saved) {
@@ -402,6 +395,12 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
     font-size: 1.1rem;
   }
 
+  .name-hint {
+    margin-top: -0.4rem;
+    font-size: 1rem;
+    color: var(--color-ink-soft);
+  }
+
   input[type='text'] {
     width: 100%;
     min-height: 3.75rem;
@@ -574,16 +573,11 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
     font-size: 4.5rem;
     font-weight: 400;
     line-height: 1.1;
-    margin-bottom: 1rem;
   }
 
   .score small {
     font-size: 2rem;
     color: var(--color-ink-soft);
-  }
-
-  .time {
-    font-size: 2.2rem;
   }
 
   .save-status {

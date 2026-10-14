@@ -53,7 +53,7 @@ import { quiz } from '../../../quiz/quiz-data.js';
     <section class="table-wrap" data-table hidden>
       <table>
         <thead>
-          <tr><th>#</th><th>Nom</th><th>Bonnes réponses</th><th>Temps</th></tr>
+          <tr><th>Place</th><th>Nom</th><th>Bonnes réponses</th></tr>
         </thead>
         <tbody data-rows></tbody>
       </table>
@@ -77,18 +77,24 @@ import { quiz } from '../../../quiz/quiz-data.js';
   const order = [3, 2, 1];
   let revealed = 0;
 
-  const formatTime = (s: number) => {
-    const m = Math.floor(s / 60);
-    const sec = Math.round(s % 60);
-    return m > 0 ? `${m} min ${String(sec).padStart(2, '0')}` : `${sec} s`;
-  };
 
-  // Classement : plus de bonnes réponses, puis temps le plus court.
-  const rank = (list: Row[]) =>
-    [...list].sort((a, b) => b.score - a.score || a.seconds - b.seconds);
+  // Classement : uniquement le nombre de bonnes réponses (pas de course contre la montre).
+  // Les ex aequo partagent la même place.
+  const rank = (list: Row[]) => [...list].sort((a, b) => b.score - a.score);
+  let groups: Row[][] = [];
+  const makeGroups = (list: Row[]) => {
+    const g: Row[][] = [];
+    list.forEach((r) => {
+      const last = g[g.length - 1];
+      if (last && last[0].score === r.score) last.push(r);
+      else g.push([r]);
+    });
+    return g;
+  };
 
   const demoRows: Row[] = [
     { name: 'Mamie Jeanne', score: 4, total: 5, seconds: 152 },
+    { name: 'Le Petit Prince', score: 3, total: 5, seconds: 110 },
     { name: 'Thomas', score: 5, total: 5, seconds: 98 },
     { name: 'Sophie', score: 5, total: 5, seconds: 121 },
     { name: 'Oncle Pierre', score: 3, total: 5, seconds: 75 },
@@ -108,9 +114,11 @@ import { quiz } from '../../../quiz/quiz-data.js';
         const json = await res.json();
         rows = rank((json.rows || []).map((r: any) => ({ ...r, score: Number(r.score), seconds: Number(r.seconds) })));
       }
+      groups = makeGroups(rows);
       meta.textContent = `${rows.length} participant${rows.length > 1 ? 's' : ''}${demo ? ' · mode démonstration' : ''}`;
     } catch (e) {
       rows = [];
+      groups = [];
       meta.textContent =
         (e as Error).message === 'no-endpoint'
           ? 'Adresse Google Apps Script non renseignée (src/quiz/config.js). Ajoutez « ?demo » à l’adresse pour une démonstration.'
@@ -123,12 +131,21 @@ import { quiz } from '../../../quiz/quiz-data.js';
   function renderPodium() {
     order.forEach((place) => {
       const el = root.querySelector<HTMLElement>(`[data-place="${place}"]`)!;
-      const r = rows[place - 1];
-      el.querySelector('[data-name]')!.textContent = r ? r.name : '—';
-      el.querySelector('[data-detail]')!.textContent = r
-        ? `${r.score} / ${r.total || totalQuestions} · ${formatTime(r.seconds)}`
+      const g = groups[place - 1];
+      const nameEl = el.querySelector<HTMLElement>('[data-name]')!;
+      nameEl.innerHTML = '';
+      if (g) {
+        g.forEach((r) => {
+          const span = document.createElement('span');
+          span.textContent = r.name;
+          nameEl.appendChild(span);
+        });
+      } else nameEl.textContent = '—';
+      nameEl.classList.toggle('many', !!g && g.length > 2);
+      el.querySelector('[data-detail]')!.textContent = g
+        ? `${g[0].score} / ${g[0].total || totalQuestions}${g.length > 1 ? ' · ex aequo' : ''}`
         : '';
-      el.classList.toggle('empty', !r);
+      el.classList.toggle('empty', !g);
     });
     updateButton();
   }
@@ -152,15 +169,16 @@ import { quiz } from '../../../quiz/quiz-data.js';
   function renderTable() {
     const tbody = root.querySelector<HTMLElement>('[data-rows]')!;
     tbody.innerHTML = '';
-    rows.forEach((r, i) => {
+    groups.forEach((g, gi) => g.forEach((r) => {
       const tr = document.createElement('tr');
-      [String(i + 1), r.name, `${r.score} / ${r.total || totalQuestions}`, formatTime(r.seconds)].forEach((v) => {
+      if (gi < 3) tr.className = 'top';
+      [String(gi + 1), r.name, `${r.score} / ${r.total || totalQuestions}`].forEach((v) => {
         const td = document.createElement('td');
         td.textContent = v;
         tr.appendChild(td);
       });
       tbody.appendChild(tr);
-    });
+    }));
   }
 
   // ── Confettis (sans bibliothèque) ──
@@ -345,6 +363,14 @@ import { quiz } from '../../../quiz/quiz-data.js';
     overflow-wrap: anywhere;
   }
 
+  .name :global(span) {
+    display: block;
+  }
+
+  .name.many {
+    font-size: clamp(1.3rem, 2.4vw, 2.6rem);
+  }
+
   .p1 .name {
     font-size: clamp(2rem, 4.4vw, 4.6rem);
   }
@@ -425,7 +451,7 @@ import { quiz } from '../../../quiz/quiz-data.js';
     border-bottom: 1px solid var(--color-line);
   }
 
-  table :global(tbody tr:nth-child(-n + 3) td) {
+  table :global(tr.top td) {
     font-weight: 500;
   }
 

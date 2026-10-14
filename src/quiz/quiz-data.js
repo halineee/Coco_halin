@@ -26,8 +26,8 @@
 // ─────────────────────────────────────────────────────────────
 
 export const quiz = {
-  titre: 'Le grand quiz de Corentin & Halin',
-  intro: 'Que savez-vous vraiment de nous ? Quelques questions, un peu de rapidité… et trois gagnants !',
+  titre: 'Notre petit quiz',
+  intro: 'Que savez-vous vraiment de nous ? Prenez votre temps, il n’y a pas de chrono. Les meilleurs scores gagnent un petit cadeau !',
 
   questions: [
     {
