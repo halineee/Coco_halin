@@ -146,7 +146,7 @@ export const quiz = {
     {
       type: 'choix',
       question: 'Lequel de ces plats Coco n’a-t-il JAMAIS cuisiné pour Halin ?',
-      choix: ['Un riz sauté au kimchi', 'Le « Coco-bang »', 'Un poulet aux olives', 'Un kimchi jjigae'],
+      choix: ['Un riz sauté au kimchi', 'Un coq au vin', 'Un poulet aux olives', 'Un kimchi jjigae'],
       reponse: 4,
     },
     {
