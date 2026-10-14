@@ -41,21 +41,32 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
       <div class="progress" aria-hidden="true"><span data-progress-bar></span></div>
       <p class="step" data-step></p>
       <h2 class="question" data-question></h2>
+      <p class="aide" data-aide hidden></p>
       <img class="photo" data-photo alt="" hidden />
       <div class="choices" data-choices role="radiogroup"></div>
       <div class="number" data-number hidden>
         <input type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-label="Votre réponse" data-number-input />
         <span class="unit" data-unit></span>
       </div>
-      <button type="button" class="btn primary next" data-next disabled>Suivant</button>
+      <p class="feedback" data-feedback role="status" aria-live="polite" hidden></p>
+      <button type="button" class="btn primary next" data-next disabled>Valider</button>
     </section>
 
-    <!-- 3. Fin -->
+    <!-- 3. Un petit mot pour les mariés -->
+    <section class="screen" data-screen="message" hidden>
+      <h1 class="title">{quiz.message?.titre}</h1>
+      <p class="lead">{quiz.message?.texte}</p>
+      <textarea class="message" rows="6" maxlength="1000" placeholder="Facultatif" aria-label={quiz.message?.titre} data-message-input></textarea>
+      <button type="button" class="btn primary next" data-send>Envoyer mes réponses</button>
+    </section>
+
+    <!-- 4. Fin -->
     <section class="screen" data-screen="done" hidden>
       <h1 class="title">Merci <span data-done-name></span> !</h1>
       <div class="score-card">
         <p class="score-label">Bonnes réponses</p>
         <p class="score"><span data-score></span><small> / <span data-total></span></small></p>
+        <p class="verdict" data-verdict></p>
       </div>
       <p class="save-status" data-save-status></p>
       <button type="button" class="btn ghost" data-retry hidden>Réessayer l’envoi</button>
@@ -70,18 +81,21 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
   type Question = {
     type: 'choix' | 'nombre';
     question: string;
+    aide?: string;
     photo?: string;
     choix?: string[];
     reponse: number;
     tolerance?: number;
     unite?: string;
   };
+  type Answer = number | string | null;
   type Result = {
     name: string;
     score: number;
     total: number;
     seconds: number;
-    answers: (number | string | null)[];
+    answers: Answer[];
+    message: string;
     deviceId: string;
     submittedAt: string;
     saved: boolean;
@@ -127,27 +141,43 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
     })();
 
   // ── État de la partie (sauvegardé : un rechargement reprend où l'on en était) ──
-  type Progress = { name: string; start: number; index: number; answers: (number | string | null)[] };
+  // locked[i] = la réponse i est validée (on ne peut plus la changer).
+  type Progress = { name: string; start: number; index: number; answers: Answer[]; locked: boolean[]; stage?: 'message' };
   let progress: Progress | null = store.get(KEY_PROGRESS);
+  if (progress && !progress.locked) progress.locked = questions.map(() => false);
+  const save = () => store.set(KEY_PROGRESS, progress);
 
   const show = (name: string) => {
     document.querySelectorAll<HTMLElement>('[data-screen]').forEach((s) => (s.hidden = s.dataset.screen !== name));
     window.scrollTo(0, 0);
   };
 
-
-  const isCorrect = (q: Question, a: number | string | null) => {
+  const isCorrect = (q: Question, a: Answer) => {
     if (a === null || a === '') return false;
     if (q.type === 'choix') return Number(a) === q.reponse;
     const n = Number(String(a).replace(',', '.'));
     return Number.isFinite(n) && Math.abs(n - q.reponse) <= (q.tolerance || 0);
   };
 
+  // Petites phrases au hasard (toujours la même pour une question donnée)
+  const BRAVO = ['Bravo !', 'Exactement !', 'Vous nous connaissez bien !', 'Bien joué !', 'Parfait !'];
+  const RATE = ['Raté !', 'Eh non !', 'Presque…', 'Pas tout à fait !', 'Oups !'];
+  const pick = (list: string[], i: number) => list[i % list.length];
+
   // ── Écran de fin ──
+  const verdict = (score: number, total: number) => {
+    const r = score / total;
+    if (r === 1) return 'Un sans-faute : vous êtes notre plus grand fan !';
+    if (r >= 0.8) return 'Impressionnant, vous nous connaissez par cœur !';
+    if (r >= 0.5) return 'Pas mal du tout !';
+    return 'Il va falloir passer plus de temps avec nous !';
+  };
+
   const renderDone = (r: Result) => {
     $('[data-done-name]').textContent = r.name;
     $('[data-score]').textContent = String(r.score);
     $('[data-total]').textContent = String(r.total);
+    $('[data-verdict]').textContent = verdict(r.score, r.total);
     const status = $('[data-save-status]');
     const retry = $('[data-retry]');
     if (r.saved) {
@@ -174,6 +204,7 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
       seconds: r.seconds,
       deviceId: r.deviceId,
       answers: r.answers,
+      message: r.message,
       submittedAt: r.submittedAt,
     });
     try {
@@ -202,6 +233,7 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
       total: questions.length,
       seconds,
       answers: progress.answers,
+      message: $<HTMLTextAreaElement>('[data-message-input]').value.trim(),
       deviceId,
       submittedAt: new Date().toISOString(),
       saved: false,
@@ -222,6 +254,42 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
   const numberWrap = $('[data-number]');
   const numberInput = $<HTMLInputElement>('[data-number-input]');
   const nextBtn = $<HTMLButtonElement>('[data-next]');
+  const feedback = $('[data-feedback]');
+
+  const isLast = () => progress!.index === questions.length - 1;
+
+  // Affiche « bonne / mauvaise réponse » et verrouille la question
+  const showFeedback = () => {
+    const i = progress!.index;
+    const q = questions[i];
+    const ok = isCorrect(q, progress!.answers[i]);
+    feedback.hidden = false;
+    feedback.className = `feedback ${ok ? 'good' : 'bad'}`;
+    if (ok) feedback.textContent = `${pick(BRAVO, i)} 🎉`;
+    else {
+      const right = q.type === 'choix' ? (q.choix || [])[q.reponse - 1] : `${q.reponse}${q.unite ? ` ${q.unite}` : ''}`;
+      feedback.textContent = `${pick(RATE, i)} La bonne réponse : ${right}`;
+    }
+    if (q.type === 'choix') {
+      choicesEl.querySelectorAll<HTMLButtonElement>('.choice').forEach((c, k) => {
+        c.disabled = true;
+        c.classList.toggle('is-right', k + 1 === q.reponse);
+        c.classList.toggle('is-wrong', k + 1 === Number(progress!.answers[i]) && !ok);
+      });
+    } else {
+      numberInput.disabled = true;
+      numberWrap.classList.toggle('is-right', ok);
+      numberWrap.classList.toggle('is-wrong', !ok);
+    }
+    nextBtn.disabled = false;
+    nextBtn.textContent = isLast() ? 'Terminer' : 'Question suivante';
+  };
+
+  const lock = () => {
+    progress!.locked[progress!.index] = true;
+    save();
+    showFeedback();
+  };
 
   const renderQuestion = () => {
     if (!progress) return;
@@ -230,17 +298,25 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
     $('[data-step]').textContent = `Question ${i + 1} sur ${questions.length}`;
     $('[data-progress-bar]').style.width = `${(i / questions.length) * 100}%`;
     $('[data-question]').textContent = q.question;
+    const aide = $('[data-aide]');
+    aide.hidden = !q.aide;
+    aide.textContent = q.aide || '';
 
     const photo = $<HTMLImageElement>('[data-photo]');
     photo.hidden = !q.photo;
     if (q.photo) photo.src = q.photo;
     else photo.removeAttribute('src');
 
+    feedback.hidden = true;
+    numberWrap.classList.remove('is-right', 'is-wrong');
+    numberInput.disabled = false;
     const current = progress.answers[i];
     choicesEl.innerHTML = '';
+
     if (q.type === 'choix') {
       numberWrap.hidden = true;
       choicesEl.hidden = false;
+      nextBtn.hidden = true; // on avance après avoir vu la correction
       (q.choix || []).forEach((label, k) => {
         const b = document.createElement('button');
         b.type = 'button';
@@ -250,23 +326,29 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
         b.innerHTML = `<span class="letter">${'ABCD'[k] || k + 1}</span><span class="label"></span>`;
         b.querySelector('.label')!.textContent = label;
         b.addEventListener('click', () => {
+          if (progress!.locked[i]) return;
           progress!.answers[i] = k + 1;
-          store.set(KEY_PROGRESS, progress);
           choicesEl.querySelectorAll('.choice').forEach((c, j) => c.setAttribute('aria-checked', String(j === k)));
-          nextBtn.disabled = false;
+          nextBtn.hidden = false;
+          lock();
         });
         choicesEl.appendChild(b);
       });
-      nextBtn.disabled = current == null;
     } else {
       choicesEl.hidden = true;
       numberWrap.hidden = false;
+      nextBtn.hidden = false;
       numberInput.value = current == null ? '' : String(current);
       $('[data-unit]').textContent = q.unite || '';
+      nextBtn.textContent = 'Valider';
       nextBtn.disabled = numberInput.value.trim() === '';
-      setTimeout(() => numberInput.focus(), 50);
+      if (!progress.locked[i]) setTimeout(() => numberInput.focus(), 50);
     }
-    nextBtn.textContent = i === questions.length - 1 ? 'Valider mes réponses' : 'Suivant';
+
+    if (progress.locked[i]) {
+      nextBtn.hidden = false;
+      showFeedback();
+    }
     show('question');
   };
 
@@ -274,7 +356,7 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
     if (!progress) return;
     numberInput.value = numberInput.value.replace(/[^0-9.,-]/g, '');
     progress.answers[progress.index] = numberInput.value.trim() || null;
-    store.set(KEY_PROGRESS, progress);
+    save();
     nextBtn.disabled = numberInput.value.trim() === '';
   });
   numberInput.addEventListener('keydown', (e) => {
@@ -283,14 +365,27 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
 
   nextBtn.addEventListener('click', () => {
     if (!progress) return;
-    if (progress.index < questions.length - 1) {
+    const i = progress.index;
+    // Question à réponse chiffrée : le premier clic valide et affiche la correction
+    if (!progress.locked[i]) {
+      if (progress.answers[i] == null) return;
+      lock();
+      return;
+    }
+    if (!isLast()) {
       progress.index += 1;
-      store.set(KEY_PROGRESS, progress);
+      save();
       renderQuestion();
     } else {
-      nextBtn.disabled = true;
-      finish();
+      progress.stage = 'message';
+      save();
+      show('message');
     }
+  });
+
+  $('[data-send]').addEventListener('click', () => {
+    $<HTMLButtonElement>('[data-send]').disabled = true;
+    finish();
   });
 
   // ── Démarrage ──
@@ -298,8 +393,8 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
     e.preventDefault();
     const name = $<HTMLInputElement>('#quiz-name').value.trim();
     if (!name) return;
-    progress = { name, start: Date.now(), index: 0, answers: questions.map(() => null) };
-    store.set(KEY_PROGRESS, progress);
+    progress = { name, start: Date.now(), index: 0, answers: questions.map(() => null), locked: questions.map(() => false) };
+    save();
     renderQuestion();
   });
 
@@ -327,7 +422,8 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
       });
     }
   } else if (progress) {
-    renderQuestion();
+    if (progress.stage === 'message') show('message');
+    else renderQuestion();
   }
 </script>
 
@@ -599,5 +695,112 @@ const payload = { questions, endpoint: APPS_SCRIPT_URL, storageKey: STORAGE_KEY 
     font-family: var(--font-script);
     font-size: 1.8rem;
     text-align: center;
+  }
+
+  .aide {
+    margin-top: 0.4rem;
+    font-size: 1.05rem;
+    color: var(--color-ink-soft);
+  }
+
+  .aide[hidden],
+  .feedback[hidden],
+  .next[hidden] {
+    display: none;
+  }
+
+  /* Correction immédiate */
+  .choices :global(.choice:disabled) {
+    color: var(--color-ink);
+    cursor: default;
+  }
+
+  .choices :global(.choice:disabled:not(.is-right):not(.is-wrong)) {
+    opacity: 0.45;
+  }
+
+  .choices :global(.choice.is-right) {
+    border-color: #4f8a64;
+    background: #e3f1e7;
+    color: #2f5e40;
+  }
+
+  .choices :global(.choice.is-wrong) {
+    border-color: #b9655a;
+    background: #f7e3df;
+    color: #8a3b30;
+  }
+
+  .number.is-right input {
+    border-color: #4f8a64;
+    background: #e3f1e7;
+  }
+
+  .number.is-wrong input {
+    border-color: #b9655a;
+    background: #f7e3df;
+  }
+
+  .number input:disabled {
+    color: var(--color-ink);
+    opacity: 1;
+    -webkit-text-fill-color: var(--color-ink);
+  }
+
+  .feedback {
+    margin-top: 1.25rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: 14px;
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.4;
+    animation: pop 0.35s var(--ease);
+  }
+
+  .feedback.good {
+    background: #e3f1e7;
+    color: #2f5e40;
+  }
+
+  .feedback.bad {
+    background: #f7e3df;
+    color: #8a3b30;
+  }
+
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .feedback {
+      animation: none;
+    }
+  }
+
+  /* Petit mot */
+  .message {
+    width: 100%;
+    margin-top: 1.25rem;
+    padding: 0.9rem 1rem;
+    border: 2px solid var(--color-line);
+    border-radius: 12px;
+    background: var(--color-card);
+    color: var(--color-ink);
+    font: inherit;
+    font-size: 1.2rem;
+    resize: vertical;
+  }
+
+  .message:focus {
+    border-color: var(--color-ink);
+    outline: none;
+  }
+
+  .verdict {
+    margin-top: 0.75rem;
+    font-size: 1.15rem;
   }
 </style>

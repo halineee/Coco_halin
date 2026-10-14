@@ -3,15 +3,15 @@
  *
  * À coller dans Google Sheets → Extensions → Apps Script (voir quiz/SETUP.md).
  *
- *  - doPost : reçoit une réponse du quiz et l'ajoute en une ligne dans la feuille.
+ *  - doPost : reçoit une réponse du quiz (avec le petit mot) et l'ajoute en une ligne dans la feuille.
  *  - doGet  : renvoie le classement (JSON) pour la page des résultats.
  *
- * Classement : plus de bonnes réponses d'abord, puis le temps le plus court.
+ * Classement : le nombre de bonnes réponses (les ex aequo partagent la même place sur la page des résultats).
  * Un même téléphone ne compte qu'une fois (seule sa première réponse est gardée).
  */
 
 const SHEET_NAME = 'Quiz';
-const HEADERS = ['Horodatage', 'Nom', 'Bonnes réponses', 'Total', 'Temps (s)', 'Appareil', 'Réponses'];
+const HEADERS = ['Horodatage', 'Nom', 'Bonnes réponses', 'Total', 'Temps (s)', 'Appareil', 'Réponses', 'Petit mot'];
 
 function getSheet_() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -22,6 +22,9 @@ function getSheet_() {
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(HEADERS);
     sheet.setFrozenRows(1);
+  } else if (sheet.getRange(1, HEADERS.length).getValue() === '') {
+    // Ancienne version de la feuille : on complète la ligne de titres
+    sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
   }
   return sheet;
 }
@@ -57,6 +60,7 @@ function doPost(e) {
       Number(data.seconds) || 0,
       deviceId,
       JSON.stringify(data.answers || []),
+      String(data.message || '').slice(0, 1000),
     ]);
     return json_({ ok: true });
   } catch (err) {

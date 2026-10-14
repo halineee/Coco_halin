@@ -139,7 +139,17 @@
 - [ ] 저장이 실패한 하객은 휴대폰 마지막 화면(점수·시간)을 보고 스프레드시트에 직접 한 줄 추가
   (Horodatage · Nom · Bonnes réponses · Total · Temps (s), 「Appareil」 칸은 비워두기)
 
-## Apps Script 코드를 고쳤을 때
+## Apps Script 코드를 고쳤을 때 (「Petit mot」 추가로 지금 한 번 필요!)
+
+마지막 화면의 **"Un petit mot pour nous"(한마디)** 를 시트에 저장하도록 `Code.gs` 가 바뀌었어요.
+아래 순서로 한 번 업데이트해 주세요:
+
+1. 스프레드시트 → **확장 프로그램 → Apps Script**
+2. 기존 코드를 전부 지우고 `quiz/apps-script/Code.gs` 새 내용을 붙여넣기 → 💾 저장
+3. **배포 → 배포 관리 → ✏️(수정) → 버전: 「새 버전」 → 배포**
+4. 다음 응답부터 `Quiz` 탭 H열에 **Petit mot** 가 생깁니다.
+
+일반적인 경우:
 
 `Code.gs` 를 수정했다면 **배포 → 배포 관리 → ✏️ 수정 → 버전: 새 버전 → 배포** 를 해야 반영됩니다.
 (이렇게 하면 URL이 그대로 유지돼요. "새 배포"를 하면 URL이 바뀌니 `config.js` 도 다시 바꿔야 합니다.)
