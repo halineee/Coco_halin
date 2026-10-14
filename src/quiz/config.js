@@ -7,7 +7,7 @@
 //  mais l'écran final affiche quand même le score (comptage manuel possible).
 // ─────────────────────────────────────────────────────────────
 
-export const APPS_SCRIPT_URL = '';
+export const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxoCmAeLf2M72-ItwjW1R4KEc04sd69OJiJXhBbP5bHm6jjyyYEBuFPu8sIhgqSqiE7Sw/exec';
 
 // Clé de stockage sur le téléphone (empêche de rejouer).
 // Changez-la (ex. '-v2') pour autoriser tout le monde à rejouer après un test.
