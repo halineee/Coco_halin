@@ -29,7 +29,7 @@
 export const quiz = {
   titre: 'Notre petit quiz',
   photo: '/quiz-photos/nous-accueil.jpg', // petite photo du premier écran (facultatif)
-  intro: 'Que savez-vous vraiment de Coco (Corentin) et Halin ? Prenez votre temps, il n’y a pas de chrono. Les meilleurs scores gagnent un petit cadeau !',
+  intro: 'Que savez-vous vraiment de Coco (Corentin) et Halin ? Les meilleurs scores gagnent un petit cadeau !',
 
   // Dernier écran avant l'envoi : un petit mot pour les mariés (facultatif, sans points)
   message: {
